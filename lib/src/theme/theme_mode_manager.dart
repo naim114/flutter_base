@@ -1,14 +1,14 @@
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:theme_mode_handler/theme_mode_manager_interface.dart';
 
-class ExampleThemeModeManager implements IThemeModeManager {
-  static const _key = 'example_theme_mode';
+class MyThemeModeManager implements IThemeModeManager {
+  static const _key = 'my_theme_mode';
 
   @override
   Future<String?> loadThemeMode() async {
     final _prefs = await SharedPreferences.getInstance();
     // Intended delay for demonstration purposes
-    await Future.delayed(Duration(milliseconds: 500));
+    await Future.delayed(const Duration(milliseconds: 500));
 
     return _prefs.getString(_key);
   }

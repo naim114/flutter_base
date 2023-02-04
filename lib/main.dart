@@ -3,20 +3,21 @@ import 'package:flutter_base/src/features/auth/log_in.dart';
 import 'package:flutter_base/src/features/auth/sign_up.dart';
 import 'package:flutter_base/src/services/helpers.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:theme_mode_handler/theme_mode_handler.dart';
 
 import 'src/theme/theme_mode_manager.dart';
 
-void main() => runApp(const ExampleApp());
+void main() => runApp(const MyApp());
 
-class ExampleApp extends StatefulWidget {
-  const ExampleApp({super.key});
+class MyApp extends StatefulWidget {
+  const MyApp({super.key});
 
   @override
-  _ExampleAppState createState() => _ExampleAppState();
+  _MyAppState createState() => _MyAppState();
 }
 
-class _ExampleAppState extends State<ExampleApp> {
+class _MyAppState extends State<MyApp> {
   MaterialColor primaryColorShades = const MaterialColor(
     0xFF643FDB,
     <int, Color>{
@@ -36,10 +37,12 @@ class _ExampleAppState extends State<ExampleApp> {
   @override
   Widget build(BuildContext context) {
     return ThemeModeHandler(
-      manager: ExampleThemeModeManager(),
-      placeholderWidget: const Center(
-        child: CircularProgressIndicator(
-          color: CustomColor.primary,
+      manager: MyThemeModeManager(),
+      placeholderWidget: Center(
+        child: LoadingAnimationWidget.flickr(
+          leftDotColor: CustomColor.primary,
+          rightDotColor: CustomColor.secondary,
+          size: 50,
         ),
       ),
       builder: (ThemeMode themeMode) => MaterialApp(
@@ -54,6 +57,11 @@ class _ExampleAppState extends State<ExampleApp> {
                 bodyColor: Colors.white,
                 displayColor: Colors.white,
               ),
+          scaffoldBackgroundColor: CustomColor.neutral1,
+          inputDecorationTheme: const InputDecorationTheme(
+            fillColor: CustomColor.neutral1,
+            filled: true,
+          ),
         ),
 
         // LIGHT THEME
@@ -67,9 +75,6 @@ class _ExampleAppState extends State<ExampleApp> {
                 displayColor: CustomColor.neutral1,
               ),
           scaffoldBackgroundColor: Colors.white,
-          inputDecorationTheme: const InputDecorationTheme(
-            prefixIconColor: CustomColor.neutral1,
-          ),
           iconTheme: const IconThemeData(
             color: CustomColor.neutral1,
           ),

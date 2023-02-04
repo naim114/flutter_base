@@ -1,3 +1,4 @@
+import 'dart:math';
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
@@ -13,13 +14,15 @@ class CustomColor {
   static const semantic2 = Color(0xFF47C272);
 }
 
+bool isDarkTheme(context) {
+  return Theme.of(context).brightness == Brightness.dark ? true : false;
+}
+
 Color getColorByBackground(context) {
-  return Theme.of(context).brightness == Brightness.dark
-      ? Colors.white
-      : CustomColor.neutral1;
+  return isDarkTheme(context) ? Colors.white : CustomColor.neutral1;
 }
 
 void selectThemeMode(BuildContext context) async {
   final newThemeMode = await showThemePickerDialog(context: context);
-  print(newThemeMode);
+  debugPrint(newThemeMode.toString());
 }

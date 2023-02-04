@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_base/src/features/auth/sign_up.dart';
+import 'package:flutter_base/src/features/main/index.dart';
 import 'package:flutter_base/src/services/helpers.dart';
 import 'package:flutter_base/src/widgets/custom_appbar.dart';
 import 'package:flutter_base/src/widgets/custom_button.dart';
@@ -18,9 +19,9 @@ class LogIn extends StatelessWidget {
         noBackButton: true,
         actions: [
           IconButton(
-            icon: Theme.of(context).brightness == Brightness.dark
-                ? const Icon(CupertinoIcons.lightbulb)
-                : const Icon(CupertinoIcons.lightbulb_fill),
+            icon: isDarkTheme(context)
+                ? const Icon(CupertinoIcons.moon_fill)
+                : const Icon(CupertinoIcons.sun_max_fill),
             color: getColorByBackground(context),
             onPressed: () => selectThemeMode(context),
           ),
@@ -37,7 +38,7 @@ class LogIn extends StatelessWidget {
                   const Padding(
                     padding: EdgeInsets.only(bottom: 30.0),
                     child: Text(
-                      "Sign In",
+                      "Log In",
                       style: TextStyle(
                         fontSize: 24,
                         fontWeight: FontWeight.bold,
@@ -65,7 +66,11 @@ class LogIn extends StatelessWidget {
                   ),
                   customButton(
                     child: const Text('Log In'),
-                    onPressed: () {},
+                    onPressed: () => Navigator.of(context).pushReplacement(
+                      MaterialPageRoute(
+                        builder: (context) => const FrontFrame(),
+                      ),
+                    ),
                   ),
                 ],
               ),

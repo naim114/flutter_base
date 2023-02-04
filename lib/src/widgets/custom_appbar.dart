@@ -13,28 +13,27 @@ PreferredSizeWidget customAppBar({
   List<Widget>? actions,
   String title = '',
   bool noBackButton = false,
-}) {
-  return AppBar(
-    actions: actions,
-    leading: noBackButton
-        ? null
-        : IconButton(
-            onPressed: noBackButton ? null : onPressed,
-            color: getColorByBackground(context),
-            icon: const Icon(
-              CupertinoIcons.back,
+}) =>
+    AppBar(
+      actions: actions,
+      leading: noBackButton
+          ? null
+          : IconButton(
+              onPressed: noBackButton ? null : onPressed,
+              color: getColorByBackground(context),
+              icon: const Icon(
+                CupertinoIcons.back,
+              ),
             ),
-          ),
-    title: Text(
-      title,
-      style: TextStyle(
-        color: getColorByBackground(context),
-        fontWeight: FontWeight.bold,
+      title: Text(
+        title,
+        style: TextStyle(
+          color: getColorByBackground(context),
+          fontWeight: FontWeight.bold,
+        ),
       ),
-    ),
-    centerTitle: true,
-    backgroundColor: Colors.transparent,
-    shadowColor: Colors.transparent,
-    elevation: 0,
-  );
-}
+      centerTitle: true,
+      backgroundColor: Colors.transparent,
+      shadowColor: Colors.transparent,
+      elevation: 0,
+    );

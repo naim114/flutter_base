@@ -18,9 +18,9 @@ class SignUp extends StatelessWidget {
         },
         actions: [
           IconButton(
-            icon: Theme.of(context).brightness == Brightness.dark
-                ? const Icon(CupertinoIcons.lightbulb)
-                : const Icon(CupertinoIcons.lightbulb_fill),
+            icon: isDarkTheme(context)
+                ? const Icon(CupertinoIcons.moon_fill)
+                : const Icon(CupertinoIcons.sun_max_fill),
             color: getColorByBackground(context),
             onPressed: () => selectThemeMode(context),
           ),
