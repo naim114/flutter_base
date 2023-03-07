@@ -8,6 +8,7 @@ Widget listTileNotification({
   required void Function(BuildContext) onMarkUnread,
   required void Function(BuildContext) onDelete,
   required void Function() onTap,
+  bool unread = true,
 }) =>
     GestureDetector(
       onTap: onTap,
@@ -32,16 +33,24 @@ Widget listTileNotification({
             ),
           ],
         ),
-        child: const ListTile(
-          title: Text(
+        child: ListTile(
+          shape: const Border(
+            bottom: BorderSide(
+              color: CustomColor.neutral2,
+            ),
+          ),
+          title: const Text(
             'Notifications title',
             style: TextStyle(fontWeight: FontWeight.bold),
           ),
-          subtitle: Text('Mar 18 2014'),
-          trailing: Icon(
-            Icons.circle,
-            color: CustomColor.secondary,
-          ),
+          subtitle: const Text('Mar 18 2014'),
+          trailing: (unread)
+              ? const Icon(
+                  Icons.circle,
+                  size: 10,
+                  color: CustomColor.secondary,
+                )
+              : const SizedBox.shrink(),
         ),
       ),
     );

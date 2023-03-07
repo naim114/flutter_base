@@ -13,33 +13,45 @@ class Notifications extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Padding(
-        padding: const EdgeInsets.all(25.0),
-        child: ListView(
-          children: [
-            pageTitleIcon(
-              context: context,
-              title: "Notification",
-              icon: const Icon(
-                CupertinoIcons.bell_fill,
-                size: 24,
-              ),
+      body: ListView(
+        children: [
+          Container(
+            padding: const EdgeInsets.only(
+              top: 25,
+              left: 25,
+              right: 25,
+              bottom: 10,
             ),
-            const Padding(
-              padding: EdgeInsets.symmetric(vertical: 10),
-              child: Text(
-                'View all your notifications. Slide notification for action.',
-                style: TextStyle(),
-              ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                pageTitleIcon(
+                  context: context,
+                  title: "Notification",
+                  icon: const Icon(
+                    CupertinoIcons.bell_fill,
+                    size: 24,
+                  ),
+                ),
+                const Padding(
+                  padding: EdgeInsets.symmetric(vertical: 10),
+                  child: Text(
+                    'View all your notifications. Slide notification for action.',
+                    style: TextStyle(),
+                  ),
+                ),
+              ],
             ),
-            // FOREACH HERE
-            listTileNotification(
-              onMarkUnread: doNothing,
-              onDelete: doNothing,
-              onTap: () {},
-            ),
-          ],
-        ),
+          ),
+
+          // FOREACH HERE
+          listTileNotification(
+            onMarkUnread: doNothing,
+            onDelete: doNothing,
+            onTap: () {},
+            unread: false,
+          ),
+        ],
       ),
     );
   }
