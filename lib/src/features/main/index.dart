@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_base/src/features/account/index.dart';
-import 'package:flutter_base/src/features/inbox/index.dart';
+import 'package:flutter_base/src/features/notification/index.dart';
 import 'package:flutter_base/src/services/helpers.dart';
 import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 
@@ -29,7 +29,7 @@ class _FrontFrameState extends State<FrontFrame> {
           child: Text('1'),
         ),
       ),
-      Inbox(),
+      Notifications(),
       Account(mainContext: context),
     ];
   }
