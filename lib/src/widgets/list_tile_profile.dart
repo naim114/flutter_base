@@ -5,6 +5,7 @@ import '../services/helpers.dart';
 
 Widget listTileProfile({
   required BuildContext context,
+  required void Function() onEdit,
 }) =>
     ListTile(
       leading: const CircleAvatar(
@@ -18,7 +19,7 @@ Widget listTileProfile({
       subtitle: const Text('user@email.com'),
       contentPadding: const EdgeInsets.all(15),
       trailing: OutlinedButton(
-        onPressed: () {},
+        onPressed: onEdit,
         style: ButtonStyle(
           shape: MaterialStateProperty.all<RoundedRectangleBorder>(
             RoundedRectangleBorder(

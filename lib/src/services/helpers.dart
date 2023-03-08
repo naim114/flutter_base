@@ -13,6 +13,7 @@ class CustomColor {
   static const semantic1 = Color(0xFFFF6A5D);
   static const semantic2 = Color(0xFF47C272);
   static const danger = Color(0xFFFE4A49);
+  static const success = Color(0xFF47C272);
 }
 
 bool isDarkTheme(context) {
