@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_base/src/services/helpers.dart';
+import 'package:flutter_base/src/widgets/appbar_confirm_cancel.dart';
 import 'package:intl/intl.dart';
 
 class Profile extends StatefulWidget {
@@ -21,29 +22,10 @@ class _ProfileState extends State<Profile> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        elevation: 0,
-        backgroundColor: Colors.transparent,
-        leading: IconButton(
-          onPressed: () => Navigator.pop(context),
-          icon: const Icon(
-            Icons.close,
-            color: CustomColor.neutral2,
-          ),
-        ),
-        actions: [
-          IconButton(
-            onPressed: () {},
-            icon: const Icon(
-              Icons.check_outlined,
-              color: CustomColor.primary,
-            ),
-          ),
-        ],
-        title: const Text(
-          "Edit Profile",
-          style: TextStyle(fontWeight: FontWeight.bold),
-        ),
+      appBar: appBarConfirmCancel(
+        onCancel: () => Navigator.pop(context),
+        onConfirm: () {},
+        title: "Edit Profile",
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(vertical: 15.0),

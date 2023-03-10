@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_base/src/features/account/profile/index.dart';
+import 'package:flutter_base/src/features/account/security/index.dart';
 import 'package:flutter_base/src/features/auth/log_in.dart';
 import 'package:flutter_base/src/services/helpers.dart';
 import 'package:flutter_base/src/widgets/list_tile_icon.dart';
@@ -53,9 +54,13 @@ class Account extends StatelessWidget {
             // Security (Password, Login activity)
             listTileIcon(
               context: context,
-              icon: CupertinoIcons.padlock,
+              icon: CupertinoIcons.shield_lefthalf_fill,
               title: "Security",
-              onTap: () {},
+              onTap: () => Navigator.of(mainContext).push(
+                MaterialPageRoute(
+                  builder: (context) => const Security(),
+                ),
+              ),
             ),
             // Theme
             listTileIcon(
