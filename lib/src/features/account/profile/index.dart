@@ -1,3 +1,4 @@
+import 'package:country/country.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_base/src/services/helpers.dart';
 import 'package:flutter_base/src/widgets/appbar_confirm_cancel.dart';
@@ -10,8 +11,12 @@ class Profile extends StatefulWidget {
   State<Profile> createState() => _ProfileState();
 }
 
+List<Country> list = Countries.values;
+
 class _ProfileState extends State<Profile> {
   TextEditingController dateinput = TextEditingController();
+  String dropdownValue = Countries.mys.number;
+  // String dropdownValue = list.first;
 
   @override
   void initState() {
@@ -31,6 +36,7 @@ class _ProfileState extends State<Profile> {
         padding: const EdgeInsets.symmetric(vertical: 15.0),
         child: ListView(
           children: [
+            // Profile Picture
             GestureDetector(
               onTap: () {
                 showModalBottomSheet(
@@ -84,6 +90,7 @@ class _ProfileState extends State<Profile> {
               padding: const EdgeInsets.symmetric(horizontal: 30.0),
               child: Column(
                 children: [
+                  // Name
                   const Padding(
                     padding: EdgeInsets.symmetric(vertical: 8.0),
                     child: TextField(
@@ -92,16 +99,7 @@ class _ProfileState extends State<Profile> {
                       ),
                     ),
                   ),
-                  const Padding(
-                    padding: EdgeInsets.symmetric(vertical: 8.0),
-                    child: TextField(
-                      decoration: InputDecoration(
-                        labelText: 'Email',
-                      ),
-                      keyboardType: TextInputType.emailAddress,
-                      autofillHints: [AutofillHints.email],
-                    ),
-                  ),
+                  // Birthday
                   Padding(
                     padding: const EdgeInsets.symmetric(vertical: 8.0),
                     child: TextField(
@@ -123,15 +121,16 @@ class _ProfileState extends State<Profile> {
                               DateFormat('dd/MM/yyyy').format(pickedDate);
                           print(formattedDate);
 
-                          setState(() {
-                            dateinput.text = formattedDate;
-                          });
+                          setState(() => dateinput.text = formattedDate);
                         } else {
                           print("Date is not selected");
+                          setState(() => dateinput.text =
+                              DateFormat('dd/MM/yyyy').format(DateTime.now()));
                         }
                       },
                     ),
                   ),
+                  // Phone Number
                   const Padding(
                     padding: EdgeInsets.symmetric(vertical: 8.0),
                     child: TextField(
@@ -139,6 +138,24 @@ class _ProfileState extends State<Profile> {
                         labelText: 'Phone Number',
                       ),
                     ),
+                  ),
+                  // Country
+                  DropdownButtonFormField<String>(
+                    elevation: 0,
+                    value: dropdownValue,
+                    icon: const Icon(Icons.arrow_downward),
+                    decoration: const InputDecoration(
+                      labelText: 'Country',
+                    ),
+                    onChanged: (String? value) =>
+                        setState(() => dropdownValue = value!),
+                    items:
+                        list.map<DropdownMenuItem<String>>((Country country) {
+                      return DropdownMenuItem<String>(
+                        value: country.number,
+                        child: Text(country.isoShortName),
+                      );
+                    }).toList(),
                   ),
                 ],
               ),

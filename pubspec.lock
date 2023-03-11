@@ -41,6 +41,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.17.0"
+  country:
+    dependency: "direct main"
+    description:
+      name: country
+      sha256: "315abc4dcf2f5a866b00c3cbb13021093d3eea83f0c990a69afae6dc42f3d042"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.0.6"
   crypto:
     dependency: transitive
     description:
