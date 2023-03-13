@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
+import 'package:flutter_base/src/features/account/security/login_activity.dart';
+import 'package:flutter_base/src/features/account/security/update_email.dart';
+import 'package:flutter_base/src/features/account/security/update_password.dart';
 import 'package:flutter_base/src/widgets/list_tile_icon.dart';
 
 import '../../../services/helpers.dart';
@@ -21,24 +24,45 @@ class Security extends StatelessWidget {
             color: CustomColor.neutral2,
           ),
         ),
-        title: const Text(
+        title: Text(
           "Security",
-          style: TextStyle(fontWeight: FontWeight.bold),
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+            color: getColorByBackground(context),
+          ),
         ),
       ),
       body: ListView(
         children: [
           listTileIcon(
             context: context,
+            icon: Icons.email,
+            title: "Update Email",
+            onTap: () => Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (context) => const UpdateEmail(),
+              ),
+            ),
+          ),
+          listTileIcon(
+            context: context,
             icon: Icons.key,
-            title: "Password",
-            onTap: () {},
+            title: "Update Password",
+            onTap: () => Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (context) => const UpdatePassword(),
+              ),
+            ),
           ),
           listTileIcon(
             context: context,
             icon: Icons.pin_drop,
             title: "Login activity",
-            onTap: () {},
+            onTap: () => Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (context) => const LoginActivity(),
+              ),
+            ),
           ),
         ],
       ),

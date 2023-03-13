@@ -31,6 +31,7 @@ class _ProfileState extends State<Profile> {
         onCancel: () => Navigator.pop(context),
         onConfirm: () {},
         title: "Edit Profile",
+        context: context,
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(vertical: 15.0),

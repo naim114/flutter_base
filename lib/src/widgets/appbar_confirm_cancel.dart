@@ -6,6 +6,7 @@ PreferredSizeWidget appBarConfirmCancel({
   String title = "",
   required void Function() onCancel,
   required void Function() onConfirm,
+  required BuildContext context,
 }) =>
     AppBar(
       elevation: 0,
@@ -28,6 +29,9 @@ PreferredSizeWidget appBarConfirmCancel({
       ],
       title: Text(
         title,
-        style: const TextStyle(fontWeight: FontWeight.bold),
+        style: TextStyle(
+          color: getColorByBackground(context),
+          fontWeight: FontWeight.bold,
+        ),
       ),
     );
