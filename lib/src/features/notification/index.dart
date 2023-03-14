@@ -46,7 +46,6 @@ class Notifications extends StatelessWidget {
 
           // FOREACH HERE
           listTileNotification(
-            onMarkUnread: doNothing,
             onDelete: doNothing,
             onTap: () {},
             unread: false,

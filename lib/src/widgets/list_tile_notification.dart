@@ -5,7 +5,6 @@ import 'package:flutter_slidable/flutter_slidable.dart';
 import '../services/helpers.dart';
 
 Widget listTileNotification({
-  required void Function(BuildContext) onMarkUnread,
   required void Function(BuildContext) onDelete,
   required void Function() onTap,
   bool unread = true,
@@ -17,13 +16,6 @@ Widget listTileNotification({
         endActionPane: ActionPane(
           motion: const ScrollMotion(),
           children: [
-            SlidableAction(
-              onPressed: onMarkUnread,
-              backgroundColor: CustomColor.neutral2,
-              foregroundColor: Colors.white,
-              icon: Icons.mark_as_unread,
-              label: 'Mark Unread',
-            ),
             SlidableAction(
               onPressed: onDelete,
               backgroundColor: CustomColor.danger,
