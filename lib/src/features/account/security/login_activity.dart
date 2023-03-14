@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../services/helpers.dart';
+import '../../../widgets/list_tile_login_activity.dart';
 
 class LoginActivity extends StatelessWidget {
   const LoginActivity({super.key});
@@ -28,38 +29,19 @@ class LoginActivity extends StatelessWidget {
       ),
       body: ListView(
         children: [
-          ExpansionTile(
-            title: const Text('device_name',
-                style: TextStyle(fontWeight: FontWeight.bold)),
-            subtitle: const Text('device_ip'),
-            children: <Widget>[
-              ListTile(
-                title: RichText(
-                  text: TextSpan(
-                    style: TextStyle(color: getColorByBackground(context)),
-                    children: const <TextSpan>[
-                      TextSpan(
-                          text: 'Device info: \n',
-                          style: TextStyle(fontWeight: FontWeight.bold)),
-                      TextSpan(text: 'device_info_here'),
-                    ],
-                  ),
-                ),
-              ),
-              ListTile(
-                title: RichText(
-                  text: TextSpan(
-                    style: TextStyle(color: getColorByBackground(context)),
-                    children: const <TextSpan>[
-                      TextSpan(
-                          text: 'Network info: \n',
-                          style: TextStyle(fontWeight: FontWeight.bold)),
-                      TextSpan(text: 'device_info_here'),
-                    ],
-                  ),
-                ),
-              ),
-            ],
+          listTileLoginActivity(
+            context: context,
+            deviceName: 'iPhone X',
+            dateTime: '15 March 2023',
+            deviceInfo: 'blablabalbalbablalab',
+            networkInfo: 'blablabalbalbablalab',
+          ),
+          listTileLoginActivity(
+            context: context,
+            deviceName: 'Samsung Something',
+            dateTime: '11 December 2020',
+            deviceInfo: 'blablabalbalbablalab',
+            networkInfo: 'blablabalbalbablalab',
           ),
         ],
       ),
