@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_base/src/features/account/profile/index.dart';
 import 'package:flutter_base/src/features/account/security/index.dart';
+import 'package:flutter_base/src/features/admin/dashboard/index.dart';
 import 'package:flutter_base/src/features/auth/log_in.dart';
 import 'package:flutter_base/src/services/helpers.dart';
 import 'package:flutter_base/src/widgets/list_tile_icon.dart';
@@ -87,8 +88,20 @@ class Account extends StatelessWidget {
               context: context,
               icon: CupertinoIcons.chart_bar_alt_fill,
               title: "Dashboard",
+              onTap: () => Navigator.of(mainContext).push(
+                MaterialPageRoute(
+                  builder: (context) => const Dashboard(),
+                ),
+              ),
+            ),
+            // User List
+            listTileIcon(
+              context: context,
+              icon: CupertinoIcons.group_solid,
+              title: "User List",
               onTap: () {},
             ),
+
             // Log Out TODO DISPLAY A POPUP TO CONFIRM LOGOUT
             ListTile(
               title: Text(

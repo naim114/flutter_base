@@ -142,6 +142,7 @@ class _ProfileState extends State<Profile> {
                   ),
                   // Country
                   DropdownButtonFormField<String>(
+                    isExpanded: true,
                     elevation: 0,
                     value: dropdownValue,
                     icon: const Icon(Icons.arrow_downward),
@@ -154,7 +155,10 @@ class _ProfileState extends State<Profile> {
                         list.map<DropdownMenuItem<String>>((Country country) {
                       return DropdownMenuItem<String>(
                         value: country.number,
-                        child: Text(country.isoShortName),
+                        child: Text(
+                          country.isoShortName,
+                          overflow: TextOverflow.ellipsis,
+                        ),
                       );
                     }).toList(),
                   ),
