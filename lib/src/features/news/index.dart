@@ -5,8 +5,8 @@ import 'package:flutter/src/widgets/placeholder.dart';
 
 import '../../widgets/page_title_icon.dart';
 
-class Blog extends StatelessWidget {
-  const Blog({super.key});
+class News extends StatelessWidget {
+  const News({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -25,9 +25,9 @@ class Blog extends StatelessWidget {
               children: [
                 pageTitleIcon(
                   context: context,
-                  title: "Blog",
+                  title: "News",
                   icon: const Icon(
-                    CupertinoIcons.news_solid,
+                    Icons.newspaper,
                     size: 24,
                   ),
                 ),

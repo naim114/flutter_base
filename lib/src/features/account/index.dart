@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_base/src/features/account/profile/index.dart';
 import 'package:flutter_base/src/features/account/security/index.dart';
 import 'package:flutter_base/src/features/admin/dashboard/index.dart';
+import 'package:flutter_base/src/features/admin/index.dart';
+import 'package:flutter_base/src/features/admin/user_list/index.dart';
 import 'package:flutter_base/src/features/auth/log_in.dart';
 import 'package:flutter_base/src/services/helpers.dart';
 import 'package:flutter_base/src/widgets/list_tile_icon.dart';
@@ -94,19 +96,34 @@ class Account extends StatelessWidget {
                 ),
               ),
             ),
-            // User List
+            // Admin Panel
             listTileIcon(
               context: context,
-              icon: CupertinoIcons.group_solid,
-              title: "User List",
-              onTap: () {},
+              icon: Icons.admin_panel_settings,
+              title: "Admin Panel",
+              onTap: () => Navigator.of(mainContext).push(
+                MaterialPageRoute(
+                  builder: (context) => const AdminPanel(),
+                ),
+              ),
+            ),
+            listTileIcon(
+              context: context,
+              icon: Icons.app_settings_alt,
+              title: "App Settings",
+              onTap: () => Navigator.of(mainContext).push(
+                MaterialPageRoute(
+                  builder: (context) => const AdminPanel(),
+                ),
+              ),
             ),
 
             // Log Out TODO DISPLAY A POPUP TO CONFIRM LOGOUT
             ListTile(
               title: Text(
                 'Log Out',
-                style: TextStyle(color: Colors.red[400]),
+                style: TextStyle(
+                    color: Colors.red[400], fontWeight: FontWeight.bold),
               ),
               onTap: () => Navigator.of(mainContext).pushReplacement(
                 MaterialPageRoute(

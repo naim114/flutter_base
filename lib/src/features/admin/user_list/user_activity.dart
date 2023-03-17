@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/src/widgets/framework.dart';
+import 'package:flutter/src/widgets/placeholder.dart';
 
 import '../../../services/helpers.dart';
 import '../../../widgets/list_tile_activity.dart';
 
-class LoginActivity extends StatelessWidget {
-  const LoginActivity({super.key});
+class UserActivity extends StatelessWidget {
+  const UserActivity({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +22,7 @@ class LoginActivity extends StatelessWidget {
           ),
         ),
         title: Text(
-          "Login Activity",
+          "User Activity",
           style: TextStyle(
             fontWeight: FontWeight.bold,
             color: getColorByBackground(context),
@@ -31,14 +33,9 @@ class LoginActivity extends StatelessWidget {
         children: [
           listTileActivity(
             context: context,
-            deviceName: 'iPhone X',
-            dateTime: '15 March 2023',
-            deviceInfo: 'blablabalbalbablalab',
-            networkInfo: 'blablabalbalbablalab',
-          ),
-          listTileActivity(
-            context: context,
-            deviceName: 'Samsung Something',
+            action: "Update Email",
+            deviceName:
+                'Samsung Something Samsung Something Samsung Something Samsung Something',
             dateTime: '11 December 2020',
             deviceInfo: 'blablabalbalbablalab',
             networkInfo: 'blablabalbalbablalab',

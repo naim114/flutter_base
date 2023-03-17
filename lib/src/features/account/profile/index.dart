@@ -5,18 +5,20 @@ import 'package:flutter_base/src/widgets/appbar_confirm_cancel.dart';
 import 'package:intl/intl.dart';
 
 class Profile extends StatefulWidget {
-  const Profile({super.key});
+  final Widget bottomWidget;
+  const Profile({
+    super.key,
+    this.bottomWidget = const SizedBox(),
+  });
 
   @override
   State<Profile> createState() => _ProfileState();
 }
 
-List<Country> list = Countries.values;
-
 class _ProfileState extends State<Profile> {
+  List<Country> list = Countries.values;
   TextEditingController dateinput = TextEditingController();
   String dropdownValue = Countries.mys.number;
-  // String dropdownValue = list.first;
 
   @override
   void initState() {
@@ -141,26 +143,33 @@ class _ProfileState extends State<Profile> {
                     ),
                   ),
                   // Country
-                  DropdownButtonFormField<String>(
-                    isExpanded: true,
-                    elevation: 0,
-                    value: dropdownValue,
-                    icon: const Icon(Icons.arrow_downward),
-                    decoration: const InputDecoration(
-                      labelText: 'Country',
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 8.0),
+                    child: DropdownButtonFormField<String>(
+                      isExpanded: true,
+                      elevation: 0,
+                      value: dropdownValue,
+                      icon: const Icon(Icons.arrow_downward),
+                      decoration: const InputDecoration(
+                        labelText: 'Country',
+                      ),
+                      onChanged: (String? value) =>
+                          setState(() => dropdownValue = value!),
+                      items:
+                          list.map<DropdownMenuItem<String>>((Country country) {
+                        return DropdownMenuItem<String>(
+                          value: country.number,
+                          child: Text(
+                            country.isoShortName,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        );
+                      }).toList(),
                     ),
-                    onChanged: (String? value) =>
-                        setState(() => dropdownValue = value!),
-                    items:
-                        list.map<DropdownMenuItem<String>>((Country country) {
-                      return DropdownMenuItem<String>(
-                        value: country.number,
-                        child: Text(
-                          country.isoShortName,
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                      );
-                    }).toList(),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 8.0),
+                    child: widget.bottomWidget,
                   ),
                 ],
               ),

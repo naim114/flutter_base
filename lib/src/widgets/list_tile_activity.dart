@@ -2,18 +2,37 @@ import 'package:flutter/material.dart';
 
 import '../services/helpers.dart';
 
-Widget listTileLoginActivity({
+Widget listTileActivity({
   required BuildContext context,
   required String deviceName,
   required String dateTime,
   required String deviceInfo,
   required String networkInfo,
+  String action = "",
 }) =>
     ExpansionTile(
-      title:
-          Text(deviceName, style: const TextStyle(fontWeight: FontWeight.bold)),
+      title: Text(
+        action != "" ? action : deviceName,
+        style: const TextStyle(fontWeight: FontWeight.bold),
+        overflow: TextOverflow.ellipsis,
+      ),
       subtitle: Text(dateTime),
       children: <Widget>[
+        action != ""
+            ? ListTile(
+                title: RichText(
+                  text: TextSpan(
+                    style: TextStyle(color: getColorByBackground(context)),
+                    children: <TextSpan>[
+                      const TextSpan(
+                          text: 'Action: \n',
+                          style: TextStyle(fontWeight: FontWeight.bold)),
+                      TextSpan(text: action),
+                    ],
+                  ),
+                ),
+              )
+            : const SizedBox(),
         ListTile(
           title: RichText(
             text: TextSpan(

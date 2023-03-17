@@ -5,7 +5,7 @@ import 'package:flutter_base/src/features/notification/index.dart';
 import 'package:flutter_base/src/services/helpers.dart';
 import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 
-import '../blog/index.dart';
+import '../news/index.dart';
 
 class FrontFrame extends StatefulWidget {
   const FrontFrame({super.key});
@@ -31,7 +31,7 @@ class _FrontFrameState extends State<FrontFrame> {
           child: Text('1'),
         ),
       ),
-      const Blog(),
+      const News(),
       const Notifications(),
       Account(mainContext: context),
     ];
@@ -48,8 +48,8 @@ class _FrontFrameState extends State<FrontFrame> {
         inactiveColorPrimary: CupertinoColors.systemGrey,
       ),
       PersistentBottomNavBarItem(
-        icon: const Icon(CupertinoIcons.news),
-        title: ("Blog"),
+        icon: const Icon(Icons.newspaper),
+        title: ("News"),
         activeColorPrimary:
             isDarkTheme(context) ? Colors.white : CustomColor.primary,
         inactiveColorPrimary: CupertinoColors.systemGrey,
