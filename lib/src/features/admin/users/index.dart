@@ -1,19 +1,17 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
-import 'package:flutter_base/src/features/admin/user_list/edit.dart';
+import 'package:flutter_base/src/features/admin/users/edit.dart';
 
 import '../../../services/helpers.dart';
 
-class UserList extends StatefulWidget {
-  const UserList({super.key});
+class AdminPanelUsers extends StatefulWidget {
+  const AdminPanelUsers({super.key});
 
   @override
-  State<UserList> createState() => _UserListState();
+  State<AdminPanelUsers> createState() => _AdminPanelUsersState();
 }
 
-class _UserListState extends State<UserList> {
+class _AdminPanelUsersState extends State<AdminPanelUsers> {
   List<dynamic> data = [
     {
       "Profile Picture":
@@ -74,7 +72,7 @@ class _UserListState extends State<UserList> {
           ),
         ),
         title: Text(
-          "User List",
+          "Manage Users",
           style: TextStyle(
             fontWeight: FontWeight.bold,
             color: getColorByBackground(context),
@@ -83,6 +81,17 @@ class _UserListState extends State<UserList> {
       ),
       body: ListView(
         children: [
+          const Padding(
+            padding: EdgeInsets.only(
+              left: 10.0,
+              right: 10.0,
+              bottom: 10.0,
+            ),
+            child: Text(
+              'View all user here. Search for user by typing user email or role. Edit or Delete users by clicking on the actions button.',
+              textAlign: TextAlign.justify,
+            ),
+          ),
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: TextField(
@@ -112,12 +121,10 @@ class _UserListState extends State<UserList> {
                           _currentSortColumn = columnIndex;
                           if (_isAscending == true) {
                             _isAscending = false;
-                            // sort the product list in Ascending, order by Price
                             data.sort((itemA, itemB) =>
                                 itemB['Role'].compareTo(itemA['Role']));
                           } else {
                             _isAscending = true;
-                            // sort the product list in Descending, order by Price
                             data.sort((itemA, itemB) =>
                                 itemA['Role'].compareTo(itemB['Role']));
                           }
@@ -131,12 +138,10 @@ class _UserListState extends State<UserList> {
                           _currentSortColumn = columnIndex;
                           if (_isAscending == true) {
                             _isAscending = false;
-                            // sort the product list in Ascending, order by Price
                             data.sort((itemA, itemB) =>
                                 itemB['Email'].compareTo(itemA['Email']));
                           } else {
                             _isAscending = true;
-                            // sort the product list in Descending, order by Price
                             data.sort((itemA, itemB) =>
                                 itemA['Email'].compareTo(itemB['Email']));
                           }

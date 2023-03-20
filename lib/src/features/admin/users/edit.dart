@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_base/src/features/account/profile/index.dart';
 import 'package:flutter_base/src/features/account/security/login_activity.dart';
 import 'package:flutter_base/src/features/account/security/update_email.dart';
-import 'package:flutter_base/src/features/admin/user_list/user_activity.dart';
+import 'package:flutter_base/src/features/admin/users/user_activity.dart';
 import 'package:flutter_base/src/services/helpers.dart';
 
 import '../../account/security/update_password.dart';

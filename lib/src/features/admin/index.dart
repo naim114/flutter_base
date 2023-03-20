@@ -1,8 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
-import 'package:flutter_base/src/features/admin/user_list/index.dart';
+import 'package:flutter_base/src/features/admin/notification/index.dart';
+import 'package:flutter_base/src/features/admin/users/index.dart';
 
 import '../../services/helpers.dart';
 import '../../widgets/list_tile/list_tile_icon.dart';
@@ -39,7 +38,7 @@ class AdminPanel extends StatelessWidget {
             title: "Users",
             onTap: () => Navigator.of(context).push(
               MaterialPageRoute(
-                builder: (context) => const UserList(),
+                builder: (context) => const AdminPanelUsers(),
               ),
             ),
           ),
@@ -49,7 +48,7 @@ class AdminPanel extends StatelessWidget {
             title: "Notification",
             onTap: () => Navigator.of(context).push(
               MaterialPageRoute(
-                builder: (context) => const UserList(),
+                builder: (context) => const AdminPanelNotification(),
               ),
             ),
           ),
@@ -59,7 +58,7 @@ class AdminPanel extends StatelessWidget {
             title: "News",
             onTap: () => Navigator.of(context).push(
               MaterialPageRoute(
-                builder: (context) => const UserList(),
+                builder: (context) => const AdminPanelUsers(),
               ),
             ),
           ),

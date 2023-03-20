@@ -26,92 +26,94 @@ class SignUp extends StatelessWidget {
           ),
         ],
       ),
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 30),
-        child: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Column(
-                children: [
-                  const Padding(
-                    padding: EdgeInsets.only(bottom: 30.0),
-                    child: Text(
-                      "Sign Up",
-                      style: TextStyle(
-                        fontSize: 24,
-                        fontWeight: FontWeight.bold,
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 30),
+          child: Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Column(
+                  children: [
+                    const Padding(
+                      padding: EdgeInsets.only(bottom: 30.0),
+                      child: Text(
+                        "Sign Up",
+                        style: TextStyle(
+                          fontSize: 24,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
                     ),
-                  ),
-                  const Padding(
-                    padding: EdgeInsets.only(bottom: 20),
-                    child: CustomTextField(
-                      icon: Icon(
-                        CupertinoIcons.person,
+                    const Padding(
+                      padding: EdgeInsets.only(bottom: 20),
+                      child: CustomTextField(
+                        icon: Icon(
+                          CupertinoIcons.person,
+                        ),
+                        labelText: 'Enter Name',
                       ),
-                      labelText: 'Enter Name',
                     ),
-                  ),
-                  const Padding(
-                    padding: EdgeInsets.only(bottom: 10),
-                    child: CustomTextField(
-                      icon: Icon(
-                        CupertinoIcons.at,
+                    const Padding(
+                      padding: EdgeInsets.only(bottom: 10),
+                      child: CustomTextField(
+                        icon: Icon(
+                          CupertinoIcons.at,
+                        ),
+                        labelText: 'Enter Email',
                       ),
-                      labelText: 'Enter Email',
                     ),
-                  ),
-                  Divider(
-                    color: getColorByBackground(context),
-                    indent: 10,
-                    endIndent: 10,
-                  ),
-                  const Padding(
-                    padding: EdgeInsets.only(top: 10, bottom: 20),
-                    child: CustomTextField(
-                      icon: Icon(
-                        CupertinoIcons.padlock,
-                      ),
-                      labelText: 'Enter Password',
-                      isPassword: true,
+                    Divider(
+                      color: getColorByBackground(context),
+                      indent: 10,
+                      endIndent: 10,
                     ),
-                  ),
-                  const Padding(
-                    padding: EdgeInsets.only(bottom: 20),
-                    child: CustomTextField(
-                      icon: Icon(
-                        CupertinoIcons.padlock,
+                    const Padding(
+                      padding: EdgeInsets.only(top: 10, bottom: 20),
+                      child: CustomTextField(
+                        icon: Icon(
+                          CupertinoIcons.padlock,
+                        ),
+                        labelText: 'Enter Password',
+                        isPassword: true,
                       ),
-                      labelText: 'Confirm Password',
-                      isPassword: true,
                     ),
-                  ),
-                  customButton(
-                    child: const Text('Sign Up'),
-                    onPressed: () {},
-                  ),
-                ],
-              ),
-              TextButton(
-                onPressed: () => Navigator.pop(context),
-                child: RichText(
-                  text: const TextSpan(
-                    style: TextStyle(fontWeight: FontWeight.bold),
-                    children: [
-                      TextSpan(
-                        text: 'Already have an account? ',
-                        style: TextStyle(color: CustomColor.neutral2),
+                    const Padding(
+                      padding: EdgeInsets.only(bottom: 20),
+                      child: CustomTextField(
+                        icon: Icon(
+                          CupertinoIcons.padlock,
+                        ),
+                        labelText: 'Confirm Password',
+                        isPassword: true,
                       ),
-                      TextSpan(
-                        text: 'Log In',
-                        style: TextStyle(color: CustomColor.secondary),
-                      ),
-                    ],
+                    ),
+                    customButton(
+                      child: const Text('Sign Up'),
+                      onPressed: () {},
+                    ),
+                  ],
+                ),
+                TextButton(
+                  onPressed: () => Navigator.pop(context),
+                  child: RichText(
+                    text: const TextSpan(
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                      children: [
+                        TextSpan(
+                          text: 'Already have an account? ',
+                          style: TextStyle(color: CustomColor.neutral2),
+                        ),
+                        TextSpan(
+                          text: 'Log In',
+                          style: TextStyle(color: CustomColor.secondary),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),
