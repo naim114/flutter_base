@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:flutter_base/src/features/account/security/login_activity.dart';
 import 'package:flutter_base/src/features/account/security/update_email.dart';
 import 'package:flutter_base/src/features/account/security/update_password.dart';
-import 'package:flutter_base/src/widgets/list_tile_icon.dart';
 
 import '../../../services/helpers.dart';
+import '../../../widgets/list_tile/list_tile_icon.dart';
 
 class Security extends StatelessWidget {
   const Security({super.key});

@@ -4,12 +4,12 @@ import 'package:flutter_base/src/features/account/profile/index.dart';
 import 'package:flutter_base/src/features/account/security/index.dart';
 import 'package:flutter_base/src/features/admin/dashboard/index.dart';
 import 'package:flutter_base/src/features/admin/index.dart';
-import 'package:flutter_base/src/features/admin/user_list/index.dart';
 import 'package:flutter_base/src/features/auth/log_in.dart';
 import 'package:flutter_base/src/services/helpers.dart';
-import 'package:flutter_base/src/widgets/list_tile_icon.dart';
-import 'package:flutter_base/src/widgets/page_title_icon.dart';
-import 'package:flutter_base/src/widgets/list_tile_profile.dart';
+import 'package:flutter_base/src/widgets/typography/page_title_icon.dart';
+
+import '../../widgets/list_tile/list_tile_icon.dart';
+import '../../widgets/list_tile/list_tile_profile.dart';
 
 class Account extends StatelessWidget {
   const Account({

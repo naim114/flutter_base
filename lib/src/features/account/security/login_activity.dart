@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../services/helpers.dart';
-import '../../../widgets/list_tile_activity.dart';
+import '../../../widgets/list_tile/list_tile_activity.dart';
 
 class LoginActivity extends StatelessWidget {
   const LoginActivity({super.key});

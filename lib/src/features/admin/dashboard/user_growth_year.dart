@@ -3,7 +3,7 @@ import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 
 import '../../../services/helpers.dart';
-import '../../../widgets/card_icon.dart';
+import '../../../widgets/card/card_icon.dart';
 
 List<Color> gradientColors = [
   Colors.blue,

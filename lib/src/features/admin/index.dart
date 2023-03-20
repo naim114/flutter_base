@@ -5,7 +5,7 @@ import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:flutter_base/src/features/admin/user_list/index.dart';
 
 import '../../services/helpers.dart';
-import '../../widgets/list_tile_icon.dart';
+import '../../widgets/list_tile/list_tile_icon.dart';
 
 class AdminPanel extends StatelessWidget {
   const AdminPanel({super.key});

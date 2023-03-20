@@ -1,9 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_base/src/services/helpers.dart';
-import 'package:flutter_base/src/widgets/custom_appbar.dart';
-import 'package:flutter_base/src/widgets/custom_button.dart';
-import 'package:flutter_base/src/widgets/custom_textfield.dart';
+import 'package:flutter_base/src/widgets/appbar/custom_appbar.dart';
+import 'package:flutter_base/src/widgets/button/custom_button.dart';
+import 'package:flutter_base/src/widgets/typography/custom_textfield.dart';
 
 class SignUp extends StatelessWidget {
   const SignUp({super.key});

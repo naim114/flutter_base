@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
 
-import '../../../widgets/appbar_confirm_cancel.dart';
+import '../../../widgets/appbar/appbar_confirm_cancel.dart';
 
 class UpdatePassword extends StatelessWidget {
   const UpdatePassword({

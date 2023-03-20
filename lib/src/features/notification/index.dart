@@ -1,11 +1,7 @@
-import 'dart:math';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_base/src/services/helpers.dart';
-import 'package:flutter_base/src/widgets/list_tile_notification.dart';
-import 'package:flutter_slidable/flutter_slidable.dart';
-import '../../widgets/page_title_icon.dart';
+import '../../widgets/list_tile/list_tile_notification.dart';
+import '../../widgets/typography/page_title_icon.dart';
 
 class Notifications extends StatelessWidget {
   const Notifications({super.key});

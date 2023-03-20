@@ -1,9 +1,6 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 
-import '../../widgets/page_title_icon.dart';
+import '../../widgets/typography/page_title_icon.dart';
 
 class News extends StatelessWidget {
   const News({super.key});

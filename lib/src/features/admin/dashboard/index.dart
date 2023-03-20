@@ -5,7 +5,7 @@ import 'package:flutter_base/src/features/admin/dashboard/user_growth_overall.da
 import 'package:flutter_base/src/features/admin/dashboard/user_growth_year.dart';
 
 import '../../../services/helpers.dart';
-import '../../../widgets/card_icon.dart';
+import '../../../widgets/card/card_icon.dart';
 import './user_count_report.dart';
 
 class Dashboard extends StatelessWidget {

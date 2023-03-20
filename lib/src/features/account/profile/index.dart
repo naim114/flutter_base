@@ -1,7 +1,7 @@
 import 'package:country/country.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_base/src/services/helpers.dart';
-import 'package:flutter_base/src/widgets/appbar_confirm_cancel.dart';
+import 'package:flutter_base/src/widgets/appbar/appbar_confirm_cancel.dart';
 import 'package:intl/intl.dart';
 
 class Profile extends StatefulWidget {

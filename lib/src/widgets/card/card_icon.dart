@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../services/helpers.dart';
+import '../../services/helpers.dart';
 
 Widget cardIcon({
   Color color = CustomColor.primary,
