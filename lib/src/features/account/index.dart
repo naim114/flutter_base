@@ -4,6 +4,7 @@ import 'package:flutter_base/src/features/account/profile/index.dart';
 import 'package:flutter_base/src/features/account/security/index.dart';
 import 'package:flutter_base/src/features/admin/dashboard/index.dart';
 import 'package:flutter_base/src/features/admin/index.dart';
+import 'package:flutter_base/src/features/admin/settings/index.dart';
 import 'package:flutter_base/src/features/auth/log_in.dart';
 import 'package:flutter_base/src/services/helpers.dart';
 import 'package:flutter_base/src/widgets/typography/page_title_icon.dart';
@@ -113,7 +114,7 @@ class Account extends StatelessWidget {
               title: "App Settings",
               onTap: () => Navigator.of(mainContext).push(
                 MaterialPageRoute(
-                  builder: (context) => const AdminPanel(),
+                  builder: (context) => const AppSettings(),
                 ),
               ),
             ),
