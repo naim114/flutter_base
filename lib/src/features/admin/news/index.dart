@@ -1,28 +1,26 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_base/src/features/admin/notification/add.dart';
-import 'package:flutter_base/src/features/admin/notification/edit.dart';
+import 'package:flutter_base/src/features/admin/news/add.dart';
+import 'package:flutter_base/src/features/admin/news/edit.dart';
 
 import '../../../services/helpers.dart';
 
-class AdminPanelNotification extends StatefulWidget {
-  const AdminPanelNotification({super.key});
+class AdminPanelNews extends StatefulWidget {
+  const AdminPanelNews({super.key});
 
   @override
-  State<AdminPanelNotification> createState() => _AdminPanelNotificationState();
+  State<AdminPanelNews> createState() => _AdminPanelNewsState();
 }
 
-class _AdminPanelNotificationState extends State<AdminPanelNotification> {
+class _AdminPanelNewsState extends State<AdminPanelNews> {
   List<dynamic> data = [
     {
       "Title": "Welcome to AppName!",
-      "To": "All",
       "Created By": "Admin",
       "Created At": "10 March 2020",
     },
     {
       "Title": "New Features Available. Check out the new Update.",
-      "To": "4 Users",
       "Created By": "Admin",
       "Created At": "10 March 2020",
     },
@@ -72,7 +70,7 @@ class _AdminPanelNotificationState extends State<AdminPanelNotification> {
           ),
         ),
         title: Text(
-          "Manage Notifications",
+          "Manage News",
           style: TextStyle(
             fontWeight: FontWeight.bold,
             color: getColorByBackground(context),
@@ -82,11 +80,11 @@ class _AdminPanelNotificationState extends State<AdminPanelNotification> {
           IconButton(
               onPressed: () => Navigator.of(context).push(
                     MaterialPageRoute(
-                      builder: (context) => AddNotification(),
+                      builder: (context) => AddNews(),
                     ),
                   ),
               icon: Icon(
-                Icons.notification_add,
+                Icons.playlist_add_rounded,
                 color: getColorByBackground(context),
               ))
         ],
@@ -99,7 +97,7 @@ class _AdminPanelNotificationState extends State<AdminPanelNotification> {
             bottom: 10.0,
           ),
           child: Text(
-            'View all notification here. Click button at top right to send notification to all or specific users. Search notifications by typing to the textbox. Edit or Delete notification by clicking on the actions button.',
+            'View all news here. Search news by typing to the textbox. Edit or Delete news by clicking on the actions button.',
             textAlign: TextAlign.justify,
           ),
         ),
@@ -174,9 +172,6 @@ class _AdminPanelNotificationState extends State<AdminPanelNotification> {
                     },
                   ),
                   const DataColumn(
-                    label: Text('To'),
-                  ),
-                  const DataColumn(
                     label: Text('Actions'),
                   ),
                 ],
@@ -190,7 +185,6 @@ class _AdminPanelNotificationState extends State<AdminPanelNotification> {
                       )),
                       DataCell(Text(item['Created By'])),
                       DataCell(Text(item['Created At'])),
-                      DataCell(Text(item['To'])),
                       DataCell(
                         Row(
                           children: [
@@ -199,7 +193,7 @@ class _AdminPanelNotificationState extends State<AdminPanelNotification> {
                               icon: const Icon(Icons.edit),
                               onPressed: () => Navigator.of(context).push(
                                 MaterialPageRoute(
-                                  builder: (context) => EditNotification(),
+                                  builder: (context) => EditNews(),
                                 ),
                               ),
                             ),
@@ -209,9 +203,9 @@ class _AdminPanelNotificationState extends State<AdminPanelNotification> {
                               onPressed: () => showDialog<String>(
                                 context: context,
                                 builder: (BuildContext context) => AlertDialog(
-                                  title: const Text('Delete Notification?'),
+                                  title: const Text('Delete News?'),
                                   content: const Text(
-                                      'Are you sure you want to delete this notification? Deleted data may can\'t be retrieved back. Select OK to confirm.'),
+                                      'Are you sure you want to delete this news? Deleted data may can\'t be retrieved back. Select OK to confirm.'),
                                   actions: <Widget>[
                                     TextButton(
                                       onPressed: () => Navigator.pop(context),
