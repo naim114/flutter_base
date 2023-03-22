@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_base/src/features/account/about/index.dart';
 import 'package:flutter_base/src/features/account/profile/index.dart';
 import 'package:flutter_base/src/features/account/security/index.dart';
 import 'package:flutter_base/src/features/admin/dashboard/index.dart';
@@ -74,6 +75,17 @@ class Account extends StatelessWidget {
                   : CupertinoIcons.sun_max_fill,
               title: "Theme",
               onTap: () => selectThemeMode(context),
+            ),
+            // About
+            listTileIcon(
+              context: context,
+              icon: Icons.info_outlined,
+              title: "About",
+              onTap: () => Navigator.of(mainContext).push(
+                MaterialPageRoute(
+                  builder: (context) => const AppAbout(),
+                ),
+              ),
             ),
             // ADMIN ONLY
             const Padding(

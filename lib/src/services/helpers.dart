@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:theme_mode_handler/theme_picker_dialog.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class CustomColor {
   static const primary = Color(0xFF643FDB);
@@ -24,4 +25,16 @@ Color getColorByBackground(context) {
 void selectThemeMode(BuildContext context) async {
   final newThemeMode = await showThemePickerDialog(context: context);
   debugPrint(newThemeMode.toString());
+}
+
+Future<void> goToURL({
+  required Uri url,
+  required BuildContext context,
+}) async {
+  if (!await launchUrl(url)) {
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      content: Text('Could not launch $url'),
+    ));
+    throw Exception('Could not launch $url');
+  }
 }
