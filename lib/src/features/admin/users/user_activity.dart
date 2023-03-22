@@ -1,7 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
-
 import '../../../services/helpers.dart';
 import '../../../widgets/list_tile/list_tile_activity.dart';
 

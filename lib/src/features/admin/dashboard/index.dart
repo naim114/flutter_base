@@ -1,11 +1,9 @@
-import 'package:carousel_slider/carousel_slider.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_base/src/features/admin/dashboard/user_growth_overall.dart';
 import 'package:flutter_base/src/features/admin/dashboard/user_growth_year.dart';
 
 import '../../../services/helpers.dart';
-import '../../../widgets/card/card_icon.dart';
 import './user_count_report.dart';
 
 class Dashboard extends StatelessWidget {

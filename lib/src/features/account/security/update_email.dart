@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:flutter_base/src/widgets/appbar/appbar_confirm_cancel.dart';
 
 class UpdateEmail extends StatelessWidget {

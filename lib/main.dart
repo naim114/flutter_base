@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_base/src/features/auth/log_in.dart';
-import 'package:flutter_base/src/features/auth/sign_up.dart';
 import 'package:flutter_base/src/services/helpers.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';

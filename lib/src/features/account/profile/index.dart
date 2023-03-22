@@ -119,14 +119,10 @@ class _ProfileState extends State<Profile> {
                             lastDate: DateTime.now());
 
                         if (pickedDate != null) {
-                          print(pickedDate);
                           String formattedDate =
                               DateFormat('dd/MM/yyyy').format(pickedDate);
-                          print(formattedDate);
-
                           setState(() => dateinput.text = formattedDate);
                         } else {
-                          print("Date is not selected");
                           setState(() => dateinput.text =
                               DateFormat('dd/MM/yyyy').format(DateTime.now()));
                         }

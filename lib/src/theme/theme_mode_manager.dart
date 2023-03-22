@@ -6,17 +6,17 @@ class MyThemeModeManager implements IThemeModeManager {
 
   @override
   Future<String?> loadThemeMode() async {
-    final _prefs = await SharedPreferences.getInstance();
+    final prefs = await SharedPreferences.getInstance();
     // Intended delay for demonstration purposes
     await Future.delayed(const Duration(milliseconds: 500));
 
-    return _prefs.getString(_key);
+    return prefs.getString(_key);
   }
 
   @override
   Future<bool> saveThemeMode(String value) async {
-    final _prefs = await SharedPreferences.getInstance();
+    final prefs = await SharedPreferences.getInstance();
 
-    return _prefs.setString(_key, value);
+    return prefs.setString(_key, value);
   }
 }

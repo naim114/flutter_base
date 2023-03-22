@@ -1,6 +1,3 @@
-import 'dart:math';
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
 import 'package:theme_mode_handler/theme_picker_dialog.dart';
 
