@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_quill/flutter_quill.dart' hide Text;
-
-import '../../../widgets/text_editor/news_editor.dart';
+import '../../../widgets/editor/news_editor.dart';
 
 class EditNews extends StatelessWidget {
   EditNews({super.key});
