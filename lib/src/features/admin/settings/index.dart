@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_base/src/widgets/scaffold/edit_text.dart';
+import 'package:flutter_base/src/widgets/editor/edit_text.dart';
 
 import '../../../services/helpers.dart';
 
