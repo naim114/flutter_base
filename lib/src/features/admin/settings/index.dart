@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_base/src/widgets/editor/edit_text.dart';
+import 'package:flutter_base/src/widgets/editor/image_editor.dart';
 
 import '../../../services/helpers.dart';
 
@@ -92,7 +93,15 @@ class AppSettings extends StatelessWidget {
               "Tap to change logo",
               style: TextStyle(fontStyle: FontStyle.italic),
             ),
-            onTap: () {},
+            onTap: () => Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (context) => ImageEditor(
+                  appBarTitle: "Upload Logo",
+                  onCancel: () => Navigator.pop(context),
+                  onConfirm: () {},
+                ),
+              ),
+            ),
           ),
           ListTile(
             title: const Text("Primary color"),

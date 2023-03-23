@@ -1,6 +1,6 @@
 import 'package:flutter_quill/flutter_quill.dart' hide Text;
 import 'package:flutter/material.dart';
-import '../../../widgets/text_editor/notification_editor.dart';
+import '../../../widgets/editor/notification_editor.dart';
 
 class AddNotification extends StatelessWidget {
   AddNotification({super.key});

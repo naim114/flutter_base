@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_quill/flutter_quill.dart';
-
-import '../../../widgets/text_editor/notification_editor.dart';
+import '../../../widgets/editor/notification_editor.dart';
 
 class EditNotification extends StatelessWidget {
   EditNotification({super.key});
