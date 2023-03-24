@@ -3,7 +3,8 @@ import 'package:flutter/material.dart';
 import '../../widgets/typography/page_title_icon.dart';
 
 class News extends StatelessWidget {
-  const News({super.key});
+  const News({super.key, required this.mainContext});
+  final BuildContext mainContext;
 
   @override
   Widget build(BuildContext context) {

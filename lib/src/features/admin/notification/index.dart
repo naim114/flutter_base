@@ -80,15 +80,16 @@ class _AdminPanelNotificationState extends State<AdminPanelNotification> {
         ),
         actions: [
           IconButton(
-              onPressed: () => Navigator.of(context).push(
-                    MaterialPageRoute(
-                      builder: (context) => AddNotification(),
-                    ),
-                  ),
-              icon: Icon(
-                Icons.notification_add,
-                color: getColorByBackground(context),
-              ))
+            onPressed: () => Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (context) => AddNotification(),
+              ),
+            ),
+            icon: Icon(
+              Icons.notification_add,
+              color: getColorByBackground(context),
+            ),
+          ),
         ],
       ),
       body: ListView(children: [

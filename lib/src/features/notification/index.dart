@@ -2,9 +2,13 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import '../../widgets/list_tile/list_tile_notification.dart';
 import '../../widgets/typography/page_title_icon.dart';
+import '../account/profile/index.dart';
+import 'notification_view.dart';
 
 class Notifications extends StatelessWidget {
-  const Notifications({super.key});
+  const Notifications({super.key, required this.mainContext});
+
+  final BuildContext mainContext;
 
   @override
   Widget build(BuildContext context) {
@@ -43,7 +47,11 @@ class Notifications extends StatelessWidget {
           // FOREACH HERE
           listTileNotification(
             onDelete: doNothing,
-            onTap: () {},
+            onTap: () => Navigator.of(mainContext).push(
+              MaterialPageRoute(
+                builder: (context) => const NotificationView(),
+              ),
+            ),
             unread: false,
           ),
         ],

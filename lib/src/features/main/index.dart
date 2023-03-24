@@ -31,8 +31,8 @@ class _FrontFrameState extends State<FrontFrame> {
           child: Text('1'),
         ),
       ),
-      const News(),
-      const Notifications(),
+      News(mainContext: context),
+      Notifications(mainContext: context),
       Account(mainContext: context),
     ];
   }
