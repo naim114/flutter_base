@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_base/src/widgets/editor/single_input_editor.dart';
 import 'package:flutter_base/src/widgets/editor/image_single_editor.dart';
+import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 
 import '../../../services/helpers.dart';
 
@@ -10,6 +11,32 @@ class AppSettings extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    void colorPicker({Color initialColor = CustomColor.primary}) {
+      showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: Text('Pick a color!'),
+              content: SingleChildScrollView(
+                child: ColorPicker(
+                  pickerColor: initialColor, //default color
+                  onColorChanged: (Color color) {
+                    //on color picked
+                  },
+                ),
+              ),
+              actions: <Widget>[
+                ElevatedButton(
+                  child: const Text('DONE'),
+                  onPressed: () {
+                    Navigator.of(context).pop(); //dismiss the color picker
+                  },
+                ),
+              ],
+            );
+          });
+    }
+
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
@@ -116,7 +143,7 @@ class AppSettings extends StatelessWidget {
                 ),
               ),
             ),
-            onTap: () {},
+            onTap: () => colorPicker(initialColor: CustomColor.primary),
           ),
           ListTile(
             title: const Text("Secondary color"),
