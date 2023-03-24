@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_base/src/widgets/select_user.dart';
+import 'package:flutter_base/src/widgets/picker/select_user.dart';
 import 'package:flutter_quill/flutter_quill.dart' hide Text;
 
 import '../../services/helpers.dart';
@@ -62,7 +62,7 @@ Widget notificationEditor({
           ListTile(
             onTap: () => Navigator.of(context).push(
               MaterialPageRoute(
-                builder: (context) => const SelectorUsers(),
+                builder: (context) => const UsersPicker(),
               ),
             ),
             title: const Text("Send to: All"),

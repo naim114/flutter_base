@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_base/src/widgets/appbar/appbar_confirm_cancel.dart';
 
-class SelectorUsers extends StatefulWidget {
-  const SelectorUsers({super.key});
+class UsersPicker extends StatefulWidget {
+  const UsersPicker({super.key});
 
   @override
-  State<SelectorUsers> createState() => _SelectorUsersState();
+  State<UsersPicker> createState() => _UsersPickerState();
 }
 
-class _SelectorUsersState extends State<SelectorUsers> {
+class _UsersPickerState extends State<UsersPicker> {
   List<dynamic> data = [
     {
       "Email": "admin@email.com",
