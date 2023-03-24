@@ -5,8 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import '../appbar/appbar_confirm_cancel.dart';
 
-enum ImageSourceType { gallery, camera }
-
 // ignore: must_be_immutable
 class ImageEditor extends StatefulWidget {
   final void Function() onCancel;
@@ -61,31 +59,12 @@ class ImageFileEditorState extends State<ImageEditor> {
                       ListTile(
                         leading: const Icon(Icons.image),
                         title: const Text('Upload Image from Gallery'),
-                        onTap: () async {
-                          var source = ImageSource.gallery;
-                          XFile image = await imagePicker.pickImage(
-                            source: source,
-                            imageQuality: 50,
-                            preferredCameraDevice: CameraDevice.front,
-                          );
-                          setState(() {
-                            widget.imageFile = File(image.path);
-                          });
-                        },
+                        onTap: () => uploadImage(ImageSource.gallery),
                       ),
                       ListTile(
                         leading: const Icon(Icons.camera),
                         title: const Text('Upload Image from Camera'),
-                        onTap: () async {
-                          var source = ImageSource.camera;
-                          XFile image = await imagePicker.pickImage(
-                              source: source,
-                              imageQuality: 50,
-                              preferredCameraDevice: CameraDevice.front);
-                          setState(() {
-                            widget.imageFile = File(image.path);
-                          });
-                        },
+                        onTap: () => uploadImage(ImageSource.camera),
                       ),
                     ],
                   );
@@ -125,5 +104,17 @@ class ImageFileEditorState extends State<ImageEditor> {
         ),
       ),
     );
+  }
+
+  Future<void> uploadImage(ImageSource source) async {
+    XFile image = await imagePicker.pickImage(
+      source: source,
+      imageQuality: 50,
+      preferredCameraDevice: CameraDevice.front,
+    );
+
+    setState(() {
+      widget.imageFile = File(image.path);
+    });
   }
 }
