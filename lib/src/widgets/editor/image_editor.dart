@@ -6,7 +6,7 @@ import 'package:image_picker/image_picker.dart';
 import '../appbar/appbar_confirm_cancel.dart';
 
 // ignore: must_be_immutable
-class ImageEditor extends StatefulWidget {
+class SingleImageUploader extends StatefulWidget {
   final void Function() onCancel;
   final void Function() onConfirm;
   final String appBarTitle;
@@ -14,7 +14,7 @@ class ImageEditor extends StatefulWidget {
   final double height;
   dynamic imageFile;
 
-  ImageEditor({
+  SingleImageUploader({
     super.key,
     required this.onCancel,
     required this.onConfirm,
@@ -25,10 +25,10 @@ class ImageEditor extends StatefulWidget {
   });
 
   @override
-  State<ImageEditor> createState() => ImageFileEditorState();
+  State<SingleImageUploader> createState() => ImageFileEditorState();
 }
 
-class ImageFileEditorState extends State<ImageEditor> {
+class ImageFileEditorState extends State<SingleImageUploader> {
   var imagePicker;
 
   @override

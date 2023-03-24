@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_base/src/widgets/appbar/appbar_confirm_cancel.dart';
 
-class EditText extends StatelessWidget {
+class SingleInputEditor extends StatelessWidget {
   final String appBarTitle;
   final String textFieldLabel;
   final void Function() onCancel;
   final void Function() onConfirm;
   final String description;
 
-  const EditText({
+  const SingleInputEditor({
     super.key,
     required this.appBarTitle,
     required this.textFieldLabel,

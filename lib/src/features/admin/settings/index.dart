@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_base/src/widgets/editor/edit_text.dart';
+import 'package:flutter_base/src/widgets/editor/single_input_editor.dart';
 import 'package:flutter_base/src/widgets/editor/image_editor.dart';
 
 import '../../../services/helpers.dart';
@@ -36,7 +36,7 @@ class AppSettings extends StatelessWidget {
             trailing: const Text("Application name"),
             onTap: () => Navigator.of(context).push(
               MaterialPageRoute(
-                builder: (context) => EditText(
+                builder: (context) => SingleInputEditor(
                   appBarTitle: 'Edit Application Name',
                   textFieldLabel: 'Application Name',
                   onCancel: () => Navigator.pop(context),
@@ -50,7 +50,7 @@ class AppSettings extends StatelessWidget {
             trailing: const Text("https://github.com/naim114"),
             onTap: () => Navigator.of(context).push(
               MaterialPageRoute(
-                builder: (context) => EditText(
+                builder: (context) => SingleInputEditor(
                   appBarTitle: 'Edit Copyright URL',
                   textFieldLabel: 'Copyright URL',
                   onCancel: () => Navigator.pop(context),
@@ -64,7 +64,7 @@ class AppSettings extends StatelessWidget {
             trailing: const Text("https://github.com/naim114"),
             onTap: () => Navigator.of(context).push(
               MaterialPageRoute(
-                builder: (context) => EditText(
+                builder: (context) => SingleInputEditor(
                   appBarTitle: 'Edit Privacy Policy URL',
                   textFieldLabel: 'Privacy Policy URL',
                   onCancel: () => Navigator.pop(context),
@@ -78,7 +78,7 @@ class AppSettings extends StatelessWidget {
             trailing: const Text("https://github.com/naim114"),
             onTap: () => Navigator.of(context).push(
               MaterialPageRoute(
-                builder: (context) => EditText(
+                builder: (context) => SingleInputEditor(
                   appBarTitle: 'Edit Terms & Condition URL',
                   textFieldLabel: 'Terms & Condition URL',
                   onCancel: () => Navigator.pop(context),
@@ -95,7 +95,7 @@ class AppSettings extends StatelessWidget {
             ),
             onTap: () => Navigator.of(context).push(
               MaterialPageRoute(
-                builder: (context) => ImageEditor(
+                builder: (context) => SingleImageUploader(
                   appBarTitle: "Upload Logo",
                   onCancel: () => Navigator.pop(context),
                   onConfirm: () {},
