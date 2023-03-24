@@ -65,7 +65,20 @@ Widget notificationEditor({
                 builder: (context) => const UsersPicker(),
               ),
             ),
-            title: const Text("Send to: All"),
+            title: RichText(
+              text: const TextSpan(
+                style: TextStyle(fontSize: 16),
+                children: <TextSpan>[
+                  TextSpan(
+                    text: 'Send to: ',
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  TextSpan(text: 'All'),
+                ],
+              ),
+            ),
             trailing: const Icon(Icons.arrow_forward_ios_rounded),
             shape: const Border(
               bottom: BorderSide(

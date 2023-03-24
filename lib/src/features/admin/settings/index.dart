@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_base/src/widgets/editor/single_input_editor.dart';
-import 'package:flutter_base/src/widgets/editor/image_single_editor.dart';
+import 'package:flutter_base/src/widgets/editor/image_uploader.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 
 import '../../../services/helpers.dart';
@@ -122,7 +122,7 @@ class AppSettings extends StatelessWidget {
             ),
             onTap: () => Navigator.of(context).push(
               MaterialPageRoute(
-                builder: (context) => SingleImageUploader(
+                builder: (context) => ImageUploader(
                   appBarTitle: "Upload Logo",
                   onCancel: () => Navigator.pop(context),
                   onConfirm: () {},

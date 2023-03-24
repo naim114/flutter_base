@@ -1,7 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_base/src/widgets/editor/image_uploader.dart';
+import 'package:flutter_base/src/widgets/editor/select_user.dart';
 import 'package:flutter_quill/flutter_quill.dart' hide Text;
-
 import '../../services/helpers.dart';
 
 Widget newsEditor({
@@ -9,6 +10,7 @@ Widget newsEditor({
   required BuildContext context,
   String appBarTitle = "Add/Edit News",
 }) =>
+    // TODO add thumbnail
     Scaffold(
       appBar: AppBar(
         elevation: 0,
@@ -57,6 +59,28 @@ Widget newsEditor({
       ),
       body: ListView(
         children: [
+          ListTile(
+            onTap: () => Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (context) => ImageUploader(
+                  appBarTitle: "Upload Thumbnail",
+                  width: 350,
+                  height: 196.88,
+                  onCancel: () => Navigator.of(context).pop(),
+                  onConfirm: () {},
+                ),
+              ),
+            ),
+            title: const Text("Preview/Upload Thumbnail"),
+            trailing: const Icon(Icons.arrow_forward_ios_rounded),
+            shape: const Border(
+              bottom: BorderSide(
+                width: 1,
+                color: CupertinoColors.systemGrey,
+              ),
+            ),
+          ),
+          const SizedBox(height: 10),
           const TextField(
             decoration: InputDecoration(
               contentPadding: EdgeInsets.all(15),

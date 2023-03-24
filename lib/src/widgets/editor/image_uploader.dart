@@ -6,29 +6,32 @@ import 'package:image_picker/image_picker.dart';
 import '../appbar/appbar_confirm_cancel.dart';
 
 // ignore: must_be_immutable
-class SingleImageUploader extends StatefulWidget {
+class ImageUploader extends StatefulWidget {
   final void Function() onCancel;
   final void Function() onConfirm;
   final String appBarTitle;
   final double width;
   final double height;
+  final String desc;
   dynamic imageFile;
 
-  SingleImageUploader({
+  ImageUploader({
     super.key,
     required this.onCancel,
     required this.onConfirm,
-    this.width = 200,
-    this.height = 200,
+    this.width = 300,
+    this.height = 300,
     this.appBarTitle = "Upload Image",
+    this.desc =
+        'Tap image to upload new image. Tap top right to confirm changes. ',
     this.imageFile,
   });
 
   @override
-  State<SingleImageUploader> createState() => ImageFileEditorState();
+  State<ImageUploader> createState() => ImageFileEditorState();
 }
 
-class ImageFileEditorState extends State<SingleImageUploader> {
+class ImageFileEditorState extends State<ImageUploader> {
   var imagePicker;
 
   @override
@@ -49,7 +52,7 @@ class ImageFileEditorState extends State<SingleImageUploader> {
       body: Center(
         child: Column(
           children: [
-            const SizedBox(height: 30),
+            SizedBox(height: MediaQuery.of(context).size.height * 0.06),
             GestureDetector(
               onTap: () => showModalBottomSheet(
                 context: context,
@@ -95,7 +98,7 @@ class ImageFileEditorState extends State<SingleImageUploader> {
                 horizontal: 30,
               ),
               child: Text(
-                'Image resolution is ${widget.width.toInt()} x ${widget.height.toInt()}. Tap image to upload new image. Tap top right to confirm changes. ',
+                widget.desc,
                 textAlign: TextAlign.center,
                 style: const TextStyle(fontWeight: FontWeight.bold),
               ),

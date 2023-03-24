@@ -4,7 +4,7 @@ import 'package:flutter_base/src/services/helpers.dart';
 import 'package:flutter_base/src/widgets/appbar/appbar_confirm_cancel.dart';
 import 'package:intl/intl.dart';
 
-import '../../../widgets/editor/image_single_editor.dart';
+import '../../../widgets/editor/image_uploader.dart';
 
 class Profile extends StatefulWidget {
   final Widget bottomWidget;
@@ -39,7 +39,7 @@ class _ProfileState extends State<Profile> {
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(vertical: 15.0),
-        child: ListView(
+        child: Column(
           children: [
             // Profile Picture
             GestureDetector(
@@ -54,7 +54,7 @@ class _ProfileState extends State<Profile> {
                           title: const Text('New profile picture'),
                           onTap: () => Navigator.of(context).push(
                             MaterialPageRoute(
-                              builder: (context) => SingleImageUploader(
+                              builder: (context) => ImageUploader(
                                 appBarTitle: "Upload New Profile Picture",
                                 onCancel: () => Navigator.of(context).pop(),
                                 onConfirm: () {},
