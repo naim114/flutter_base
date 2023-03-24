@@ -4,6 +4,8 @@ import 'package:flutter_base/src/services/helpers.dart';
 import 'package:flutter_base/src/widgets/appbar/appbar_confirm_cancel.dart';
 import 'package:intl/intl.dart';
 
+import '../../../widgets/editor/image_single_editor.dart';
+
 class Profile extends StatefulWidget {
   final Widget bottomWidget;
   const Profile({
@@ -50,7 +52,15 @@ class _ProfileState extends State<Profile> {
                         ListTile(
                           leading: const Icon(Icons.image_outlined),
                           title: const Text('New profile picture'),
-                          onTap: () {},
+                          onTap: () => Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (context) => SingleImageUploader(
+                                appBarTitle: "Upload New Profile Picture",
+                                onCancel: () => Navigator.of(context).pop(),
+                                onConfirm: () {},
+                              ),
+                            ),
+                          ),
                         ),
                         ListTile(
                           leading: const Icon(
