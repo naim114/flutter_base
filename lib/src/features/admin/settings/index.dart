@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_base/src/widgets/editor/single_input_editor.dart';
-import 'package:flutter_base/src/widgets/editor/image_editor.dart';
+import 'package:flutter_base/src/widgets/editor/image_single_editor.dart';
 
 import '../../../services/helpers.dart';
 
