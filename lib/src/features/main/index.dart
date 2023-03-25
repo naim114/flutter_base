@@ -26,11 +26,6 @@ class _FrontFrameState extends State<FrontFrame> {
   // Bottom Bar
   List<Widget> _buildScreens(context) {
     return [
-      const Scaffold(
-        body: Center(
-          child: Text('1'),
-        ),
-      ),
       News(mainContext: context),
       Notifications(mainContext: context),
       Account(mainContext: context),
@@ -41,13 +36,6 @@ class _FrontFrameState extends State<FrontFrame> {
   List<PersistentBottomNavBarItem> _navBarsItems() {
     return [
       PersistentBottomNavBarItem(
-        icon: const Icon(CupertinoIcons.home),
-        title: ("Home"),
-        activeColorPrimary:
-            isDarkTheme(context) ? Colors.white : CustomColor.primary,
-        inactiveColorPrimary: CupertinoColors.systemGrey,
-      ),
-      PersistentBottomNavBarItem(
         icon: const Icon(Icons.newspaper),
         title: ("News"),
         activeColorPrimary:
@@ -55,14 +43,14 @@ class _FrontFrameState extends State<FrontFrame> {
         inactiveColorPrimary: CupertinoColors.systemGrey,
       ),
       PersistentBottomNavBarItem(
-        icon: const Icon(CupertinoIcons.bell),
+        icon: const Icon(CupertinoIcons.bell_fill),
         title: ("Notification"),
         activeColorPrimary:
             isDarkTheme(context) ? Colors.white : CustomColor.primary,
         inactiveColorPrimary: CupertinoColors.systemGrey,
       ),
       PersistentBottomNavBarItem(
-        icon: const Icon(CupertinoIcons.person),
+        icon: const Icon(CupertinoIcons.person_fill),
         title: ("Account"),
         activeColorPrimary:
             isDarkTheme(context) ? Colors.white : CustomColor.primary,
