@@ -79,7 +79,7 @@ class _NewsState extends State<News> with TickerProviderStateMixin {
               options: CarouselOptions(
                   autoPlay: true,
                   enlargeCenterPage: true,
-                  aspectRatio: 2.0,
+                  aspectRatio: 2,
                   onPageChanged: (index, reason) =>
                       setState(() => current = index)),
             ),
@@ -137,7 +137,7 @@ class _NewsState extends State<News> with TickerProviderStateMixin {
                       });
                     },
                     child: Container(
-                      width: 5,
+                      width: 8,
                       height: 5,
                       margin: const EdgeInsets.symmetric(
                         vertical: 8.0,
@@ -164,7 +164,17 @@ final List<Widget> imageSliders = imgList
         borderRadius: const BorderRadius.all(Radius.circular(5.0)),
         child: Stack(
           children: <Widget>[
-            Image.network(item, fit: BoxFit.cover, width: 1000.0),
+            Image.network(
+              item,
+              fit: BoxFit.cover,
+              width: 2000.0,
+              loadingBuilder: (context, child, loadingProgress) {
+                if (loadingProgress == null) return child;
+                return const Center(child: CircularProgressIndicator());
+              },
+              errorBuilder: (context, error, stackTrace) =>
+                  const Text('Some errors occurred!'),
+            ),
             Positioned(
               bottom: 0.0,
               left: 0.0,
@@ -192,7 +202,7 @@ final List<Widget> imageSliders = imgList
                     overflow: TextOverflow.ellipsis,
                   ),
                   subtitle: RichText(
-                    text: TextSpan(
+                    text: const TextSpan(
                       children: [
                         WidgetSpan(
                           child: Icon(Icons.access_time, size: 14),
