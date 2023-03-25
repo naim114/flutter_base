@@ -90,6 +90,17 @@ class _NewsState extends State<News> with TickerProviderStateMixin {
             current: current,
           ),
           // Popular News Cards
+          const Padding(
+            padding: EdgeInsets.symmetric(horizontal: 25, vertical: 10),
+            child: Text(
+              "Popular News",
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 20,
+              ),
+            ),
+          ),
+
           // Latest News Cards
         ],
       ),
