@@ -18,11 +18,15 @@ class _AdminPanelNewsState extends State<AdminPanelNews> {
       "Title": "Welcome to AppName!",
       "Created By": "Admin",
       "Created At": "10 March 2020",
+      "Likes": "10",
+      "Starred": true,
     },
     {
       "Title": "New Features Available. Check out the new Update.",
       "Created By": "Admin",
       "Created At": "10 March 2020",
+      "Likes": "3",
+      "Starred": false,
     },
   ];
 
@@ -97,7 +101,7 @@ class _AdminPanelNewsState extends State<AdminPanelNews> {
             bottom: 10.0,
           ),
           child: Text(
-            'View all news here. Search news by typing to the textbox. Edit or Delete news by clicking on the actions button.',
+            'View all news here. Search news by typing to the textbox. Edit or Delete news by clicking on the actions button. Tap on star icon to feature the news in news carousel.',
             textAlign: TextAlign.justify,
           ),
         ),
@@ -171,6 +175,23 @@ class _AdminPanelNewsState extends State<AdminPanelNews> {
                       });
                     },
                   ),
+                  DataColumn(
+                    label: const Text('Likes'),
+                    onSort: (columnIndex, _) {
+                      setState(() {
+                        _currentSortColumn = columnIndex;
+                        if (_isAscending == true) {
+                          _isAscending = false;
+                          data.sort((itemA, itemB) =>
+                              itemB['Likes'].compareTo(itemA['Likes']));
+                        } else {
+                          _isAscending = true;
+                          data.sort((itemA, itemB) =>
+                              itemA['Likes'].compareTo(itemB['Likes']));
+                        }
+                      });
+                    },
+                  ),
                   const DataColumn(
                     label: Text('Actions'),
                   ),
@@ -185,9 +206,44 @@ class _AdminPanelNewsState extends State<AdminPanelNews> {
                       )),
                       DataCell(Text(item['Created By'])),
                       DataCell(Text(item['Created At'])),
+                      DataCell(Text(item['Likes'])),
                       DataCell(
                         Row(
                           children: [
+                            // Starred
+                            IconButton(
+                              icon: Icon(item['Starred']
+                                  ? Icons.star
+                                  : Icons.star_outline),
+                              onPressed: () => showDialog<String>(
+                                context: context,
+                                builder: (BuildContext context) => AlertDialog(
+                                  title: Text(item['Starred']
+                                      ? 'Unstar News?'
+                                      : 'Star News?'),
+                                  content: Text(
+                                    item['Starred']
+                                        ? 'Are you sure you want to unstar this news? This news will not feature in news carousel anymore. Select OK to confirm.'
+                                        : 'Are you sure you want to star this news? This news will feature in news carousel anymore. Select OK to confirm.',
+                                  ),
+                                  actions: <Widget>[
+                                    TextButton(
+                                      onPressed: () => Navigator.pop(context),
+                                      child: const Text(
+                                        'Cancel',
+                                        style: TextStyle(
+                                          color: CupertinoColors.systemGrey,
+                                        ),
+                                      ),
+                                    ),
+                                    TextButton(
+                                      onPressed: () {},
+                                      child: const Text('OK'),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
                             // Edit
                             IconButton(
                               icon: const Icon(Icons.edit),
