@@ -24,7 +24,8 @@ Widget newsCard({
             Image.network(
               imageURL,
               fit: BoxFit.cover,
-              width: 100,
+              width: 80,
+              height: 80,
               loadingBuilder: (context, child, loadingProgress) {
                 if (loadingProgress == null) return child;
                 return const Center(child: CircularProgressIndicator());
@@ -34,7 +35,7 @@ Widget newsCard({
             ),
             Container(
               padding: const EdgeInsets.only(left: 15.0),
-              width: 230,
+              width: 250,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [

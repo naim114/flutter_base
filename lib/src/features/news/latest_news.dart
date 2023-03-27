@@ -12,7 +12,7 @@ Widget latestNews({required BuildContext context}) => Column(
           child: newsCard(
             context: context,
             imageURL:
-                'https://images.unsplash.com/photo-1519125323398-675f0ddb6308?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=94a1e718d89ca60a6337a6008341ca50&auto=format&fit=crop&w=1950&q=80',
+                'https://img.theculturetrip.com/1440x807/smart/wp-content/uploads/2017/02/nasi-lemak.jpg',
             title:
                 'Small U.S. banks see record drop in deposits after SVB collapse.',
             date: DateTime.now(),
@@ -27,7 +27,7 @@ Widget latestNews({required BuildContext context}) => Column(
           child: newsCard(
             context: context,
             imageURL:
-                'https://images.unsplash.com/photo-1519125323398-675f0ddb6308?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=94a1e718d89ca60a6337a6008341ca50&auto=format&fit=crop&w=1950&q=80',
+                'https://img.theculturetrip.com/1440x807/smart/wp-content/uploads/2017/02/nasi-lemak.jpg',
             title:
                 'Small U.S. banks see record drop in deposits after SVB collapse.',
             date: DateTime.now(),
@@ -42,7 +42,7 @@ Widget latestNews({required BuildContext context}) => Column(
           child: newsCard(
             context: context,
             imageURL:
-                'https://images.unsplash.com/photo-1519125323398-675f0ddb6308?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=94a1e718d89ca60a6337a6008341ca50&auto=format&fit=crop&w=1950&q=80',
+                'https://img.theculturetrip.com/1440x807/smart/wp-content/uploads/2017/02/nasi-lemak.jpg',
             title:
                 'Small U.S. banks see record drop in deposits after SVB collapse.',
             date: DateTime.now(),
