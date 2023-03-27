@@ -1,5 +1,10 @@
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_base/src/features/news/latest_news.dart';
+import 'package:flutter_base/src/features/news/popular_news.dart';
+import 'package:flutter_base/src/services/helpers.dart';
+import '../../widgets/card/news_card.dart';
 import '../../widgets/typography/page_title_icon.dart';
 
 final List<String> imgList = [
@@ -60,13 +65,19 @@ class _NewsState extends State<News> with TickerProviderStateMixin {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 25),
             child: TextField(
+              readOnly: false,
+              autofocus: false,
+              enabled: false,
               decoration: InputDecoration(
+                disabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(50.0),
+                    borderSide: const BorderSide(
+                      color: CupertinoColors.systemGrey,
+                      width: 1.5,
+                    )),
                 contentPadding: const EdgeInsets.all(0),
                 prefixIcon: const Icon(Icons.search),
                 hintText: 'Search news here',
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(50.0),
-                ),
               ),
             ),
           ),
@@ -74,7 +85,7 @@ class _NewsState extends State<News> with TickerProviderStateMixin {
           Padding(
             padding: const EdgeInsets.only(top: 23.0, bottom: 5),
             child: CarouselSlider(
-              items: imageSliders,
+              items: imageSliders(),
               carouselController: controller,
               options: CarouselOptions(
                   autoPlay: true,
@@ -100,7 +111,20 @@ class _NewsState extends State<News> with TickerProviderStateMixin {
               ),
             ),
           ),
-
+          popularNews(context: context),
+          // Latest News Cards
+          const Padding(
+            padding: EdgeInsets.symmetric(horizontal: 25, vertical: 10),
+            child: Text(
+              "Latest News",
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 20,
+              ),
+            ),
+          ),
+          latestNews(context: context),
+          const SizedBox(height: 40),
           // Latest News Cards
         ],
       ),
@@ -170,7 +194,7 @@ class _NewsState extends State<News> with TickerProviderStateMixin {
       );
 }
 
-final List<Widget> imageSliders = imgList
+List<Widget> imageSliders() => imgList
     .map((item) => ClipRRect(
         borderRadius: const BorderRadius.all(Radius.circular(5.0)),
         child: Stack(
@@ -178,7 +202,7 @@ final List<Widget> imageSliders = imgList
             Image.network(
               item,
               fit: BoxFit.cover,
-              width: 2000.0,
+              width: 1000.0,
               loadingBuilder: (context, child, loadingProgress) {
                 if (loadingProgress == null) return child;
                 return const Center(child: CircularProgressIndicator());
@@ -211,16 +235,24 @@ final List<Widget> imageSliders = imgList
                     "The costs of financing education and risk of elite capture.",
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                   subtitle: RichText(
                     text: const TextSpan(
                       children: [
                         WidgetSpan(
-                          child: Icon(Icons.access_time, size: 14),
+                          child: Icon(
+                            Icons.access_time,
+                            size: 14,
+                            color: Colors.white,
+                          ),
                         ),
                         TextSpan(
-                          text: " 22/3/2023",
-                        ),
+                            text: " 22/3/2023",
+                            style: TextStyle(color: Colors.white)),
                       ],
                     ),
                   ),
