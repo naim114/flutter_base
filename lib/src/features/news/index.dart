@@ -3,8 +3,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_base/src/features/news/latest_news.dart';
 import 'package:flutter_base/src/features/news/popular_news.dart';
-import 'package:flutter_base/src/services/helpers.dart';
-import '../../widgets/card/news_card.dart';
 import '../../widgets/typography/page_title_icon.dart';
 
 final List<String> imgList = [

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-
+// import 'package:flutter_quill/flutter_quill.dart' hide Text;
 import '../../services/helpers.dart';
 
 class NotificationView extends StatelessWidget {
@@ -19,9 +19,8 @@ class NotificationView extends StatelessWidget {
           ),
         ),
         title: Text(
-          "TODO Notification title Here",
+          "Read Notification",
           style: TextStyle(
-            fontWeight: FontWeight.bold,
             color: getColorByBackground(context),
           ),
         ),
@@ -29,11 +28,28 @@ class NotificationView extends StatelessWidget {
       body: ListView(
         children: const [
           Padding(
-            padding: EdgeInsets.symmetric(
-              vertical: 20,
-              horizontal: 20,
+            padding: EdgeInsets.only(
+              top: 20,
+              left: 20,
+              right: 20,
             ),
-            child: Text('JSON from document here'),
+            child: Text(
+              "Small U.S. banks see record drop in deposits after SVB collapse.",
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 28,
+              ),
+            ),
+          ),
+          Padding(
+            padding: EdgeInsets.only(
+              top: 20,
+              left: 20,
+              right: 20,
+            ),
+            child: Text(
+              "asdasd",
+            ),
           ),
         ],
       ),

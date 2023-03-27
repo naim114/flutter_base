@@ -12,10 +12,11 @@ class EditNotification extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return notificationEditor(
+    return NotificationEditor(
       context: context,
       controller: _controller,
       appBarTitle: "Add Notification",
+      onPost: (editedController) {},
     );
   }
 }
