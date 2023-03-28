@@ -122,9 +122,16 @@ class NotificationView extends StatelessWidget {
               horizontal: 15,
               vertical: 5,
             ),
-            child: QuillEditor.basic(
+            child: QuillEditor(
               controller: controller,
               readOnly: true,
+              autoFocus: false,
+              expands: false,
+              focusNode: FocusNode(),
+              padding: const EdgeInsets.all(0),
+              scrollController: ScrollController(),
+              scrollable: true,
+              showCursor: false,
             ),
           ),
         ],
