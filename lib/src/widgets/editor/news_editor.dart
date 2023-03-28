@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_base/src/widgets/editor/image_uploader.dart';
-import 'package:flutter_base/src/widgets/editor/select_user.dart';
 import 'package:flutter_quill/flutter_quill.dart' hide Text;
 import '../../services/helpers.dart';
 

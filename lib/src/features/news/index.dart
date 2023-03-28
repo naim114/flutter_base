@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_base/src/features/news/latest_news.dart';
 import 'package:flutter_base/src/features/news/popular_news.dart';
+import 'package:shimmer/shimmer.dart';
 import '../../widgets/typography/page_title_icon.dart';
 
 final List<String> imgList = [
@@ -203,7 +204,15 @@ List<Widget> imageSliders() => imgList
               width: 1000.0,
               loadingBuilder: (context, child, loadingProgress) {
                 if (loadingProgress == null) return child;
-                return const Center(child: CircularProgressIndicator());
+                return Shimmer.fromColors(
+                  baseColor: CupertinoColors.systemGrey,
+                  highlightColor: CupertinoColors.systemGrey2,
+                  child: Container(
+                    color: Colors.grey,
+                    height: 500,
+                    width: 1000,
+                  ),
+                );
               },
               errorBuilder: (context, error, stackTrace) =>
                   const Text('Some errors occurred!'),

@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:shimmer/shimmer.dart';
 
 import '../../services/helpers.dart';
 
@@ -28,7 +29,15 @@ Widget newsCard({
               height: 80,
               loadingBuilder: (context, child, loadingProgress) {
                 if (loadingProgress == null) return child;
-                return const Center(child: CircularProgressIndicator());
+                return Shimmer.fromColors(
+                  baseColor: CupertinoColors.systemGrey,
+                  highlightColor: CupertinoColors.systemGrey2,
+                  child: Container(
+                    color: Colors.grey,
+                    height: 80,
+                    width: 80,
+                  ),
+                );
               },
               errorBuilder: (context, error, stackTrace) =>
                   const Text('Some errors occurred!'),
