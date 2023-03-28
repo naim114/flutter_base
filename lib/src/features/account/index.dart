@@ -138,9 +138,36 @@ class Account extends StatelessWidget {
                 style: TextStyle(
                     color: Colors.red[400], fontWeight: FontWeight.bold),
               ),
-              onTap: () => Navigator.of(mainContext).pushReplacement(
-                MaterialPageRoute(
-                  builder: (context) => const LogIn(),
+              onTap: () => showDialog<String>(
+                context: context,
+                builder: (BuildContext context) => AlertDialog(
+                  title: const Text('Log Out?'),
+                  content: const Text('Select OK to log out.'),
+                  actions: <Widget>[
+                    TextButton(
+                      onPressed: () => Navigator.pop(context),
+                      child: const Text(
+                        'Cancel',
+                        style: TextStyle(
+                          color: CupertinoColors.systemGrey,
+                        ),
+                      ),
+                    ),
+                    TextButton(
+                      onPressed: () =>
+                          Navigator.of(mainContext).pushReplacement(
+                        MaterialPageRoute(
+                          builder: (context) => const LogIn(),
+                        ),
+                      ),
+                      child: const Text(
+                        'OK',
+                        style: TextStyle(
+                          color: CustomColor.danger,
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               ),
             ),
