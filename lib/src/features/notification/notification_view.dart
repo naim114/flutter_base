@@ -37,7 +37,7 @@ class NotificationView extends StatelessWidget {
         "insert": "\n"
       },
       {
-        "insert": "\nTrack personal and group journals (ToDo, Note, Ledger) from multiple views with timely reminders"
+        "insert": "\nTrack personal and group journals (Note, Ledger) from multiple views with timely reminders"
       },
       {
         "attributes": {

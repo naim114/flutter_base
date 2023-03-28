@@ -10,7 +10,6 @@ Widget newsEditor({
   required BuildContext context,
   String appBarTitle = "Add/Edit News",
 }) =>
-    // TODO add thumbnail
     Scaffold(
       appBar: AppBar(
         elevation: 0,

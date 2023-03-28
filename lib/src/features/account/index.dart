@@ -131,7 +131,6 @@ class Account extends StatelessWidget {
               ),
             ),
 
-            // Log Out TODO DISPLAY A POPUP TO CONFIRM LOGOUT
             ListTile(
               title: Text(
                 'Log Out',
