@@ -1,8 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_base/src/features/news/news_view.dart';
 
 import '../../widgets/card/news_card.dart';
 
-Widget latestNews({required BuildContext context}) => Column(
+Widget latestNews({
+  required BuildContext context,
+  required BuildContext mainContext,
+}) =>
+    Column(
       children: [
         Padding(
           padding: const EdgeInsets.symmetric(
@@ -17,6 +22,8 @@ Widget latestNews({required BuildContext context}) => Column(
                 'Small U.S. banks see record drop in deposits after SVB collapse.',
             date: DateTime.now(),
             likeCount: 20,
+            onTap: () => Navigator.of(mainContext).push(MaterialPageRoute(
+                builder: (context) => NewsView(mainContext: mainContext))),
           ),
         ),
         Padding(
@@ -32,6 +39,8 @@ Widget latestNews({required BuildContext context}) => Column(
                 'Small U.S. banks see record drop in deposits after SVB collapse.',
             date: DateTime.now(),
             likeCount: 20,
+            onTap: () => Navigator.of(mainContext).push(MaterialPageRoute(
+                builder: (context) => NewsView(mainContext: mainContext))),
           ),
         ),
         Padding(
@@ -47,6 +56,8 @@ Widget latestNews({required BuildContext context}) => Column(
                 'Small U.S. banks see record drop in deposits after SVB collapse.',
             date: DateTime.now(),
             likeCount: 20,
+            onTap: () => Navigator.of(mainContext).push(MaterialPageRoute(
+                builder: (context) => NewsView(mainContext: mainContext))),
           ),
         ),
       ],

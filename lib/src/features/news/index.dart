@@ -3,7 +3,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_base/src/features/news/latest_news.dart';
 import 'package:flutter_base/src/features/news/popular_news.dart';
-import 'package:shimmer/shimmer.dart';
 import '../../widgets/carousel/image_sliders.dart';
 import '../../widgets/typography/page_title_icon.dart';
 
@@ -85,7 +84,10 @@ class _NewsState extends State<News> with TickerProviderStateMixin {
           Padding(
             padding: const EdgeInsets.only(top: 23.0, bottom: 5),
             child: CarouselSlider(
-              items: imageSliders(imgList: imgList),
+              items: imageSliders(
+                imgList: imgList,
+                mainContext: widget.mainContext,
+              ),
               carouselController: controller,
               options: CarouselOptions(
                   autoPlay: true,
@@ -111,7 +113,7 @@ class _NewsState extends State<News> with TickerProviderStateMixin {
               ),
             ),
           ),
-          popularNews(context: context),
+          popularNews(context: context, mainContext: widget.mainContext),
           // Latest News Cards
           const Padding(
             padding: EdgeInsets.symmetric(horizontal: 25, vertical: 10),
@@ -123,7 +125,7 @@ class _NewsState extends State<News> with TickerProviderStateMixin {
               ),
             ),
           ),
-          latestNews(context: context),
+          latestNews(context: context, mainContext: widget.mainContext),
           const SizedBox(height: 40),
           // Latest News Cards
         ],
