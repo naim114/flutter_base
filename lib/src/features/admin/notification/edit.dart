@@ -16,7 +16,7 @@ class EditNotification extends StatelessWidget {
       context: context,
       controller: _controller,
       appBarTitle: "Add Notification",
-      onPost: (editedController) {},
+      onPost: (callBackController) {},
     );
   }
 }

@@ -49,7 +49,7 @@ class Notifications extends StatelessWidget {
             onDelete: doNothing,
             onTap: () => Navigator.of(mainContext).push(
               MaterialPageRoute(
-                builder: (context) => const NotificationView(),
+                builder: (context) => NotificationView(),
               ),
             ),
             unread: false,
