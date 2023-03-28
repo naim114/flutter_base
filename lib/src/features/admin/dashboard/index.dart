@@ -75,7 +75,7 @@ class Dashboard extends StatelessWidget {
               ),
             ),
             userGrowthOverall(
-              spots: [
+              spots: const [
                 FlSpot(2020, 14),
                 FlSpot(2021, 100),
                 FlSpot(2022, 5),

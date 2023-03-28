@@ -16,7 +16,7 @@ class AppSettings extends StatelessWidget {
           context: context,
           builder: (BuildContext context) {
             return AlertDialog(
-              title: Text('Pick a color!'),
+              title: const Text('Pick a color'),
               content: SingleChildScrollView(
                 child: ColorPicker(
                   pickerColor: initialColor, //default color
