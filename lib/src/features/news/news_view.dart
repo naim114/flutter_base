@@ -206,8 +206,10 @@ class NewsView extends StatelessWidget {
             ),
           ),
           Padding(
-            padding: const EdgeInsets.symmetric(
-              horizontal: 15,
+            padding: const EdgeInsets.only(
+              left: 15,
+              right: 15,
+              bottom: 30,
             ),
             child: QuillEditor(
               controller: controller,
