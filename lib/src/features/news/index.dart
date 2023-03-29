@@ -2,7 +2,11 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_base/src/features/news/latest_news.dart';
+import 'package:flutter_base/src/features/news/news_view.dart';
 import 'package:flutter_base/src/features/news/popular_news.dart';
+import 'package:flutter_base/src/services/helpers.dart';
+import 'package:flutter_base/src/widgets/card/news_card.dart';
+import 'package:search_page/search_page.dart';
 import '../../widgets/carousel/image_sliders.dart';
 import '../../widgets/typography/page_title_icon.dart';
 
@@ -26,6 +30,22 @@ class News extends StatefulWidget {
 class _NewsState extends State<News> with TickerProviderStateMixin {
   int current = 0;
   final CarouselController controller = CarouselController();
+  List<dynamic> data = [
+    {
+      "Title": "Welcome to AppName!",
+      "Created By": "Admin",
+      "Created At": DateTime.now(),
+      "Likes": 10,
+      "Starred": true,
+    },
+    {
+      "Title": "New Features Available. Check out the new Update.",
+      "Created By": "Admin",
+      "Created At": DateTime.now(),
+      "Likes": 3,
+      "Starred": false,
+    },
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -63,20 +83,103 @@ class _NewsState extends State<News> with TickerProviderStateMixin {
           // Search News
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 25),
-            child: TextField(
-              readOnly: false,
-              autofocus: false,
-              enabled: false,
-              decoration: InputDecoration(
-                disabledBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(50.0),
-                    borderSide: const BorderSide(
-                      color: CupertinoColors.systemGrey,
-                      width: 1.5,
-                    )),
-                contentPadding: const EdgeInsets.all(0),
-                prefixIcon: const Icon(Icons.search),
-                hintText: 'Search news here',
+            child: GestureDetector(
+              onTap: () => showSearch(
+                context: widget.mainContext,
+                delegate: SearchPage(
+                  barTheme: Theme.of(context).brightness == Brightness.dark
+                      ? ThemeData(
+                          inputDecorationTheme: const InputDecorationTheme(
+                            border: InputBorder.none,
+                            hintStyle: TextStyle(color: Colors.grey),
+                          ),
+                          textTheme: Theme.of(context).textTheme.apply(
+                                bodyColor: Colors.white,
+                                displayColor: Colors.white,
+                              ),
+                          scaffoldBackgroundColor: CustomColor.neutral1,
+                          appBarTheme: const AppBarTheme(
+                            backgroundColor: CustomColor.neutral1,
+                          ),
+                        )
+                      : ThemeData(
+                          inputDecorationTheme: const InputDecorationTheme(
+                            border: InputBorder.none,
+                            hintStyle: TextStyle(color: Colors.grey),
+                          ),
+                          textTheme: Theme.of(context).textTheme.apply(
+                                bodyColor: CustomColor.neutral1,
+                                displayColor: CustomColor.neutral1,
+                              ),
+                          scaffoldBackgroundColor: Colors.white,
+                          appBarTheme: const AppBarTheme(
+                            backgroundColor: Colors.white,
+                            iconTheme: IconThemeData(
+                                color: CupertinoColors.systemGrey),
+                          ),
+                        ),
+                  // barTheme: ThemeData(
+                  //   inputDecorationTheme: const InputDecorationTheme(
+                  //     border: InputBorder.none,
+                  //     hintStyle: TextStyle(color: Colors.grey),
+                  //   ),
+                  //   textTheme: Theme.of(context).textTheme.apply(
+                  //         bodyColor: Colors.white,
+                  //         displayColor: Colors.white,
+                  //       ),
+                  //   scaffoldBackgroundColor: CustomColor.neutral1,
+                  //   appBarTheme: AppBarTheme(
+                  //     backgroundColor: Colors.grey[850],
+                  //   ),
+                  // ),
+                  onQueryUpdate: print,
+                  items: data,
+                  searchLabel: 'Search news',
+                  suggestion: const Center(
+                    child: Text('Type news title'),
+                  ),
+                  failure: const Center(
+                    child: Text('No news found :('),
+                  ),
+                  filter: (item) => [
+                    item["Title"],
+                    item["Created By"],
+                  ],
+                  builder: (item) => Padding(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 10,
+                      vertical: 5,
+                    ),
+                    child: newsCard(
+                      context: context,
+                      imageURL:
+                          'https://img.theculturetrip.com/1440x807/smart/wp-content/uploads/2017/02/nasi-lemak.jpg',
+                      title: item["Title"],
+                      likeCount: item["Likes"],
+                      date: item["Created At"],
+                      onTap: () => Navigator.of(widget.mainContext).push(
+                          MaterialPageRoute(
+                              builder: (context) =>
+                                  NewsView(mainContext: widget.mainContext))),
+                    ),
+                  ),
+                ),
+              ),
+              child: TextField(
+                readOnly: false,
+                autofocus: false,
+                enabled: false,
+                decoration: InputDecoration(
+                  disabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(50.0),
+                      borderSide: const BorderSide(
+                        color: CupertinoColors.systemGrey,
+                        width: 1.5,
+                      )),
+                  contentPadding: const EdgeInsets.all(0),
+                  prefixIcon: const Icon(Icons.search),
+                  hintText: 'Search news here',
+                ),
               ),
             ),
           ),
@@ -90,11 +193,12 @@ class _NewsState extends State<News> with TickerProviderStateMixin {
               ),
               carouselController: controller,
               options: CarouselOptions(
-                  autoPlay: true,
-                  enlargeCenterPage: true,
-                  aspectRatio: 2,
-                  onPageChanged: (index, reason) =>
-                      setState(() => current = index)),
+                autoPlay: true,
+                enlargeCenterPage: true,
+                aspectRatio: 2,
+                onPageChanged: (index, reason) =>
+                    setState(() => current = index),
+              ),
             ),
           ),
           slideIndicator(

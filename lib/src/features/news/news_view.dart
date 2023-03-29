@@ -142,13 +142,15 @@ class NewsView extends StatelessWidget {
                 highlightColor: CupertinoColors.systemGrey2,
                 child: Container(
                   color: Colors.grey,
-                  height: 80,
-                  width: 80,
+                  height: 200,
                 ),
               );
             },
-            errorBuilder: (context, error, stackTrace) =>
-                const Text('Some errors occurred!'),
+            errorBuilder: (context, error, stackTrace) => Image.asset(
+              'assets/images/noimage.png',
+              fit: BoxFit.cover,
+              height: 200,
+            ),
           ),
           Padding(
             padding: const EdgeInsets.only(
@@ -160,7 +162,7 @@ class NewsView extends StatelessWidget {
               alignment: WrapAlignment.spaceBetween,
               children: [
                 const Text(
-                  "By Author Name Here",
+                  "Author Name Here",
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 18,

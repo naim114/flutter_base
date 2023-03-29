@@ -42,8 +42,12 @@ Widget newsCard({
                     ),
                   );
                 },
-                errorBuilder: (context, error, stackTrace) =>
-                    const Text('Some errors occurred!'),
+                errorBuilder: (context, error, stackTrace) => Image.asset(
+                  'assets/images/noimage.png',
+                  fit: BoxFit.cover,
+                  height: 80,
+                  width: 80,
+                ),
               ),
               Container(
                 padding: const EdgeInsets.only(left: 15.0),

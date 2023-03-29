@@ -50,6 +50,7 @@ dependencies:
   url_launcher: ^6.1.10
   flutter_colorpicker: ^1.0.3
   shimmer: ^2.0.0
+  search_page: ^2.3.0
 
 dev_dependencies:
   flutter_test:
