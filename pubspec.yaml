@@ -51,6 +51,8 @@ dependencies:
   flutter_colorpicker: ^1.0.3
   shimmer: ^2.0.0
   search_page: ^2.3.0
+  provider: ^6.0.5
+  firebase_core: ^2.8.0
 
 dev_dependencies:
   flutter_test:

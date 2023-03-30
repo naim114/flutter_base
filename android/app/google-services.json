@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "584480622587",
+    "project_id": "news-app-f23dc",
+    "storage_bucket": "news-app-f23dc.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:584480622587:android:fe0ce033d3732c4c906d5e",
+        "android_client_info": {
+          "package_name": "com.example.flutter_base"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "584480622587-foqrr3s2lj0j0docos3nglatgvgs2hjj.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBgLbrNiFRgbD2CXaEiVubVwWWtxhaYJEg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "584480622587-foqrr3s2lj0j0docos3nglatgvgs2hjj.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
