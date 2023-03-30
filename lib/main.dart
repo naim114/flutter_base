@@ -4,8 +4,9 @@ import 'package:flutter_base/src/services/helpers.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:theme_mode_handler/theme_mode_handler.dart';
-
 import 'src/theme/theme_mode_manager.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'firebase_options.dart';
 
 void main() => runApp(const MyApp());
 
