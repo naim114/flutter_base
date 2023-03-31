@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class Role {
+class RoleModel {
   final String name;
   final String displayName;
   final String description;
@@ -14,7 +14,7 @@ class Role {
   @protected
   final String uid;
 
-  Role({
+  RoleModel({
     required this.uid,
     required this.name,
     required this.displayName,

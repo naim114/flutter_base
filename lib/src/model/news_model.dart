@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_base/src/model/user_model.dart';
 
-class News {
+class NewsModel {
   final String title;
   final int likeCount;
-  final User author;
+  final UserModel author;
   final String jsonContent;
   final bool starred;
 
@@ -16,7 +16,7 @@ class News {
   @protected
   final String uid;
 
-  News({
+  NewsModel({
     required this.uid,
     required this.title,
     this.likeCount = 0,

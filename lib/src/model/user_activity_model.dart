@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_base/src/model/user_model.dart';
 
-class UserActivity {
-  final User user;
+class UserActivityModel {
+  final UserModel user;
   final String description;
   final String activityType;
 
@@ -14,7 +14,7 @@ class UserActivity {
   @protected
   final String uid;
 
-  UserActivity({
+  UserActivityModel({
     required this.uid,
     required this.user,
     this.activityType = 'log_in',

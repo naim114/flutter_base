@@ -1,12 +1,36 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_base/src/services/auth_services.dart';
 import 'package:flutter_base/src/services/helpers.dart';
 import 'package:flutter_base/src/widgets/appbar/custom_appbar.dart';
 import 'package:flutter_base/src/widgets/button/custom_button.dart';
 import 'package:flutter_base/src/widgets/typography/custom_textfield.dart';
 
-class SignUp extends StatelessWidget {
+class SignUp extends StatefulWidget {
   const SignUp({super.key});
+
+  @override
+  State<SignUp> createState() => _SignUpState();
+}
+
+class _SignUpState extends State<SignUp> {
+  final AuthService _authService = AuthService();
+
+  final nameController = TextEditingController();
+  final emailController = TextEditingController();
+  final passwordController = TextEditingController();
+  final confirmPasswordController = TextEditingController();
+
+  bool _submitted = false;
+
+  @override
+  void dispose() {
+    nameController.dispose();
+    emailController.dispose();
+    passwordController.dispose();
+    confirmPasswordController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -45,22 +69,30 @@ class SignUp extends StatelessWidget {
                         ),
                       ),
                     ),
-                    const Padding(
-                      padding: EdgeInsets.only(bottom: 20),
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 20),
                       child: CustomTextField(
-                        icon: Icon(
-                          CupertinoIcons.person,
-                        ),
+                        controller: nameController,
+                        icon: const Icon(CupertinoIcons.person),
                         labelText: 'Enter Name',
+                        errorText:
+                            _submitted == true && nameController.text.isEmpty
+                                ? "Input can't be empty"
+                                : null,
                       ),
                     ),
-                    const Padding(
-                      padding: EdgeInsets.only(bottom: 10),
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 10),
                       child: CustomTextField(
-                        icon: Icon(
-                          CupertinoIcons.at,
-                        ),
+                        controller: emailController,
+                        icon: const Icon(CupertinoIcons.at),
                         labelText: 'Enter Email',
+                        errorText:
+                            _submitted == true && emailController.text.isEmpty
+                                ? "Input can't be empty"
+                                : !validateEmail()
+                                    ? "Please enter the correct email"
+                                    : null,
                       ),
                     ),
                     Divider(
@@ -68,29 +100,52 @@ class SignUp extends StatelessWidget {
                       indent: 10,
                       endIndent: 10,
                     ),
-                    const Padding(
-                      padding: EdgeInsets.only(top: 10, bottom: 20),
+                    Padding(
+                      padding: const EdgeInsets.only(top: 10, bottom: 20),
                       child: CustomTextField(
-                        icon: Icon(
-                          CupertinoIcons.padlock,
-                        ),
+                        controller: passwordController,
+                        icon: const Icon(CupertinoIcons.padlock),
                         labelText: 'Enter Password',
                         isPassword: true,
+                        errorText: _submitted == true &&
+                                passwordController.text.isEmpty
+                            ? "Input can't be empty"
+                            : !validatePassword()
+                                ? 'Password has to be more than 8 character. Minimum 1 upper case, lower case, number and special character.'
+                                : null,
                       ),
                     ),
-                    const Padding(
-                      padding: EdgeInsets.only(bottom: 20),
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 20),
                       child: CustomTextField(
-                        icon: Icon(
-                          CupertinoIcons.padlock,
-                        ),
+                        controller: confirmPasswordController,
+                        icon: const Icon(CupertinoIcons.padlock),
                         labelText: 'Confirm Password',
                         isPassword: true,
+                        errorText: _submitted == true &&
+                                confirmPasswordController.text.isEmpty
+                            ? "Input can't be empty"
+                            : !validateConfirmPassword()
+                                ? "Password and Confirm Password should have the same value"
+                                : null,
                       ),
                     ),
                     customButton(
                       child: const Text('Sign Up'),
-                      onPressed: () {},
+                      onPressed: () {
+                        setState(() => _submitted = true);
+
+                        if (validateEmptyField() &&
+                            validateEmail() &&
+                            validatePassword() &&
+                            validateConfirmPassword()) {
+                          // if validation success
+                          _authService.signUp(
+                            emailController.text,
+                            passwordController.text,
+                          );
+                        }
+                      },
                     ),
                   ],
                 ),
@@ -118,5 +173,39 @@ class SignUp extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  bool validateEmptyField() {
+    return nameController.text.isEmpty ||
+            emailController.text.isEmpty ||
+            passwordController.text.isEmpty ||
+            confirmPasswordController.text.isEmpty
+        ? false
+        : true;
+  }
+
+  bool validateEmail() {
+    const pattern = r"(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'"
+        r'*+/=?^_`{|}~-]+)*|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-'
+        r'\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*")@(?:(?:[a-z0-9](?:[a-z0-9-]*'
+        r'[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:(2(5[0-5]|[0-4]'
+        r'[0-9])|1[0-9][0-9]|[1-9]?[0-9]))\.){3}(?:(2(5[0-5]|[0-4][0-9])|1[0-9]'
+        r'[0-9]|[1-9]?[0-9])|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\'
+        r'x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])';
+    final regex = RegExp(pattern);
+
+    return regex.hasMatch(emailController.text);
+  }
+
+  bool validatePassword() {
+    RegExp regex =
+        RegExp(r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$');
+    return regex.hasMatch(passwordController.text);
+  }
+
+  bool validateConfirmPassword() {
+    return passwordController.text == confirmPasswordController.text
+        ? true
+        : false;
   }
 }

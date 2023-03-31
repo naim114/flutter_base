@@ -7,11 +7,15 @@ class CustomTextField extends StatefulWidget {
     required this.icon,
     required this.labelText,
     this.isPassword = false,
+    this.controller,
+    this.errorText,
   });
 
   final Icon icon;
   final String labelText;
   final bool isPassword;
+  final TextEditingController? controller;
+  final String? errorText;
 
   @override
   State<CustomTextField> createState() => _CustomTextFieldState();
@@ -40,7 +44,10 @@ class _CustomTextFieldState extends State<CustomTextField> {
             borderOnForeground: false,
             borderRadius: const BorderRadius.all(Radius.circular(15)),
             child: TextField(
+              controller: widget.controller,
               decoration: InputDecoration(
+                errorText: widget.errorText,
+                errorMaxLines: 2,
                 prefixIcon: widget.icon,
                 border: const OutlineInputBorder(
                   borderRadius: BorderRadius.all(
@@ -64,13 +71,14 @@ class _CustomTextFieldState extends State<CustomTextField> {
             borderOnForeground: false,
             borderRadius: const BorderRadius.all(Radius.circular(15)),
             child: TextField(
+              controller: widget.controller,
               decoration: InputDecoration(
                 prefixIcon: widget.icon,
                 border: const OutlineInputBorder(
-                  borderRadius: BorderRadius.all(
-                    Radius.circular(15),
-                  ),
+                  borderRadius: BorderRadius.all(Radius.circular(15)),
                 ),
+                errorText: widget.errorText,
+                errorMaxLines: 2,
                 labelText: widget.labelText,
                 floatingLabelBehavior: FloatingLabelBehavior.never,
                 // fillColor: Colors.transparent,
