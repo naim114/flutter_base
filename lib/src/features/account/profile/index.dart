@@ -159,8 +159,10 @@ class _ProfileState extends State<Profile> {
                       decoration: const InputDecoration(
                         labelText: 'Country',
                       ),
-                      onChanged: (String? value) =>
-                          setState(() => dropdownValue = value!),
+                      onChanged: (String? value) {
+                        print(value);
+                        setState(() => dropdownValue = value!);
+                      },
                       items:
                           list.map<DropdownMenuItem<String>>((Country country) {
                         return DropdownMenuItem<String>(

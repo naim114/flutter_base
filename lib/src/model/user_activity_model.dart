@@ -4,6 +4,7 @@ import 'package:flutter_base/src/model/user_model.dart';
 class UserActivity {
   final User user;
   final String description;
+  final String activityType;
 
   // date
   final DateTime createdAt;
@@ -16,6 +17,7 @@ class UserActivity {
   UserActivity({
     required this.uid,
     required this.user,
+    this.activityType = 'log_in',
     required this.description,
     required this.createdAt,
     required this.updatedAt,

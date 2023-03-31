@@ -134,7 +134,7 @@ class NewsView extends StatelessWidget {
           Image.network(
             'https://sunnycrew.jp/wp-content/themes/dp-colors/img/post_thumbnail/noimage.png',
             fit: BoxFit.cover,
-            height: 200,
+            height: MediaQuery.of(context).size.height * 0.25,
             loadingBuilder: (context, child, loadingProgress) {
               if (loadingProgress == null) return child;
               return Shimmer.fromColors(

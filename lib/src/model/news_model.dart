@@ -19,10 +19,10 @@ class News {
   News({
     required this.uid,
     required this.title,
-    required this.likeCount,
+    this.likeCount = 0,
     required this.author,
     required this.jsonContent,
-    required this.starred,
+    this.starred = false,
     required this.createdAt,
     required this.updatedAt,
     this.deletedAt,

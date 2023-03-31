@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 class Role {
   final String name;
+  final String displayName;
   final String description;
   final bool removeable;
 
@@ -16,8 +17,9 @@ class Role {
   Role({
     required this.uid,
     required this.name,
+    required this.displayName,
     required this.description,
-    required this.removeable,
+    this.removeable = true,
     required this.createdAt,
     required this.updatedAt,
     this.deletedAt,

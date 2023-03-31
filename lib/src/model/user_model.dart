@@ -3,11 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_base/src/model/role_model.dart';
 
 class User {
-  final String name;
-  final DateTime birthday;
+  final String email;
+  final String? name;
+  final DateTime? birthday;
+  final String? phone;
   final Country country;
   final String? avatarPath;
-  final String email;
   final Role role;
 
   // date
@@ -23,9 +24,10 @@ class User {
 
   User({
     required this.uid,
-    required this.name,
-    required this.birthday,
-    required this.country,
+    this.name,
+    this.birthday,
+    this.phone,
+    this.country = Countries.mys,
     required this.email,
     required this.password,
     this.avatarPath,
