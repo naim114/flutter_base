@@ -1,7 +1,7 @@
-import 'package:flutter/material.dart';
 import 'package:flutter_base/src/model/user_model.dart';
 
 class NewsModel {
+  final String id;
   final String title;
   final int likeCount;
   final UserModel author;
@@ -13,11 +13,8 @@ class NewsModel {
   final DateTime updatedAt;
   final DateTime? deletedAt;
 
-  @protected
-  final String uid;
-
   NewsModel({
-    required this.uid,
+    required this.id,
     required this.title,
     this.likeCount = 0,
     required this.author,

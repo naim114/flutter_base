@@ -1,7 +1,7 @@
-import 'package:flutter/material.dart';
 import 'package:flutter_base/src/model/user_model.dart';
 
 class UserActivityModel {
+  final String id;
   final UserModel user;
   final String description;
   final String activityType;
@@ -11,11 +11,8 @@ class UserActivityModel {
   final DateTime updatedAt;
   final DateTime? deletedAt;
 
-  @protected
-  final String uid;
-
   UserActivityModel({
-    required this.uid,
+    required this.id,
     required this.user,
     this.activityType = 'log_in',
     required this.description,

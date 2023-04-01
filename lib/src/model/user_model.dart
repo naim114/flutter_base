@@ -1,8 +1,12 @@
+import 'dart:ffi';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:country/country.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_base/src/model/role_model.dart';
 
 class UserModel {
+  final String id;
   final String email;
   final String? name;
   final DateTime? birthday;
@@ -17,13 +21,10 @@ class UserModel {
   final DateTime? deletedAt;
 
   @protected
-  final String uid;
-
-  @protected
   final String password;
 
   UserModel({
-    required this.uid,
+    required this.id,
     this.name,
     this.birthday,
     this.phone,
@@ -37,9 +38,74 @@ class UserModel {
     this.deletedAt,
   });
 
+  UserModel.fromDocumentSnapshot(DocumentSnapshot<Object?> doc)
+      : this(
+          id: doc.get('id'),
+          email: doc.get('email'),
+          name: doc.get('name'),
+          birthday: doc.get('birthday'),
+          phone: doc.get('phone'),
+          country: doc.get('country'),
+          avatarPath: doc.get('avatarPath'),
+          role: doc.get('role'),
+          createdAt: DateTime(doc.get('createdAt')),
+          updatedAt: DateTime(doc.get('updatedAt')),
+          deletedAt: DateTime(doc.get('deletedAt')),
+          password: doc.get('password'),
+        );
+
+  UserModel.fromQueryDocumentSnapshot(QueryDocumentSnapshot<Object?> doc)
+      : this(
+          id: doc.get('id'),
+          email: doc.get('email'),
+          name: doc.get('name'),
+          birthday: doc.get('birthday'),
+          phone: doc.get('phone'),
+          country: doc.get('country'),
+          avatarPath: doc.get('avatarPath'),
+          role: doc.get('role'),
+          createdAt: DateTime(doc.get('createdAt')),
+          updatedAt: DateTime(doc.get('updatedAt')),
+          deletedAt: DateTime(doc.get('deletedAt')),
+          password: doc.get('password'),
+        );
+
+  UserModel.fromMap(Map<String, dynamic> map)
+      : this(
+          id: map['id'],
+          email: map['email'],
+          name: map['name'],
+          birthday: map['birthday'],
+          phone: map['phone'],
+          country: map['country'],
+          avatarPath: map['avatarPath'],
+          role: map['role'],
+          createdAt: map['createdAt'],
+          updatedAt: map['updatedAt'],
+          deletedAt: map['deletedAt'],
+          password: map['password'],
+        );
+
+  Map<String, dynamic> toMap() {
+    return {
+      'id': id,
+      'email': email,
+      'name': name,
+      'birthday': birthday,
+      'phone': phone,
+      'country': country,
+      'avatarPath': avatarPath,
+      'role': role,
+      'createdAt': createdAt,
+      'updatedAt': updatedAt,
+      'deletedAt': deletedAt,
+      'password': password,
+    };
+  }
+
   UserModel.fromJson(Map<String, Object?> json)
       : this(
-          uid: json['uid']! as String,
+          id: json['id']! as String,
           email: json['email']! as String,
           name: json['name']! as String,
           birthday: json['birthday']! as DateTime,
@@ -55,14 +121,14 @@ class UserModel {
 
   Map<String, Object?> toJson() {
     return {
-      'uid': uid,
+      'id': id,
       'email': email,
       'name': name,
       'birthday': birthday,
       'phone': phone,
-      'country': country,
+      'country': country.number,
       'avatarPath': avatarPath,
-      'role': role,
+      'role': role.id,
       'createdAt': createdAt,
       'updatedAt': updatedAt,
       'deletedAt': deletedAt,

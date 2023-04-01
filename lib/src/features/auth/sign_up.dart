@@ -90,7 +90,7 @@ class _SignUpState extends State<SignUp> {
                         errorText:
                             _submitted == true && emailController.text.isEmpty
                                 ? "Input can't be empty"
-                                : !validateEmail()
+                                : _submitted == true && !_validateEmail()
                                     ? "Please enter the correct email"
                                     : null,
                       ),
@@ -110,7 +110,7 @@ class _SignUpState extends State<SignUp> {
                         errorText: _submitted == true &&
                                 passwordController.text.isEmpty
                             ? "Input can't be empty"
-                            : !validatePassword()
+                            : _submitted == true && !_validatePassword()
                                 ? 'Password has to be more than 8 character. Minimum 1 upper case, lower case, number and special character.'
                                 : null,
                       ),
@@ -125,25 +125,28 @@ class _SignUpState extends State<SignUp> {
                         errorText: _submitted == true &&
                                 confirmPasswordController.text.isEmpty
                             ? "Input can't be empty"
-                            : !validateConfirmPassword()
+                            : !_validateConfirmPassword()
                                 ? "Password and Confirm Password should have the same value"
                                 : null,
                       ),
                     ),
                     customButton(
                       child: const Text('Sign Up'),
-                      onPressed: () {
+                      onPressed: () async {
                         setState(() => _submitted = true);
 
-                        if (validateEmptyField() &&
-                            validateEmail() &&
-                            validatePassword() &&
-                            validateConfirmPassword()) {
+                        if (_validateEmptyField() &&
+                            _validateEmail() &&
+                            _validatePassword() &&
+                            _validateConfirmPassword()) {
                           // if validation success
-                          _authService.signUp(
+                          final signUp = await _authService.signUp(
                             emailController.text,
                             passwordController.text,
                           );
+
+                          print(signUp);
+                          if (signUp == true) Navigator.pop(context);
                         }
                       },
                     ),
@@ -175,7 +178,7 @@ class _SignUpState extends State<SignUp> {
     );
   }
 
-  bool validateEmptyField() {
+  bool _validateEmptyField() {
     return nameController.text.isEmpty ||
             emailController.text.isEmpty ||
             passwordController.text.isEmpty ||
@@ -184,7 +187,7 @@ class _SignUpState extends State<SignUp> {
         : true;
   }
 
-  bool validateEmail() {
+  bool _validateEmail() {
     const pattern = r"(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'"
         r'*+/=?^_`{|}~-]+)*|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-'
         r'\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*")@(?:(?:[a-z0-9](?:[a-z0-9-]*'
@@ -197,13 +200,13 @@ class _SignUpState extends State<SignUp> {
     return regex.hasMatch(emailController.text);
   }
 
-  bool validatePassword() {
+  bool _validatePassword() {
     RegExp regex =
         RegExp(r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$');
     return regex.hasMatch(passwordController.text);
   }
 
-  bool validateConfirmPassword() {
+  bool _validateConfirmPassword() {
     return passwordController.text == confirmPasswordController.text
         ? true
         : false;
