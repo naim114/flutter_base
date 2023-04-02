@@ -11,9 +11,9 @@ class RoleServices {
     QuerySnapshot querySnapshot = await _collectionRef.get();
 
     // Get data from docs and convert map to List of Role Model
-    final List<RoleModel> allData = querySnapshot.docs.map((doc) {
-      return RoleModel.fromQueryDocumentSnapshot(doc);
-    }).toList();
+    final List<RoleModel> allData = querySnapshot.docs
+        .map((doc) => RoleModel.fromQueryDocumentSnapshot(doc))
+        .toList();
 
     return allData;
   }
@@ -24,7 +24,6 @@ class RoleServices {
         .get()
         .then((DocumentSnapshot documentSnapshot) {
       if (documentSnapshot.exists) {
-        print(documentSnapshot.get('name'));
         return RoleModel.fromDocumentSnapshot(documentSnapshot);
       } else {
         print('Document does not exist on the database');

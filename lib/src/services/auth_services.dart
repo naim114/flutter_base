@@ -11,17 +11,13 @@ class AuthService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore _db = FirebaseFirestore.instance;
 
-  Future signIn(String email, String password) async {
-    try {
-      return await _auth.signInWithEmailAndPassword(
-        email: email,
-        password: password,
-      );
-    } catch (e) {
-      print(e.toString());
-      return null;
-    }
-  }
+  // auth change user stream
+  // Stream<UserModel?> get onAuthStateChanged {
+  //   return _auth
+  //       .authStateChanges()
+  //       //.map((User? user) => _userModelFromFirebase(user));
+  //       .map(userModelFromFirebase);
+  // }
 
   //sign up with email & password
   Future signUp(String email, String password) async {
@@ -65,6 +61,19 @@ class AuthService {
               : e.toString());
 
       return false;
+    }
+  }
+
+  // sign in with email and password
+  Future signIn(String email, String password) async {
+    try {
+      return await _auth.signInWithEmailAndPassword(
+        email: email,
+        password: password,
+      );
+    } catch (e) {
+      print(e.toString());
+      return null;
     }
   }
 }
