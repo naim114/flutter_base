@@ -11,7 +11,7 @@ class UserModel {
   final String? phone;
   final Country country;
   final String? avatarPath;
-  final RoleModel role;
+  final String role;
 
   // date
   final DateTime createdAt;
@@ -43,12 +43,15 @@ class UserModel {
           name: doc.get('name'),
           birthday: doc.get('birthday'),
           phone: doc.get('phone'),
-          country: doc.get('country'),
+          country: Countries.values
+              .firstWhere((country) => country.number == doc.get('country')),
           avatarPath: doc.get('avatarPath'),
           role: doc.get('role'),
-          createdAt: DateTime(doc.get('createdAt')),
-          updatedAt: DateTime(doc.get('updatedAt')),
-          deletedAt: DateTime(doc.get('deletedAt')),
+          createdAt: doc.get('createdAt').toDate(),
+          updatedAt: doc.get('updatedAt').toDate(),
+          deletedAt: doc.get('deletedAt') == null
+              ? doc.get('deletedAt')
+              : doc.get('deletedAt').toDate(),
           password: doc.get('password'),
         );
 
@@ -59,12 +62,15 @@ class UserModel {
           name: doc.get('name'),
           birthday: doc.get('birthday'),
           phone: doc.get('phone'),
-          country: doc.get('country'),
+          country: Countries.values
+              .firstWhere((country) => country.number == doc.get('country')),
           avatarPath: doc.get('avatarPath'),
           role: doc.get('role'),
-          createdAt: DateTime(doc.get('createdAt')),
-          updatedAt: DateTime(doc.get('updatedAt')),
-          deletedAt: DateTime(doc.get('deletedAt')),
+          createdAt: doc.get('createdAt').toDate(),
+          updatedAt: doc.get('updatedAt').toDate(),
+          deletedAt: doc.get('deletedAt') == null
+              ? doc.get('deletedAt')
+              : doc.get('deletedAt').toDate(),
           password: doc.get('password'),
         );
 
@@ -110,7 +116,7 @@ class UserModel {
           phone: json['phone']! as String,
           country: json['country']! as Country,
           avatarPath: json['avatarPath']! as String,
-          role: json['role']! as RoleModel,
+          role: json['role']! as String,
           createdAt: json['createdAt']! as DateTime,
           updatedAt: json['updatedAt']! as DateTime,
           deletedAt: json['deletedAt']! as DateTime,
@@ -126,7 +132,7 @@ class UserModel {
       'phone': phone,
       'country': country.number,
       'avatarPath': avatarPath,
-      'role': role.id,
+      'role': role,
       'createdAt': createdAt,
       'updatedAt': updatedAt,
       'deletedAt': deletedAt,

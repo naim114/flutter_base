@@ -56,6 +56,7 @@ class UserServices {
       String email = user.email.toString();
 
       final users = await UserServices().getBy('email', email);
+
       return users.first;
     } else {
       return null;

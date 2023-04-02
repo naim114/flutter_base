@@ -1,8 +1,13 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_base/src/features/auth/log_in.dart';
+import 'package:flutter_base/src/model/user_model.dart';
+import 'package:flutter_base/src/services/auth_services.dart';
 import 'package:flutter_base/src/services/helpers.dart';
+import 'package:flutter_base/wrapper.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
+import 'package:provider/provider.dart';
 import 'package:theme_mode_handler/theme_mode_handler.dart';
 import 'src/theme/theme_mode_manager.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -24,6 +29,8 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+
   MaterialColor primaryColorShades = const MaterialColor(
     0xFF643FDB,
     <int, Color>{
@@ -42,54 +49,58 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-    return ThemeModeHandler(
-      manager: MyThemeModeManager(),
-      placeholderWidget: Center(
-        child: LoadingAnimationWidget.flickr(
-          leftDotColor: CustomColor.primary,
-          rightDotColor: CustomColor.secondary,
-          size: 50,
-        ),
-      ),
-      builder: (ThemeMode themeMode) => MaterialApp(
-        themeMode: themeMode,
-        // DARK THEME
-        darkTheme: ThemeData(
-          brightness: Brightness.dark,
-          fontFamily: GoogleFonts.questrial().fontFamily,
-          primarySwatch: primaryColorShades,
-          primaryColor: CustomColor.primary,
-          textTheme: Theme.of(context).textTheme.apply(
-                bodyColor: Colors.white,
-                displayColor: Colors.white,
-              ),
-          scaffoldBackgroundColor: CustomColor.neutral1,
-          inputDecorationTheme: const InputDecorationTheme(
-            fillColor: CustomColor.neutral1,
-            filled: true,
+    return StreamProvider<UserModel?>.value(
+      initialData: null,
+      // TODO fix this function
+      value: AuthService().onAuthStateChanged,
+      child: ThemeModeHandler(
+        manager: MyThemeModeManager(),
+        placeholderWidget: Center(
+          child: LoadingAnimationWidget.flickr(
+            leftDotColor: CustomColor.primary,
+            rightDotColor: CustomColor.secondary,
+            size: 50,
           ),
         ),
-
-        // LIGHT THEME
-        theme: ThemeData(
-          brightness: Brightness.light,
-          fontFamily: 'Questrial',
-          primarySwatch: primaryColorShades,
-          primaryColor: CustomColor.primary,
-          textTheme: Theme.of(context).textTheme.apply(
-                bodyColor: CustomColor.neutral1,
-                displayColor: CustomColor.neutral1,
-              ),
-          scaffoldBackgroundColor: Colors.white,
-          iconTheme: const IconThemeData(
-            color: CustomColor.neutral1,
+        builder: (ThemeMode themeMode) => MaterialApp(
+          themeMode: themeMode,
+          // DARK THEME
+          darkTheme: ThemeData(
+            brightness: Brightness.dark,
+            fontFamily: GoogleFonts.questrial().fontFamily,
+            primarySwatch: primaryColorShades,
+            primaryColor: CustomColor.primary,
+            textTheme: Theme.of(context).textTheme.apply(
+                  bodyColor: Colors.white,
+                  displayColor: Colors.white,
+                ),
+            scaffoldBackgroundColor: CustomColor.neutral1,
+            inputDecorationTheme: const InputDecorationTheme(
+              fillColor: CustomColor.neutral1,
+              filled: true,
+            ),
           ),
-          iconButtonTheme: const IconButtonThemeData(
-            style: ButtonStyle(
-                iconColor: MaterialStatePropertyAll(CustomColor.neutral1)),
+          // LIGHT THEME
+          theme: ThemeData(
+            brightness: Brightness.light,
+            fontFamily: 'Questrial',
+            primarySwatch: primaryColorShades,
+            primaryColor: CustomColor.primary,
+            textTheme: Theme.of(context).textTheme.apply(
+                  bodyColor: CustomColor.neutral1,
+                  displayColor: CustomColor.neutral1,
+                ),
+            scaffoldBackgroundColor: Colors.white,
+            iconTheme: const IconThemeData(
+              color: CustomColor.neutral1,
+            ),
+            iconButtonTheme: const IconButtonThemeData(
+              style: ButtonStyle(
+                  iconColor: MaterialStatePropertyAll(CustomColor.neutral1)),
+            ),
           ),
+          home: const Wrapper(),
         ),
-        home: const LogIn(),
       ),
     );
   }

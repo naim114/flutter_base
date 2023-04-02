@@ -5,6 +5,7 @@ import 'package:crypto/crypto.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_base/src/model/user_model.dart';
 import 'package:flutter_base/src/services/role_services.dart';
+import 'package:flutter_base/src/services/user_services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
 class AuthService {
@@ -12,12 +13,10 @@ class AuthService {
   final FirebaseFirestore _db = FirebaseFirestore.instance;
 
   // auth change user stream
-  // Stream<UserModel?> get onAuthStateChanged {
-  //   return _auth
-  //       .authStateChanges()
-  //       //.map((User? user) => _userModelFromFirebase(user));
-  //       .map(userModelFromFirebase);
-  // }
+  Stream<UserModel?> get onAuthStateChanged {
+    return _auth.authStateChanges().asyncMap(
+        (User? user) => UserServices().getUserModelFromFirebase(user));
+  }
 
   //sign up with email & password
   Future signUp(String email, String password) async {
@@ -43,7 +42,7 @@ class AuthService {
             createdAt: DateTime.now(),
             email: email,
             password: digest.toString(),
-            role: userRole.first,
+            role: userRole.first.id,
             id: user.uid,
             updatedAt: DateTime.now(),
           ).toJson());
@@ -67,10 +66,24 @@ class AuthService {
   // sign in with email and password
   Future signIn(String email, String password) async {
     try {
+      // Encrypt password
+      var bytes = utf8.encode(password);
+      var digest = sha1.convert(bytes);
+
       return await _auth.signInWithEmailAndPassword(
         email: email,
-        password: password,
+        password: digest.toString(),
       );
+    } catch (e) {
+      print(e.toString());
+      return null;
+    }
+  }
+
+  //sing out
+  Future signOut() async {
+    try {
+      return await _auth.signOut();
     } catch (e) {
       print(e.toString());
       return null;

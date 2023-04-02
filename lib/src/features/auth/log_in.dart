@@ -2,16 +2,42 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_base/src/features/auth/sign_up.dart';
 import 'package:flutter_base/src/features/main/index.dart';
+import 'package:flutter_base/src/model/user_model.dart';
 import 'package:flutter_base/src/services/helpers.dart';
 import 'package:flutter_base/src/widgets/appbar/custom_appbar.dart';
 import 'package:flutter_base/src/widgets/button/custom_button.dart';
 import 'package:flutter_base/src/widgets/typography/custom_textfield.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:provider/provider.dart';
 
-class LogIn extends StatelessWidget {
+import '../../services/auth_services.dart';
+
+class LogIn extends StatefulWidget {
   const LogIn({super.key});
 
   @override
+  State<LogIn> createState() => _LogInState();
+}
+
+class _LogInState extends State<LogIn> {
+  final AuthService _authService = AuthService();
+
+  final passwordController = TextEditingController();
+  final emailController = TextEditingController();
+
+  bool _submitted = false;
+
+  @override
+  void dispose() {
+    passwordController.dispose();
+    emailController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
+    final test = Provider.of<UserModel?>(context);
+
     return Scaffold(
       appBar: customAppBar(
         context: context,
@@ -24,6 +50,11 @@ class LogIn extends StatelessWidget {
                 : const Icon(CupertinoIcons.sun_max_fill),
             color: getColorByBackground(context),
             onPressed: () => selectThemeMode(context),
+          ),
+          IconButton(
+            icon: const Icon(Icons.abc),
+            color: getColorByBackground(context),
+            onPressed: () => _authService.signOut(),
           ),
         ],
       ),
@@ -46,32 +77,63 @@ class LogIn extends StatelessWidget {
                         ),
                       ),
                     ),
-                    const Padding(
-                      padding: EdgeInsets.only(bottom: 10),
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 30.0),
+                      child: Text(test?.email ?? 'None'),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 10),
                       child: CustomTextField(
-                        icon: Icon(
-                          CupertinoIcons.at,
-                        ),
+                        controller: emailController,
+                        icon: const Icon(CupertinoIcons.at),
                         labelText: 'Email',
+                        errorText:
+                            _submitted == true && emailController.text.isEmpty
+                                ? "Input can't be empty"
+                                : _submitted == true && !_validateEmail()
+                                    ? "Please enter the correct email"
+                                    : null,
                       ),
                     ),
-                    const Padding(
-                      padding: EdgeInsets.only(top: 10, bottom: 20),
+                    Padding(
+                      padding: const EdgeInsets.only(top: 10, bottom: 20),
                       child: CustomTextField(
-                        icon: Icon(
-                          CupertinoIcons.padlock,
-                        ),
+                        controller: passwordController,
+                        icon: const Icon(CupertinoIcons.padlock),
                         labelText: 'Password',
                         isPassword: true,
+                        errorText: _submitted == true &&
+                                passwordController.text.isEmpty
+                            ? "Input can't be empty"
+                            : null,
                       ),
                     ),
                     customButton(
                       child: const Text('Log In'),
-                      onPressed: () => Navigator.of(context).pushReplacement(
-                        MaterialPageRoute(
-                          builder: (context) => const FrontFrame(),
-                        ),
-                      ),
+                      onPressed: () async {
+                        setState(() => _submitted = true);
+
+                        if (_validateEmptyField() && _validateEmail()) {
+                          // if validation success
+                          dynamic result = await _authService.signIn(
+                            emailController.text,
+                            passwordController.text,
+                          );
+
+                          if (result == null) {
+                            Fluttertoast.showToast(
+                                msg: "Could not sign in with credentials");
+                          }
+
+                          // print(signUp);
+                          // if (signUp == true) Navigator.pop(context);
+                        }
+                        // Navigator.of(context).pushReplacement(
+                        //   MaterialPageRoute(
+                        //     builder: (context) => const FrontFrame(),
+                        //   ),
+                        // );
+                      },
                     ),
                   ],
                 ),
@@ -103,5 +165,24 @@ class LogIn extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  bool _validateEmptyField() {
+    return emailController.text.isEmpty || passwordController.text.isEmpty
+        ? false
+        : true;
+  }
+
+  bool _validateEmail() {
+    const pattern = r"(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'"
+        r'*+/=?^_`{|}~-]+)*|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-'
+        r'\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*")@(?:(?:[a-z0-9](?:[a-z0-9-]*'
+        r'[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:(2(5[0-5]|[0-4]'
+        r'[0-9])|1[0-9][0-9]|[1-9]?[0-9]))\.){3}(?:(2(5[0-5]|[0-4][0-9])|1[0-9]'
+        r'[0-9]|[1-9]?[0-9])|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\'
+        r'x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])';
+    final regex = RegExp(pattern);
+
+    return regex.hasMatch(emailController.text);
   }
 }
