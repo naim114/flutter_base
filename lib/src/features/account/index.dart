@@ -6,7 +6,6 @@ import 'package:flutter_base/src/features/account/security/index.dart';
 import 'package:flutter_base/src/features/admin/dashboard/index.dart';
 import 'package:flutter_base/src/features/admin/index.dart';
 import 'package:flutter_base/src/features/admin/settings/index.dart';
-import 'package:flutter_base/src/features/auth/log_in.dart';
 import 'package:flutter_base/src/model/role_model.dart';
 import 'package:flutter_base/src/services/helpers.dart';
 import 'package:flutter_base/src/services/role_services.dart';
@@ -38,168 +37,174 @@ class _AccountState extends State<Account> {
     final user = Provider.of<UserModel?>(context);
 
     return Scaffold(
-      body: Padding(
-        padding: const EdgeInsets.all(25.0),
-        child: ListView(
-          children: [
-            pageTitleIcon(
-              context: context,
-              title: "Account",
-              icon: const Icon(
-                CupertinoIcons.person_fill,
-                size: 24,
-              ),
-            ),
-            // PROFILE
-            listTileProfile(
-              context: context,
-              onEdit: () => Navigator.of(widget.mainContext).push(
-                MaterialPageRoute(
-                  builder: (context) => const Profile(),
-                ),
-              ),
-            ),
-            // SETTINGS
-            const Padding(
-              padding: EdgeInsets.only(bottom: 5),
-              child: Text(
-                'Settings',
-                style: TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            ),
-            // Security (Password, Login activity)
-            listTileIcon(
-              context: context,
-              icon: CupertinoIcons.shield_lefthalf_fill,
-              title: "Security",
-              onTap: () => Navigator.of(widget.mainContext).push(
-                MaterialPageRoute(
-                  builder: (context) => const Security(),
-                ),
-              ),
-            ),
-            // Theme
-            listTileIcon(
-              context: context,
-              icon: isDarkTheme(context)
-                  ? CupertinoIcons.moon_fill
-                  : CupertinoIcons.sun_max_fill,
-              title: "Theme",
-              onTap: () => selectThemeMode(context),
-            ),
-            // About
-            listTileIcon(
-              context: context,
-              icon: Icons.info_outlined,
-              title: "About",
-              onTap: () => Navigator.of(widget.mainContext).push(
-                MaterialPageRoute(
-                  builder: (context) => const AppAbout(),
-                ),
-              ),
-            ),
-            // ADMIN ONLY
-            FutureBuilder<RoleModel?>(
-                future: RoleServices().get(user!.role),
-                builder: (context, snapshot) {
-                  if (!snapshot.hasData ||
-                      snapshot.hasError ||
-                      snapshot.data!.name == "user") {
-                    return const SizedBox(height: 0, width: 0);
-                  } else {
-                    return Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const Padding(
-                          padding: EdgeInsets.only(bottom: 5),
-                          child: Text(
-                            'Admin',
-                            style: TextStyle(
-                              fontSize: 18,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ),
-                        // Admin Dashboard
-                        listTileIcon(
-                          context: context,
-                          icon: CupertinoIcons.chart_bar_alt_fill,
-                          title: "Dashboard",
-                          onTap: () => Navigator.of(widget.mainContext).push(
-                            MaterialPageRoute(
-                              builder: (context) => const Dashboard(),
-                            ),
-                          ),
-                        ),
-                        // Admin Panel
-                        listTileIcon(
-                          context: context,
-                          icon: Icons.admin_panel_settings,
-                          title: "Admin Panel",
-                          onTap: () => Navigator.of(widget.mainContext).push(
-                            MaterialPageRoute(
-                              builder: (context) => const AdminPanel(),
-                            ),
-                          ),
-                        ),
-                        listTileIcon(
-                          context: context,
-                          icon: Icons.app_settings_alt,
-                          title: "App Settings",
-                          onTap: () => Navigator.of(widget.mainContext).push(
-                            MaterialPageRoute(
-                              builder: (context) => const AppSettings(),
-                            ),
-                          ),
-                        ),
-                      ],
-                    );
-                  }
-                }),
-
-            ListTile(
-              title: Text(
-                'Log Out',
-                style: TextStyle(
-                    color: Colors.red[400], fontWeight: FontWeight.bold),
-              ),
-              onTap: () => showDialog<String>(
-                context: context,
-                builder: (BuildContext context) => AlertDialog(
-                  title: const Text('Log Out?'),
-                  content: const Text('Select OK to log out.'),
-                  actions: <Widget>[
-                    TextButton(
-                      onPressed: () => Navigator.pop(context),
-                      child: const Text(
-                        'Cancel',
-                        style: TextStyle(
-                          color: CupertinoColors.systemGrey,
-                        ),
+      body: user == null
+          ? const Center(child: CircularProgressIndicator())
+          : Padding(
+              padding: const EdgeInsets.all(25.0),
+              child: ListView(
+                children: [
+                  pageTitleIcon(
+                    context: context,
+                    title: "Account",
+                    icon: const Icon(
+                      CupertinoIcons.person_fill,
+                      size: 24,
+                    ),
+                  ),
+                  // PROFILE
+                  listTileProfile(
+                    context: context,
+                    onEdit: () => Navigator.of(widget.mainContext).push(
+                      MaterialPageRoute(
+                        builder: (context) => Profile(user: user),
                       ),
                     ),
-                    TextButton(
-                      onPressed: () {
-                        Navigator.pop(context);
-                        _authService.signOut();
-                      },
-                      child: const Text(
-                        'OK',
-                        style: TextStyle(
-                          color: CustomColor.danger,
-                        ),
+                    user: user,
+                  ),
+                  // SETTINGS
+                  const Padding(
+                    padding: EdgeInsets.only(bottom: 5),
+                    child: Text(
+                      'Settings',
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
                       ),
                     ),
-                  ],
-                ),
+                  ),
+                  // Security (Password, Login activity)
+                  listTileIcon(
+                    context: context,
+                    icon: CupertinoIcons.shield_lefthalf_fill,
+                    title: "Security",
+                    onTap: () => Navigator.of(widget.mainContext).push(
+                      MaterialPageRoute(
+                        builder: (context) => const Security(),
+                      ),
+                    ),
+                  ),
+                  // Theme
+                  listTileIcon(
+                    context: context,
+                    icon: isDarkTheme(context)
+                        ? CupertinoIcons.moon_fill
+                        : CupertinoIcons.sun_max_fill,
+                    title: "Theme",
+                    onTap: () => selectThemeMode(context),
+                  ),
+                  // About
+                  listTileIcon(
+                    context: context,
+                    icon: Icons.info_outlined,
+                    title: "About",
+                    onTap: () => Navigator.of(widget.mainContext).push(
+                      MaterialPageRoute(
+                        builder: (context) => const AppAbout(),
+                      ),
+                    ),
+                  ),
+                  // ADMIN ONLY
+                  FutureBuilder<RoleModel?>(
+                    future: RoleServices().get(user.role),
+                    builder: (context, snapshot) {
+                      if (!snapshot.hasData ||
+                          snapshot.hasError ||
+                          snapshot.data!.name == "user") {
+                        return const SizedBox(height: 0, width: 0);
+                      } else {
+                        return Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const Padding(
+                              padding: EdgeInsets.only(bottom: 5),
+                              child: Text(
+                                'Admin',
+                                style: TextStyle(
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ),
+                            // Admin Dashboard
+                            listTileIcon(
+                              context: context,
+                              icon: CupertinoIcons.chart_bar_alt_fill,
+                              title: "Dashboard",
+                              onTap: () =>
+                                  Navigator.of(widget.mainContext).push(
+                                MaterialPageRoute(
+                                  builder: (context) => const Dashboard(),
+                                ),
+                              ),
+                            ),
+                            // Admin Panel
+                            listTileIcon(
+                              context: context,
+                              icon: Icons.admin_panel_settings,
+                              title: "Admin Panel",
+                              onTap: () =>
+                                  Navigator.of(widget.mainContext).push(
+                                MaterialPageRoute(
+                                  builder: (context) => const AdminPanel(),
+                                ),
+                              ),
+                            ),
+                            listTileIcon(
+                              context: context,
+                              icon: Icons.app_settings_alt,
+                              title: "App Settings",
+                              onTap: () =>
+                                  Navigator.of(widget.mainContext).push(
+                                MaterialPageRoute(
+                                  builder: (context) => const AppSettings(),
+                                ),
+                              ),
+                            ),
+                          ],
+                        );
+                      }
+                    },
+                  ),
+                  ListTile(
+                    title: Text(
+                      'Log Out',
+                      style: TextStyle(
+                          color: Colors.red[400], fontWeight: FontWeight.bold),
+                    ),
+                    onTap: () => showDialog<String>(
+                      context: context,
+                      builder: (BuildContext context) => AlertDialog(
+                        title: const Text('Log Out?'),
+                        content: const Text('Select OK to log out.'),
+                        actions: <Widget>[
+                          TextButton(
+                            onPressed: () => Navigator.pop(context),
+                            child: const Text(
+                              'Cancel',
+                              style: TextStyle(
+                                color: CupertinoColors.systemGrey,
+                              ),
+                            ),
+                          ),
+                          TextButton(
+                            onPressed: () {
+                              Navigator.pop(context);
+                              _authService.signOut();
+                            },
+                            child: const Text(
+                              'OK',
+                              style: TextStyle(
+                                color: CustomColor.danger,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
               ),
             ),
-          ],
-        ),
-      ),
     );
   }
 }

@@ -1,9 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_base/src/model/user_model.dart';
 
 import '../../services/helpers.dart';
 
 Widget listTileProfile({
+  required UserModel user,
   required BuildContext context,
   required void Function() onEdit,
 }) =>
@@ -12,11 +14,11 @@ Widget listTileProfile({
         backgroundImage:
             AssetImage('assets/images/default-profile-picture.png'),
       ),
-      title: const Text(
-        'Name Here',
-        style: TextStyle(fontWeight: FontWeight.bold),
+      title: Text(
+        user.name ?? 'No Name',
+        style: const TextStyle(fontWeight: FontWeight.bold),
       ),
-      subtitle: const Text('user@email.com'),
+      subtitle: Text(user.email, overflow: TextOverflow.ellipsis),
       contentPadding: const EdgeInsets.all(15),
       trailing: OutlinedButton(
         onPressed: onEdit,

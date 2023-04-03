@@ -1,5 +1,6 @@
 import 'package:country/country.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_base/src/model/user_model.dart';
 import 'package:flutter_base/src/services/helpers.dart';
 import 'package:flutter_base/src/widgets/appbar/appbar_confirm_cancel.dart';
 import 'package:intl/intl.dart';
@@ -8,9 +9,12 @@ import '../../../widgets/editor/image_uploader.dart';
 
 class Profile extends StatefulWidget {
   final Widget bottomWidget;
+  final UserModel user;
+
   const Profile({
     super.key,
     this.bottomWidget = const SizedBox(),
+    required this.user,
   });
 
   @override
@@ -18,13 +22,21 @@ class Profile extends StatefulWidget {
 }
 
 class _ProfileState extends State<Profile> {
-  List<Country> list = Countries.values;
-  TextEditingController dateinput = TextEditingController();
-  String dropdownValue = Countries.mys.number;
+  TextEditingController nameController = TextEditingController();
+  TextEditingController phoneController = TextEditingController();
+  TextEditingController birthdayController = TextEditingController();
+  String countryDropdownValue = Countries.abw.number;
 
   @override
   void initState() {
-    dateinput.text = "";
+    nameController.text = widget.user.name ?? "";
+    phoneController.text = widget.user.phone ?? "";
+    birthdayController.text = widget.user.birthday != null
+        ? DateFormat('dd/MM/yyyy')
+            .format(widget.user.birthday ?? DateTime.now())
+        : "";
+
+    countryDropdownValue = widget.user.country.number;
     super.initState();
   }
 
@@ -39,7 +51,7 @@ class _ProfileState extends State<Profile> {
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(vertical: 15.0),
-        child: Column(
+        child: ListView(
           children: [
             // Profile Picture
             GestureDetector(
@@ -107,20 +119,16 @@ class _ProfileState extends State<Profile> {
                   const Padding(
                     padding: EdgeInsets.symmetric(vertical: 8.0),
                     child: TextField(
-                      decoration: InputDecoration(
-                        labelText: 'Name',
-                      ),
+                      decoration: InputDecoration(labelText: 'Name'),
                     ),
                   ),
                   // Birthday
                   Padding(
                     padding: const EdgeInsets.symmetric(vertical: 8.0),
                     child: TextField(
-                      controller: dateinput,
+                      controller: birthdayController,
                       readOnly: true,
-                      decoration: const InputDecoration(
-                        labelText: 'Birthday',
-                      ),
+                      decoration: const InputDecoration(labelText: 'Birthday'),
                       onTap: () async {
                         DateTime? pickedDate = await showDatePicker(
                             context: context,
@@ -131,9 +139,10 @@ class _ProfileState extends State<Profile> {
                         if (pickedDate != null) {
                           String formattedDate =
                               DateFormat('dd/MM/yyyy').format(pickedDate);
-                          setState(() => dateinput.text = formattedDate);
+                          setState(
+                              () => birthdayController.text = formattedDate);
                         } else {
-                          setState(() => dateinput.text =
+                          setState(() => birthdayController.text =
                               DateFormat('dd/MM/yyyy').format(DateTime.now()));
                         }
                       },
@@ -143,9 +152,7 @@ class _ProfileState extends State<Profile> {
                   const Padding(
                     padding: EdgeInsets.symmetric(vertical: 8.0),
                     child: TextField(
-                      decoration: InputDecoration(
-                        labelText: 'Phone Number',
-                      ),
+                      decoration: InputDecoration(labelText: 'Phone Number'),
                     ),
                   ),
                   // Country
@@ -154,25 +161,24 @@ class _ProfileState extends State<Profile> {
                     child: DropdownButtonFormField<String>(
                       isExpanded: true,
                       elevation: 0,
-                      value: dropdownValue,
+                      value: countryDropdownValue,
                       icon: const Icon(Icons.arrow_downward),
-                      decoration: const InputDecoration(
-                        labelText: 'Country',
-                      ),
+                      decoration: const InputDecoration(labelText: 'Country'),
                       onChanged: (String? value) {
                         print(value);
-                        setState(() => dropdownValue = value!);
+                        setState(() => countryDropdownValue = value!);
                       },
-                      items:
-                          list.map<DropdownMenuItem<String>>((Country country) {
-                        return DropdownMenuItem<String>(
-                          value: country.number,
-                          child: Text(
-                            country.isoShortName,
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                        );
-                      }).toList(),
+                      items: Countries.values.map<DropdownMenuItem<String>>(
+                        (Country country) {
+                          return DropdownMenuItem<String>(
+                            value: country.number,
+                            child: Text(
+                              country.isoShortName,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          );
+                        },
+                      ).toList(),
                     ),
                   ),
                   Padding(
