@@ -22,6 +22,7 @@ class _SignUpState extends State<SignUp> {
   final confirmPasswordController = TextEditingController();
 
   bool _submitted = false;
+  Widget _buttonChild = const Text('Log In');
 
   @override
   void dispose() {
@@ -131,9 +132,13 @@ class _SignUpState extends State<SignUp> {
                       ),
                     ),
                     customButton(
-                      child: const Text('Sign Up'),
+                      child: _buttonChild,
                       onPressed: () async {
                         setState(() => _submitted = true);
+                        setState(() =>
+                            _buttonChild = const CircularProgressIndicator(
+                              color: Colors.white,
+                            ));
 
                         if (_validateEmptyField() &&
                             _validateEmail() &&
@@ -141,12 +146,20 @@ class _SignUpState extends State<SignUp> {
                             _validateConfirmPassword()) {
                           // if validation success
                           final signUp = await _authService.signUp(
-                            emailController.text,
-                            passwordController.text,
+                            name: nameController.text,
+                            email: emailController.text,
+                            password: passwordController.text,
                           );
 
                           print(signUp);
-                          if (signUp == true) Navigator.pop(context);
+
+                          if (signUp == true && context.mounted) {
+                            Navigator.pop(context);
+                          } else {
+                            setState(() => _buttonChild = const Text("Log In"));
+                          }
+                        } else {
+                          setState(() => _buttonChild = const Text("Log In"));
                         }
                       },
                     ),

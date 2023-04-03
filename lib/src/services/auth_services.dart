@@ -14,12 +14,18 @@ class AuthService {
 
   // auth change user stream
   Stream<UserModel?> get onAuthStateChanged {
-    return _auth.authStateChanges().asyncMap(
-        (User? user) => UserServices().getUserModelFromFirebase(user));
+    return _auth.authStateChanges().asyncMap((User? user) {
+      return user == null
+          ? null
+          : UserServices().getUserModelFromFirebase(user);
+    });
   }
 
   //sign up with email & password
-  Future signUp(String email, String password) async {
+  Future signUp(
+      {required String name,
+      required String email,
+      required String password}) async {
     try {
       // Encrypt password
       var bytes = utf8.encode(password);
@@ -37,9 +43,14 @@ class AuthService {
       // Initialize role
       final userRole = await RoleServices().getBy('name', 'user');
 
+      print('//////////////////////////////');
+      print(userRole.first.toString());
+      print('//////////////////////////////');
+
       // Add to firestore
       await _db.collection("User").doc(user.uid).set(
             UserModel(
+              name: name,
               createdAt: DateTime.now(),
               email: email,
               password: digest.toString(),
@@ -53,7 +64,9 @@ class AuthService {
           msg: "Sign up success! Please log in first before continue.");
       return true;
     } catch (e) {
+      print('======================');
       print(e.toString());
+      print('======================');
 
       Fluttertoast.showToast(
           msg: e.toString().contains(
@@ -78,6 +91,7 @@ class AuthService {
       );
     } catch (e) {
       print(e.toString());
+
       return null;
     }
   }

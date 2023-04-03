@@ -42,7 +42,11 @@ class UserServices {
 
     for (var doc in allDoc) {
       if (doc.get(fieldName) == value) {
-        dataList.add(await UserServices().fromDocumentSnapshot(doc));
+        UserModel? user = await UserServices().fromDocumentSnapshot(doc);
+
+        if (user != null) {
+          dataList.add(user);
+        }
       }
     }
 

@@ -52,6 +52,16 @@ class _MyAppState extends State<MyApp> {
     return StreamProvider<UserModel?>.value(
       initialData: null,
       value: AuthService().onAuthStateChanged,
+      catchError: (context, error) {
+        // TODO try loadingbuilder? and try to print user here
+        print('An error occurred: $error');
+        return null;
+      },
+      updateShouldNotify: (previous, current) {
+        print('Previous Stream UserModel: ${previous.toString()}');
+        print('Current Stream UserModel: ${current.toString()}');
+        return true;
+      },
       builder: (context, snapshot) {
         return ThemeModeHandler(
           manager: MyThemeModeManager(),

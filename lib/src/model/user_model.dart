@@ -99,7 +99,7 @@ class UserModel {
       'address': address,
       'country': country.number,
       'avatarPath': avatarPath,
-      'role': role,
+      'role': role?.id,
       'createdAt': createdAt,
       'updatedAt': updatedAt,
       'deletedAt': deletedAt,

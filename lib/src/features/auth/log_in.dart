@@ -8,8 +8,6 @@ import 'package:flutter_base/src/widgets/appbar/custom_appbar.dart';
 import 'package:flutter_base/src/widgets/button/custom_button.dart';
 import 'package:flutter_base/src/widgets/typography/custom_textfield.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:provider/provider.dart';
-
 import '../../services/auth_services.dart';
 
 class LogIn extends StatefulWidget {
