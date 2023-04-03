@@ -36,8 +36,6 @@ class _LogInState extends State<LogIn> {
 
   @override
   Widget build(BuildContext context) {
-    final test = Provider.of<UserModel?>(context);
-
     return Scaffold(
       appBar: customAppBar(
         context: context,
@@ -50,11 +48,6 @@ class _LogInState extends State<LogIn> {
                 : const Icon(CupertinoIcons.sun_max_fill),
             color: getColorByBackground(context),
             onPressed: () => selectThemeMode(context),
-          ),
-          IconButton(
-            icon: const Icon(Icons.abc),
-            color: getColorByBackground(context),
-            onPressed: () => _authService.signOut(),
           ),
         ],
       ),
@@ -76,10 +69,6 @@ class _LogInState extends State<LogIn> {
                           fontWeight: FontWeight.bold,
                         ),
                       ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(bottom: 30.0),
-                      child: Text(test?.email ?? 'None'),
                     ),
                     Padding(
                       padding: const EdgeInsets.only(bottom: 10),

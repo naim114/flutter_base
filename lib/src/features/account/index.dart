@@ -10,16 +10,24 @@ import 'package:flutter_base/src/features/auth/log_in.dart';
 import 'package:flutter_base/src/services/helpers.dart';
 import 'package:flutter_base/src/widgets/typography/page_title_icon.dart';
 
+import '../../services/auth_services.dart';
 import '../../widgets/list_tile/list_tile_icon.dart';
 import '../../widgets/list_tile/list_tile_profile.dart';
 
-class Account extends StatelessWidget {
+class Account extends StatefulWidget {
   const Account({
     super.key,
     required this.mainContext,
   });
 
   final BuildContext mainContext;
+
+  @override
+  State<Account> createState() => _AccountState();
+}
+
+class _AccountState extends State<Account> {
+  final AuthService _authService = AuthService();
 
   @override
   Widget build(BuildContext context) {
@@ -39,7 +47,7 @@ class Account extends StatelessWidget {
             // PROFILE
             listTileProfile(
               context: context,
-              onEdit: () => Navigator.of(mainContext).push(
+              onEdit: () => Navigator.of(widget.mainContext).push(
                 MaterialPageRoute(
                   builder: (context) => const Profile(),
                 ),
@@ -61,7 +69,7 @@ class Account extends StatelessWidget {
               context: context,
               icon: CupertinoIcons.shield_lefthalf_fill,
               title: "Security",
-              onTap: () => Navigator.of(mainContext).push(
+              onTap: () => Navigator.of(widget.mainContext).push(
                 MaterialPageRoute(
                   builder: (context) => const Security(),
                 ),
@@ -81,7 +89,7 @@ class Account extends StatelessWidget {
               context: context,
               icon: Icons.info_outlined,
               title: "About",
-              onTap: () => Navigator.of(mainContext).push(
+              onTap: () => Navigator.of(widget.mainContext).push(
                 MaterialPageRoute(
                   builder: (context) => const AppAbout(),
                 ),
@@ -103,7 +111,7 @@ class Account extends StatelessWidget {
               context: context,
               icon: CupertinoIcons.chart_bar_alt_fill,
               title: "Dashboard",
-              onTap: () => Navigator.of(mainContext).push(
+              onTap: () => Navigator.of(widget.mainContext).push(
                 MaterialPageRoute(
                   builder: (context) => const Dashboard(),
                 ),
@@ -114,7 +122,7 @@ class Account extends StatelessWidget {
               context: context,
               icon: Icons.admin_panel_settings,
               title: "Admin Panel",
-              onTap: () => Navigator.of(mainContext).push(
+              onTap: () => Navigator.of(widget.mainContext).push(
                 MaterialPageRoute(
                   builder: (context) => const AdminPanel(),
                 ),
@@ -124,7 +132,7 @@ class Account extends StatelessWidget {
               context: context,
               icon: Icons.app_settings_alt,
               title: "App Settings",
-              onTap: () => Navigator.of(mainContext).push(
+              onTap: () => Navigator.of(widget.mainContext).push(
                 MaterialPageRoute(
                   builder: (context) => const AppSettings(),
                 ),
@@ -153,12 +161,7 @@ class Account extends StatelessWidget {
                       ),
                     ),
                     TextButton(
-                      onPressed: () =>
-                          Navigator.of(mainContext).pushReplacement(
-                        MaterialPageRoute(
-                          builder: (context) => const LogIn(),
-                        ),
-                      ),
+                      onPressed: () => _authService.signOut(),
                       child: const Text(
                         'OK',
                         style: TextStyle(

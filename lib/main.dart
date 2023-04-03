@@ -51,57 +51,58 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return StreamProvider<UserModel?>.value(
       initialData: null,
-      // TODO fix this function
       value: AuthService().onAuthStateChanged,
-      child: ThemeModeHandler(
-        manager: MyThemeModeManager(),
-        placeholderWidget: Center(
-          child: LoadingAnimationWidget.flickr(
-            leftDotColor: CustomColor.primary,
-            rightDotColor: CustomColor.secondary,
-            size: 50,
-          ),
-        ),
-        builder: (ThemeMode themeMode) => MaterialApp(
-          themeMode: themeMode,
-          // DARK THEME
-          darkTheme: ThemeData(
-            brightness: Brightness.dark,
-            fontFamily: GoogleFonts.questrial().fontFamily,
-            primarySwatch: primaryColorShades,
-            primaryColor: CustomColor.primary,
-            textTheme: Theme.of(context).textTheme.apply(
-                  bodyColor: Colors.white,
-                  displayColor: Colors.white,
-                ),
-            scaffoldBackgroundColor: CustomColor.neutral1,
-            inputDecorationTheme: const InputDecorationTheme(
-              fillColor: CustomColor.neutral1,
-              filled: true,
+      builder: (context, snapshot) {
+        return ThemeModeHandler(
+          manager: MyThemeModeManager(),
+          placeholderWidget: Center(
+            child: LoadingAnimationWidget.flickr(
+              leftDotColor: CustomColor.primary,
+              rightDotColor: CustomColor.secondary,
+              size: 50,
             ),
           ),
-          // LIGHT THEME
-          theme: ThemeData(
-            brightness: Brightness.light,
-            fontFamily: 'Questrial',
-            primarySwatch: primaryColorShades,
-            primaryColor: CustomColor.primary,
-            textTheme: Theme.of(context).textTheme.apply(
-                  bodyColor: CustomColor.neutral1,
-                  displayColor: CustomColor.neutral1,
-                ),
-            scaffoldBackgroundColor: Colors.white,
-            iconTheme: const IconThemeData(
-              color: CustomColor.neutral1,
+          builder: (ThemeMode themeMode) => MaterialApp(
+            themeMode: themeMode,
+            // DARK THEME
+            darkTheme: ThemeData(
+              brightness: Brightness.dark,
+              fontFamily: GoogleFonts.questrial().fontFamily,
+              primarySwatch: primaryColorShades,
+              primaryColor: CustomColor.primary,
+              textTheme: Theme.of(context).textTheme.apply(
+                    bodyColor: Colors.white,
+                    displayColor: Colors.white,
+                  ),
+              scaffoldBackgroundColor: CustomColor.neutral1,
+              inputDecorationTheme: const InputDecorationTheme(
+                fillColor: CustomColor.neutral1,
+                filled: true,
+              ),
             ),
-            iconButtonTheme: const IconButtonThemeData(
-              style: ButtonStyle(
-                  iconColor: MaterialStatePropertyAll(CustomColor.neutral1)),
+            // LIGHT THEME
+            theme: ThemeData(
+              brightness: Brightness.light,
+              fontFamily: 'Questrial',
+              primarySwatch: primaryColorShades,
+              primaryColor: CustomColor.primary,
+              textTheme: Theme.of(context).textTheme.apply(
+                    bodyColor: CustomColor.neutral1,
+                    displayColor: CustomColor.neutral1,
+                  ),
+              scaffoldBackgroundColor: Colors.white,
+              iconTheme: const IconThemeData(
+                color: CustomColor.neutral1,
+              ),
+              iconButtonTheme: const IconButtonThemeData(
+                style: ButtonStyle(
+                    iconColor: MaterialStatePropertyAll(CustomColor.neutral1)),
+              ),
             ),
+            home: const Wrapper(),
           ),
-          home: const Wrapper(),
-        ),
-      ),
+        );
+      },
     );
   }
 }
