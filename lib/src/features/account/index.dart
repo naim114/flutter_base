@@ -7,9 +7,13 @@ import 'package:flutter_base/src/features/admin/dashboard/index.dart';
 import 'package:flutter_base/src/features/admin/index.dart';
 import 'package:flutter_base/src/features/admin/settings/index.dart';
 import 'package:flutter_base/src/features/auth/log_in.dart';
+import 'package:flutter_base/src/model/role_model.dart';
 import 'package:flutter_base/src/services/helpers.dart';
+import 'package:flutter_base/src/services/role_services.dart';
 import 'package:flutter_base/src/widgets/typography/page_title_icon.dart';
+import 'package:provider/provider.dart';
 
+import '../../model/user_model.dart';
 import '../../services/auth_services.dart';
 import '../../widgets/list_tile/list_tile_icon.dart';
 import '../../widgets/list_tile/list_tile_profile.dart';
@@ -31,6 +35,8 @@ class _AccountState extends State<Account> {
 
   @override
   Widget build(BuildContext context) {
+    final user = Provider.of<UserModel?>(context);
+
     return Scaffold(
       body: Padding(
         padding: const EdgeInsets.all(25.0),
@@ -96,48 +102,63 @@ class _AccountState extends State<Account> {
               ),
             ),
             // ADMIN ONLY
-            const Padding(
-              padding: EdgeInsets.only(bottom: 5),
-              child: Text(
-                'Admin',
-                style: TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            ),
-            // Admin Dashboard
-            listTileIcon(
-              context: context,
-              icon: CupertinoIcons.chart_bar_alt_fill,
-              title: "Dashboard",
-              onTap: () => Navigator.of(widget.mainContext).push(
-                MaterialPageRoute(
-                  builder: (context) => const Dashboard(),
-                ),
-              ),
-            ),
-            // Admin Panel
-            listTileIcon(
-              context: context,
-              icon: Icons.admin_panel_settings,
-              title: "Admin Panel",
-              onTap: () => Navigator.of(widget.mainContext).push(
-                MaterialPageRoute(
-                  builder: (context) => const AdminPanel(),
-                ),
-              ),
-            ),
-            listTileIcon(
-              context: context,
-              icon: Icons.app_settings_alt,
-              title: "App Settings",
-              onTap: () => Navigator.of(widget.mainContext).push(
-                MaterialPageRoute(
-                  builder: (context) => const AppSettings(),
-                ),
-              ),
-            ),
+            FutureBuilder<RoleModel?>(
+                future: RoleServices().get(user!.role),
+                builder: (context, snapshot) {
+                  if (!snapshot.hasData ||
+                      snapshot.hasError ||
+                      snapshot.data!.name == "user") {
+                    return const SizedBox(height: 0, width: 0);
+                  } else {
+                    return Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const Padding(
+                          padding: EdgeInsets.only(bottom: 5),
+                          child: Text(
+                            'Admin',
+                            style: TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                        // Admin Dashboard
+                        listTileIcon(
+                          context: context,
+                          icon: CupertinoIcons.chart_bar_alt_fill,
+                          title: "Dashboard",
+                          onTap: () => Navigator.of(widget.mainContext).push(
+                            MaterialPageRoute(
+                              builder: (context) => const Dashboard(),
+                            ),
+                          ),
+                        ),
+                        // Admin Panel
+                        listTileIcon(
+                          context: context,
+                          icon: Icons.admin_panel_settings,
+                          title: "Admin Panel",
+                          onTap: () => Navigator.of(widget.mainContext).push(
+                            MaterialPageRoute(
+                              builder: (context) => const AdminPanel(),
+                            ),
+                          ),
+                        ),
+                        listTileIcon(
+                          context: context,
+                          icon: Icons.app_settings_alt,
+                          title: "App Settings",
+                          onTap: () => Navigator.of(widget.mainContext).push(
+                            MaterialPageRoute(
+                              builder: (context) => const AppSettings(),
+                            ),
+                          ),
+                        ),
+                      ],
+                    );
+                  }
+                }),
 
             ListTile(
               title: Text(
