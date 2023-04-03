@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:shimmer/shimmer.dart';
@@ -15,23 +16,20 @@ List<Widget> imageSliders({
                   builder: (context) => NewsView(mainContext: mainContext))),
               child: Stack(
                 children: <Widget>[
-                  Image.network(
-                    item,
+                  CachedNetworkImage(
+                    imageUrl: item,
                     fit: BoxFit.cover,
                     width: 1000.0,
-                    loadingBuilder: (context, child, loadingProgress) {
-                      if (loadingProgress == null) return child;
-                      return Shimmer.fromColors(
-                        baseColor: CupertinoColors.systemGrey,
-                        highlightColor: CupertinoColors.systemGrey2,
-                        child: Container(
-                          color: Colors.grey,
-                          height: 500,
-                          width: 1000,
-                        ),
-                      );
-                    },
-                    errorBuilder: (context, error, stackTrace) => Image.asset(
+                    placeholder: (context, url) => Shimmer.fromColors(
+                      baseColor: CupertinoColors.systemGrey,
+                      highlightColor: CupertinoColors.systemGrey2,
+                      child: Container(
+                        color: Colors.grey,
+                        height: 500,
+                        width: 1000,
+                      ),
+                    ),
+                    errorWidget: (context, url, error) => Image.asset(
                       'assets/images/noimage.png',
                       fit: BoxFit.cover,
                       height: 500,

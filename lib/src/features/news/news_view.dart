@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_quill/flutter_quill.dart' hide Text;
@@ -131,25 +132,23 @@ class NewsView extends StatelessWidget {
               ),
             ),
           ),
-          Image.network(
-            'https://sunnycrew.jp/wp-content/themes/dp-colors/img/post_thumbnail/noimage.png',
+          CachedNetworkImage(
+            imageUrl:
+                'https://sunnycrew.jp/wp-content/themes/dp-colors/img/post_thumbnail/noimage.png',
             fit: BoxFit.cover,
-            height: MediaQuery.of(context).size.height * 0.25,
-            loadingBuilder: (context, child, loadingProgress) {
-              if (loadingProgress == null) return child;
-              return Shimmer.fromColors(
-                baseColor: CupertinoColors.systemGrey,
-                highlightColor: CupertinoColors.systemGrey2,
-                child: Container(
-                  color: Colors.grey,
-                  height: 200,
-                ),
-              );
-            },
-            errorBuilder: (context, error, stackTrace) => Image.asset(
+            height: MediaQuery.of(context).size.height * 0.4,
+            placeholder: (context, url) => Shimmer.fromColors(
+              baseColor: CupertinoColors.systemGrey,
+              highlightColor: CupertinoColors.systemGrey2,
+              child: Container(
+                color: Colors.grey,
+                height: MediaQuery.of(context).size.height * 0.4,
+              ),
+            ),
+            errorWidget: (context, url, error) => Image.asset(
               'assets/images/noimage.png',
               fit: BoxFit.cover,
-              height: 200,
+              height: MediaQuery.of(context).size.height * 0.8,
             ),
           ),
           Padding(

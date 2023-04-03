@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -25,28 +26,25 @@ Widget newsCard({
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Image.network(
-                imageURL,
+              CachedNetworkImage(
+                imageUrl: imageURL,
                 fit: BoxFit.cover,
                 width: 80,
                 height: 80,
-                loadingBuilder: (context, child, loadingProgress) {
-                  if (loadingProgress == null) return child;
-                  return Shimmer.fromColors(
-                    baseColor: CupertinoColors.systemGrey,
-                    highlightColor: CupertinoColors.systemGrey2,
-                    child: Container(
-                      color: Colors.grey,
-                      height: 80,
-                      width: 80,
-                    ),
-                  );
-                },
-                errorBuilder: (context, error, stackTrace) => Image.asset(
+                placeholder: (context, url) => Shimmer.fromColors(
+                  baseColor: CupertinoColors.systemGrey,
+                  highlightColor: CupertinoColors.systemGrey2,
+                  child: Container(
+                    color: Colors.grey,
+                    width: 80,
+                    height: 80,
+                  ),
+                ),
+                errorWidget: (context, url, error) => Image.asset(
                   'assets/images/noimage.png',
                   fit: BoxFit.cover,
-                  height: 80,
                   width: 80,
+                  height: 80,
                 ),
               ),
               Container(

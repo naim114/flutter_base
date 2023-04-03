@@ -161,7 +161,10 @@ class _AccountState extends State<Account> {
                       ),
                     ),
                     TextButton(
-                      onPressed: () => _authService.signOut(),
+                      onPressed: () {
+                        Navigator.pop(context);
+                        _authService.signOut();
+                      },
                       child: const Text(
                         'OK',
                         style: TextStyle(
