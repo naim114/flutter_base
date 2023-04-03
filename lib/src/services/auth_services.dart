@@ -38,14 +38,16 @@ class AuthService {
       final userRole = await RoleServices().getBy('name', 'user');
 
       // Add to firestore
-      await _db.collection("User").doc(user.uid).set(UserModel(
-            createdAt: DateTime.now(),
-            email: email,
-            password: digest.toString(),
-            role: userRole.first,
-            id: user.uid,
-            updatedAt: DateTime.now(),
-          ).toJson());
+      await _db.collection("User").doc(user.uid).set(
+            UserModel(
+              createdAt: DateTime.now(),
+              email: email,
+              password: digest.toString(),
+              role: userRole.first,
+              id: user.uid,
+              updatedAt: DateTime.now(),
+            ).toJson(),
+          );
 
       Fluttertoast.showToast(
           msg: "Sign up success! Please log in first before continue.");

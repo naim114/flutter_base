@@ -8,6 +8,7 @@ class UserModel {
   final String? name;
   final DateTime? birthday;
   final String? phone;
+  final String? address;
   final Country country;
   final String? avatarPath;
   final RoleModel? role;
@@ -25,6 +26,7 @@ class UserModel {
     this.name,
     this.birthday,
     this.phone,
+    this.address,
     this.country = Countries.mys,
     required this.email,
     required this.password,
@@ -42,6 +44,7 @@ class UserModel {
           name: map['name'],
           birthday: map['birthday'],
           phone: map['phone'],
+          address: map['address'],
           country: map['country'],
           avatarPath: map['avatarPath'],
           role: map['role'],
@@ -58,6 +61,7 @@ class UserModel {
       'name': name,
       'birthday': birthday,
       'phone': phone,
+      'address': address,
       'country': country,
       'avatarPath': avatarPath,
       'role': role,
@@ -75,6 +79,7 @@ class UserModel {
           name: json['name']! as String,
           birthday: json['birthday']! as DateTime,
           phone: json['phone']! as String,
+          address: json['address']! as String,
           country: json['country']! as Country,
           avatarPath: json['avatarPath']! as String,
           role: json['role']! as RoleModel,
@@ -91,6 +96,7 @@ class UserModel {
       'name': name,
       'birthday': birthday,
       'phone': phone,
+      'address': address,
       'country': country.number,
       'avatarPath': avatarPath,
       'role': role,

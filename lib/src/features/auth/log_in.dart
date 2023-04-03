@@ -26,6 +26,7 @@ class _LogInState extends State<LogIn> {
   final emailController = TextEditingController();
 
   bool _submitted = false;
+  Widget _buttonChild = const Text('Log In');
 
   @override
   void dispose() {
@@ -98,9 +99,13 @@ class _LogInState extends State<LogIn> {
                       ),
                     ),
                     customButton(
-                      child: const Text('Log In'),
+                      child: _buttonChild,
                       onPressed: () async {
                         setState(() => _submitted = true);
+                        setState(() =>
+                            _buttonChild = const CircularProgressIndicator(
+                              color: Colors.white,
+                            ));
 
                         if (_validateEmptyField() && _validateEmail()) {
                           // if validation success
@@ -112,16 +117,11 @@ class _LogInState extends State<LogIn> {
                           if (result == null) {
                             Fluttertoast.showToast(
                                 msg: "Could not sign in with credentials");
+                            setState(() => _buttonChild = const Text("Log In"));
                           }
-
-                          // print(signUp);
-                          // if (signUp == true) Navigator.pop(context);
+                        } else {
+                          setState(() => _buttonChild = const Text("Log In"));
                         }
-                        // Navigator.of(context).pushReplacement(
-                        //   MaterialPageRoute(
-                        //     builder: (context) => const FrontFrame(),
-                        //   ),
-                        // );
                       },
                     ),
                   ],
