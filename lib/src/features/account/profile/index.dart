@@ -25,12 +25,14 @@ class _ProfileState extends State<Profile> {
   TextEditingController nameController = TextEditingController();
   TextEditingController phoneController = TextEditingController();
   TextEditingController birthdayController = TextEditingController();
+  TextEditingController addressController = TextEditingController();
   String countryDropdownValue = Countries.abw.number;
 
   @override
   void initState() {
     nameController.text = widget.user.name ?? "";
     phoneController.text = widget.user.phone ?? "";
+    addressController.text = widget.user.address ?? "";
     birthdayController.text = widget.user.birthday != null
         ? DateFormat('dd/MM/yyyy')
             .format(widget.user.birthday ?? DateTime.now())
@@ -116,10 +118,11 @@ class _ProfileState extends State<Profile> {
               child: Column(
                 children: [
                   // Name
-                  const Padding(
-                    padding: EdgeInsets.symmetric(vertical: 8.0),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 8.0),
                     child: TextField(
-                      decoration: InputDecoration(labelText: 'Name'),
+                      controller: nameController,
+                      decoration: const InputDecoration(labelText: 'Name'),
                     ),
                   ),
                   // Birthday
@@ -153,6 +156,14 @@ class _ProfileState extends State<Profile> {
                     padding: EdgeInsets.symmetric(vertical: 8.0),
                     child: TextField(
                       decoration: InputDecoration(labelText: 'Phone Number'),
+                    ),
+                  ),
+                  // Address
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 8.0),
+                    child: TextField(
+                      controller: addressController,
+                      decoration: const InputDecoration(labelText: 'Address'),
                     ),
                   ),
                   // Country
