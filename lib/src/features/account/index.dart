@@ -104,15 +104,9 @@ class _AccountState extends State<Account> {
                     ),
                   ),
                   // ADMIN ONLY
-                  FutureBuilder<RoleModel?>(
-                    future: RoleServices().get(user.role),
-                    builder: (context, snapshot) {
-                      if (!snapshot.hasData ||
-                          snapshot.hasError ||
-                          snapshot.data!.name == "user") {
-                        return const SizedBox(height: 0, width: 0);
-                      } else {
-                        return Column(
+                  user.role?.name == "user"
+                      ? const SizedBox()
+                      : Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             const Padding(
@@ -161,10 +155,7 @@ class _AccountState extends State<Account> {
                               ),
                             ),
                           ],
-                        );
-                      }
-                    },
-                  ),
+                        ),
                   ListTile(
                     title: Text(
                       'Log Out',

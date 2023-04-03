@@ -42,7 +42,7 @@ class AuthService {
             createdAt: DateTime.now(),
             email: email,
             password: digest.toString(),
-            role: userRole.first.id,
+            role: userRole.first,
             id: user.uid,
             updatedAt: DateTime.now(),
           ).toJson());

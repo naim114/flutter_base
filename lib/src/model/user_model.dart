@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:country/country.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_base/src/model/role_model.dart';
@@ -11,7 +10,7 @@ class UserModel {
   final String? phone;
   final Country country;
   final String? avatarPath;
-  final String role;
+  final RoleModel? role;
 
   // date
   final DateTime createdAt;
@@ -35,44 +34,6 @@ class UserModel {
     required this.updatedAt,
     this.deletedAt,
   });
-
-  UserModel.fromDocumentSnapshot(DocumentSnapshot<Object?> doc)
-      : this(
-          id: doc.get('id'),
-          email: doc.get('email'),
-          name: doc.get('name'),
-          birthday: doc.get('birthday'),
-          phone: doc.get('phone'),
-          country: Countries.values
-              .firstWhere((country) => country.number == doc.get('country')),
-          avatarPath: doc.get('avatarPath'),
-          role: doc.get('role'),
-          createdAt: doc.get('createdAt').toDate(),
-          updatedAt: doc.get('updatedAt').toDate(),
-          deletedAt: doc.get('deletedAt') == null
-              ? doc.get('deletedAt')
-              : doc.get('deletedAt').toDate(),
-          password: doc.get('password'),
-        );
-
-  UserModel.fromQueryDocumentSnapshot(QueryDocumentSnapshot<Object?> doc)
-      : this(
-          id: doc.get('id'),
-          email: doc.get('email'),
-          name: doc.get('name'),
-          birthday: doc.get('birthday'),
-          phone: doc.get('phone'),
-          country: Countries.values
-              .firstWhere((country) => country.number == doc.get('country')),
-          avatarPath: doc.get('avatarPath'),
-          role: doc.get('role'),
-          createdAt: doc.get('createdAt').toDate(),
-          updatedAt: doc.get('updatedAt').toDate(),
-          deletedAt: doc.get('deletedAt') == null
-              ? doc.get('deletedAt')
-              : doc.get('deletedAt').toDate(),
-          password: doc.get('password'),
-        );
 
   UserModel.fromMap(Map<String, dynamic> map)
       : this(
@@ -116,7 +77,7 @@ class UserModel {
           phone: json['phone']! as String,
           country: json['country']! as Country,
           avatarPath: json['avatarPath']! as String,
-          role: json['role']! as String,
+          role: json['role']! as RoleModel,
           createdAt: json['createdAt']! as DateTime,
           updatedAt: json['updatedAt']! as DateTime,
           deletedAt: json['deletedAt']! as DateTime,
