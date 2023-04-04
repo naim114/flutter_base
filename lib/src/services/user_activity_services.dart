@@ -107,13 +107,8 @@ class UserActivityServices {
 
         return true;
       } catch (e) {
-        if (e.toString().contains(
-            "MissingPluginException(No implementation found for method wifiName on channel dev.fluttercommunity.plus/network_info)")) {
-          print(e.toString());
-        } else {
-          print(e.toString());
-          Fluttertoast.showToast(msg: e.toString());
-        }
+        print(e.toString());
+        Fluttertoast.showToast(msg: e.toString());
       }
       return false;
     }

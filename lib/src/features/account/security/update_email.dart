@@ -1,13 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_base/src/widgets/appbar/appbar_confirm_cancel.dart';
 
-class UpdateEmail extends StatelessWidget {
+class UpdateEmail extends StatefulWidget {
   const UpdateEmail({
     super.key,
     this.includeAuth = true,
   });
 
   final bool includeAuth;
+
+  @override
+  State<UpdateEmail> createState() => _UpdateEmailState();
+}
+
+class _UpdateEmailState extends State<UpdateEmail> {
+  final TextEditingController newEmailController = TextEditingController();
+  final TextEditingController oldEmailController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -22,33 +31,36 @@ class UpdateEmail extends StatelessWidget {
         padding: const EdgeInsets.symmetric(vertical: 15.0, horizontal: 30.0),
         child: ListView(
           children: [
-            Text(includeAuth
+            Text(widget.includeAuth
                 ? "Enter new email, old email and password then click submmit button at top right."
                 : "Enter new email then click submmit button at top right."),
-            const Padding(
-              padding: EdgeInsets.symmetric(vertical: 8.0),
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 8.0),
               child: TextField(
-                decoration: InputDecoration(labelText: 'New Email'),
+                controller: newEmailController,
+                decoration: const InputDecoration(labelText: 'New Email'),
                 keyboardType: TextInputType.emailAddress,
-                autofillHints: [AutofillHints.email],
+                autofillHints: const [AutofillHints.email],
               ),
             ),
-            includeAuth
-                ? const Padding(
-                    padding: EdgeInsets.symmetric(vertical: 8.0),
+            widget.includeAuth
+                ? Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 8.0),
                     child: TextField(
-                      decoration: InputDecoration(labelText: 'Old Email'),
+                      controller: oldEmailController,
+                      decoration: const InputDecoration(labelText: 'Old Email'),
                       keyboardType: TextInputType.emailAddress,
-                      autofillHints: [AutofillHints.email],
+                      autofillHints: const [AutofillHints.email],
                     ),
                   )
                 : const SizedBox(),
-            includeAuth
-                ? const Padding(
-                    padding: EdgeInsets.symmetric(vertical: 8.0),
+            widget.includeAuth
+                ? Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 8.0),
                     child: TextField(
+                      controller: passwordController,
                       obscureText: true,
-                      decoration: InputDecoration(labelText: 'Password'),
+                      decoration: const InputDecoration(labelText: 'Password'),
                     ),
                   )
                 : const SizedBox(),

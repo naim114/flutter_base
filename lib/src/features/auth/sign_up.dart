@@ -95,7 +95,8 @@ class _SignUpState extends State<SignUp> {
                         errorText:
                             _submitted == true && emailController.text.isEmpty
                                 ? "Input can't be empty"
-                                : _submitted == true && !_validateEmail()
+                                : _submitted == true &&
+                                        !validateEmail(emailController)
                                     ? "Please enter the correct email"
                                     : null,
                       ),
@@ -115,7 +116,8 @@ class _SignUpState extends State<SignUp> {
                         errorText: _submitted == true &&
                                 passwordController.text.isEmpty
                             ? "Input can't be empty"
-                            : _submitted == true && !_validatePassword()
+                            : _submitted == true &&
+                                    !validatePassword(passwordController)
                                 ? 'Password has to be more than 8 character. Minimum 1 upper case, lower case, number and special character.'
                                 : null,
                       ),
@@ -145,8 +147,8 @@ class _SignUpState extends State<SignUp> {
                             ));
 
                         if (_validateEmptyField() &&
-                            _validateEmail() &&
-                            _validatePassword() &&
+                            validateEmail(emailController) &&
+                            validatePassword(passwordController) &&
                             _validateConfirmPassword()) {
                           // if validation success
                           dynamic result = await _authService.signUp(
@@ -207,25 +209,6 @@ class _SignUpState extends State<SignUp> {
             confirmPasswordController.text.isEmpty
         ? false
         : true;
-  }
-
-  bool _validateEmail() {
-    const pattern = r"(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'"
-        r'*+/=?^_`{|}~-]+)*|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-'
-        r'\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*")@(?:(?:[a-z0-9](?:[a-z0-9-]*'
-        r'[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:(2(5[0-5]|[0-4]'
-        r'[0-9])|1[0-9][0-9]|[1-9]?[0-9]))\.){3}(?:(2(5[0-5]|[0-4][0-9])|1[0-9]'
-        r'[0-9]|[1-9]?[0-9])|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\'
-        r'x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])';
-    final regex = RegExp(pattern);
-
-    return regex.hasMatch(emailController.text);
-  }
-
-  bool _validatePassword() {
-    RegExp regex =
-        RegExp(r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$');
-    return regex.hasMatch(passwordController.text);
   }
 
   bool _validateConfirmPassword() {

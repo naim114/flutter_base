@@ -31,8 +31,10 @@ class _ProfileState extends State<Profile> {
   final TextEditingController birthdayController = TextEditingController();
   final TextEditingController addressController = TextEditingController();
   String countryDropdownValue = Countries.abw.number;
+
   final NetworkInfo _networkInfo = NetworkInfo();
   static final DeviceInfoPlugin _deviceInfo = DeviceInfoPlugin();
+
   @override
   void initState() {
     nameController.text = widget.user.name ?? "";
