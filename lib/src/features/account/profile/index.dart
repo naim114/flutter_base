@@ -51,7 +51,7 @@ class _ProfileState extends State<Profile> {
       appBar: appBarConfirmCancel(
         onCancel: () => Navigator.pop(context),
         onConfirm: () async {
-          dynamic result = await UserServices().updateUserDetails(
+          dynamic result = await UserServices().updateDetails(
             id: widget.user.id,
             name: nameController.text,
             birthday: birthdayController.text == ""

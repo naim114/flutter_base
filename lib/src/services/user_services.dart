@@ -1,8 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:country/country.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter_base/src/features/admin/users/user_activity.dart';
 import 'package:flutter_base/src/model/user_model.dart';
 import 'package:flutter_base/src/services/role_services.dart';
+import 'package:flutter_base/src/services/user_activity_services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
 class UserServices {
@@ -24,8 +26,8 @@ class UserServices {
   }
 
   // get user by id
-  Future<UserModel?> get(String id) async {
-    return _collectionRef.doc(id).get().then((DocumentSnapshot doc) async {
+  Future<UserModel?> get(String id) {
+    return _collectionRef.doc(id).get().then((DocumentSnapshot doc) {
       if (doc.exists) {
         return UserServices().fromDocumentSnapshot(doc);
       } else {
@@ -120,7 +122,7 @@ class UserServices {
   }
 
   // Update user details (name, birthday, phone, address, country)
-  Future updateUserDetails({
+  Future updateDetails({
     required String id,
     required String? name,
     required DateTime? birthday,
@@ -143,6 +145,16 @@ class UserServices {
           .catchError((error) => print('Failed: $error'));
 
       print(result.toString());
+
+      final user = await UserServices().get(id).then((user) {
+        if (user != null) {
+          return UserActivityServices().add(
+            user: user,
+            description: "Update Profile Details",
+            activityType: "update_profile",
+          );
+        }
+      });
 
       return true;
     } catch (e) {

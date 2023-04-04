@@ -10,18 +10,21 @@ class UserActivityServices {
       FirebaseFirestore.instance.collection('UserActivity');
 
   // Add activity
-  Future addActivity({
+  Future add({
     required UserModel user,
     required String description,
     required String activityType,
   }) async {
     try {
-      dynamic add = _collectionRef.add({
+      dynamic add = await _collectionRef.add({
         'createdAt': DateTime.now(),
         'updatedAt': DateTime.now(),
         'deletedAt': null,
       }).then((docRef) {
-        _db.collection("User").doc(docRef.id).set(
+        _db
+            .collection("UserActivity")
+            .doc(docRef.id)
+            .set(
               UserActivityModel(
                 id: docRef.id,
                 user: user,
@@ -30,7 +33,10 @@ class UserActivityServices {
                 createdAt: DateTime.now(),
                 updatedAt: DateTime.now(),
               ).toJson(),
-            );
+            )
+            .then((value) => print("User Activity Setted"))
+            .catchError(
+                (error) => print("Failed to set user activity: $error"));
 
         print("User Activity Added");
       }).catchError((error) => print("Failed to add user activity: $error"));
