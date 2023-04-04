@@ -57,11 +57,11 @@ class _MyAppState extends State<MyApp> {
         print('An error occurred: $error');
         return null;
       },
-      updateShouldNotify: (previous, current) {
-        print('Previous Stream UserModel: ${previous.toString()}');
-        print('Current Stream UserModel: ${current.toString()}');
-        return true;
-      },
+      // updateShouldNotify: (previous, current) {
+      //   print('Previous Stream UserModel: ${previous.toString()}');
+      //   print('Current Stream UserModel: ${current.toString()}');
+      //   return true;
+      // },
       builder: (context, snapshot) {
         return ThemeModeHandler(
           manager: MyThemeModeManager(),

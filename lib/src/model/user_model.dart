@@ -39,7 +39,7 @@ class UserModel {
 
   @override
   String toString() {
-    return 'UserModel(id: $id, email: $email, name: $name, birthday: $birthday, phone: $phone, address: $address, country: $country, avatarPath: $avatarPath, role: $role, createdAt: $createdAt, updatedAt: $updatedAt, deletedAt: $deletedAt, password: $password)';
+    return 'UserModel(id: $id, email: $email, name: $name, birthday: $birthday, phone: $phone, address: $address, country: ${country.isoShortName}, avatarPath: $avatarPath, role: $role, createdAt: $createdAt, updatedAt: $updatedAt, deletedAt: $deletedAt, password: $password)';
   }
 
   UserModel.fromMap(Map<String, dynamic> map)

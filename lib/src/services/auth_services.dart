@@ -43,10 +43,6 @@ class AuthService {
       // Initialize role
       final userRole = await RoleServices().getBy('name', 'user');
 
-      print('//////////////////////////////');
-      print(userRole.first.toString());
-      print('//////////////////////////////');
-
       // Add to firestore
       await _db.collection("User").doc(user.uid).set(
             UserModel(
@@ -64,10 +60,6 @@ class AuthService {
           msg: "Sign up success! Please log in first before continue.");
       return true;
     } catch (e) {
-      print('======================');
-      print(e.toString());
-      print('======================');
-
       Fluttertoast.showToast(
           msg: e.toString().contains(
                   'email address is already in use by another account')

@@ -48,4 +48,21 @@ class RoleServices {
 
     return dataList;
   }
+
+  Future<RoleModel> getByFirst(String fieldName, String value) async {
+    List<RoleModel> dataList = List.empty(growable: true);
+
+    QuerySnapshot querySnapshot = await _collectionRef.get();
+
+    final List<QueryDocumentSnapshot<Object?>> allDoc =
+        querySnapshot.docs.toList();
+
+    for (var doc in allDoc) {
+      if (doc.get(fieldName) == value) {
+        dataList.add(RoleModel.fromDocumentSnapshot(doc));
+      }
+    }
+
+    return dataList.first;
+  }
 }

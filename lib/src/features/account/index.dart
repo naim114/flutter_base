@@ -6,9 +6,7 @@ import 'package:flutter_base/src/features/account/security/index.dart';
 import 'package:flutter_base/src/features/admin/dashboard/index.dart';
 import 'package:flutter_base/src/features/admin/index.dart';
 import 'package:flutter_base/src/features/admin/settings/index.dart';
-import 'package:flutter_base/src/model/role_model.dart';
 import 'package:flutter_base/src/services/helpers.dart';
-import 'package:flutter_base/src/services/role_services.dart';
 import 'package:flutter_base/src/widgets/typography/page_title_icon.dart';
 import 'package:provider/provider.dart';
 
@@ -59,7 +57,6 @@ class _AccountState extends State<Account> {
                         builder: (context) => Profile(user: user),
                       ),
                     ),
-                    user: user,
                   ),
                   // SETTINGS
                   const Padding(

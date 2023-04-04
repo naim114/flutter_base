@@ -22,7 +22,7 @@ class _SignUpState extends State<SignUp> {
   final confirmPasswordController = TextEditingController();
 
   bool _submitted = false;
-  Widget _buttonChild = const Text('Log In');
+  Widget _buttonChild = const Text('Sign Up Now');
 
   @override
   void dispose() {
@@ -145,21 +145,24 @@ class _SignUpState extends State<SignUp> {
                             _validatePassword() &&
                             _validateConfirmPassword()) {
                           // if validation success
-                          final signUp = await _authService.signUp(
+                          dynamic result = await _authService.signUp(
                             name: nameController.text,
                             email: emailController.text,
                             password: passwordController.text,
                           );
 
-                          print(signUp);
-
-                          if (signUp == true && context.mounted) {
+                          print(result);
+                          if (result == null || result == false) {
+                            setState(
+                                () => _buttonChild = const Text("Sign Up Now"));
+                          } else if (result == true && context.mounted) {
+                            setState(
+                                () => _buttonChild = const Text("Sign Up Now"));
                             Navigator.pop(context);
-                          } else {
-                            setState(() => _buttonChild = const Text("Log In"));
                           }
                         } else {
-                          setState(() => _buttonChild = const Text("Log In"));
+                          setState(
+                              () => _buttonChild = const Text("Sign Up Now"));
                         }
                       },
                     ),

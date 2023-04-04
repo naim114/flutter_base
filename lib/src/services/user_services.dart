@@ -3,6 +3,7 @@ import 'package:country/country.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_base/src/model/user_model.dart';
 import 'package:flutter_base/src/services/role_services.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class UserServices {
   final FirebaseFirestore _db = FirebaseFirestore.instance;
@@ -71,8 +72,11 @@ class UserServices {
       id: doc.get('id'),
       email: doc.get('email'),
       name: doc.get('name'),
-      birthday: doc.get('birthday'),
+      birthday: doc.get('birthday') == null
+          ? doc.get('birthday')
+          : doc.get('birthday').toDate(),
       phone: doc.get('phone'),
+      address: doc.get('address'),
       country: Countries.values
           .firstWhere((country) => country.number == doc.get('country')),
       avatarPath: doc.get('avatarPath'),
@@ -92,8 +96,11 @@ class UserServices {
       id: doc.get('id'),
       email: doc.get('email'),
       name: doc.get('name'),
-      birthday: doc.get('birthday'),
+      birthday: doc.get('birthday') == null
+          ? doc.get('birthday')
+          : doc.get('birthday').toDate(),
       phone: doc.get('phone'),
+      address: doc.get('address'),
       country: Countries.values
           .firstWhere((country) => country.number == doc.get('country')),
       avatarPath: doc.get('avatarPath'),
@@ -105,5 +112,38 @@ class UserServices {
           : doc.get('deletedAt').toDate(),
       password: doc.get('password'),
     );
+  }
+
+  Future updateUserDetails({
+    required String id,
+    required String? name,
+    required DateTime? birthday,
+    required String? phone,
+    required String? address,
+    required String countryNumber,
+  }) async {
+    try {
+      dynamic result = _collectionRef
+          .doc(id)
+          .update({
+            'name': name,
+            'birthday': birthday,
+            'phone': phone,
+            'address': address,
+            'country': countryNumber,
+            'updatedAt': DateTime.now(),
+          })
+          .then((value) => print("User Updated"))
+          .catchError((error) => print('Failed: $error'));
+
+      print(result.toString());
+
+      return true;
+    } catch (e) {
+      print(e.toString());
+      Fluttertoast.showToast(msg: e.toString());
+
+      return false;
+    }
   }
 }

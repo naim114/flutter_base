@@ -2,7 +2,9 @@ import 'package:country/country.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_base/src/model/user_model.dart';
 import 'package:flutter_base/src/services/helpers.dart';
+import 'package:flutter_base/src/services/user_services.dart';
 import 'package:flutter_base/src/widgets/appbar/appbar_confirm_cancel.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
 
 import '../../../widgets/editor/image_uploader.dart';
@@ -22,10 +24,10 @@ class Profile extends StatefulWidget {
 }
 
 class _ProfileState extends State<Profile> {
-  TextEditingController nameController = TextEditingController();
-  TextEditingController phoneController = TextEditingController();
-  TextEditingController birthdayController = TextEditingController();
-  TextEditingController addressController = TextEditingController();
+  final TextEditingController nameController = TextEditingController();
+  final TextEditingController phoneController = TextEditingController();
+  final TextEditingController birthdayController = TextEditingController();
+  final TextEditingController addressController = TextEditingController();
   String countryDropdownValue = Countries.abw.number;
 
   @override
@@ -39,6 +41,7 @@ class _ProfileState extends State<Profile> {
         : "";
 
     countryDropdownValue = widget.user.country.number;
+
     super.initState();
   }
 
@@ -47,7 +50,30 @@ class _ProfileState extends State<Profile> {
     return Scaffold(
       appBar: appBarConfirmCancel(
         onCancel: () => Navigator.pop(context),
-        onConfirm: () {},
+        onConfirm: () async {
+          print("nameController: ${nameController.text}");
+          print("phoneController: ${phoneController.text}");
+          print("birthdayController: ${birthdayController.text}");
+          print("addressController: ${addressController.text}");
+          print("countryDropdownValue: $countryDropdownValue");
+
+          dynamic result = await UserServices().updateUserDetails(
+            id: widget.user.id,
+            name: nameController.text,
+            birthday: birthdayController.text == ""
+                ? null
+                : DateFormat('dd/MM/yyyy').parse(birthdayController.text),
+            phone: phoneController.text,
+            address: addressController.text,
+            countryNumber: countryDropdownValue,
+          );
+
+          if (result == true) {
+            Fluttertoast.showToast(msg: "Details sucessfully updated.");
+            Fluttertoast.showToast(
+                msg: "Close application and reopen it if no changes happen.");
+          }
+        },
         title: "Edit Profile",
         context: context,
       ),
@@ -152,10 +178,12 @@ class _ProfileState extends State<Profile> {
                     ),
                   ),
                   // Phone Number
-                  const Padding(
-                    padding: EdgeInsets.symmetric(vertical: 8.0),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 8.0),
                     child: TextField(
-                      decoration: InputDecoration(labelText: 'Phone Number'),
+                      controller: phoneController,
+                      decoration:
+                          const InputDecoration(labelText: 'Phone Number'),
                     ),
                   ),
                   // Address
