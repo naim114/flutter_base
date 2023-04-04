@@ -17,8 +17,6 @@ class SignUp extends StatefulWidget {
 
 class _SignUpState extends State<SignUp> {
   final AuthService _authService = AuthService();
-  final NetworkInfo _networkInfo = NetworkInfo();
-  static final DeviceInfoPlugin _deviceInfo = DeviceInfoPlugin();
 
   final nameController = TextEditingController();
   final emailController = TextEditingController();
@@ -155,8 +153,6 @@ class _SignUpState extends State<SignUp> {
                             name: nameController.text,
                             email: emailController.text,
                             password: passwordController.text,
-                            networkInfo: _networkInfo,
-                            deviceInfoPlugin: _deviceInfo,
                           );
 
                           print(result);

@@ -31,8 +31,6 @@ class Account extends StatefulWidget {
 
 class _AccountState extends State<Account> {
   final AuthService _authService = AuthService();
-  final NetworkInfo _networkInfo = NetworkInfo();
-  static final DeviceInfoPlugin _deviceInfo = DeviceInfoPlugin();
 
   @override
   Widget build(BuildContext context) {
@@ -181,14 +179,11 @@ class _AccountState extends State<Account> {
                           TextButton(
                             onPressed: () {
                               Navigator.pop(context);
-                              _authService.signOut(
-                                  user, _networkInfo, _deviceInfo);
+                              _authService.signOut(user);
                             },
                             child: const Text(
                               'OK',
-                              style: TextStyle(
-                                color: CustomColor.danger,
-                              ),
+                              style: TextStyle(color: CustomColor.danger),
                             ),
                           ),
                         ],

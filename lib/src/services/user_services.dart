@@ -13,6 +13,9 @@ class UserServices {
   final CollectionReference _collectionRef =
       FirebaseFirestore.instance.collection('User');
 
+  static final DeviceInfoPlugin _deviceInfoPlugin = DeviceInfoPlugin();
+  final NetworkInfo _networkInfo = NetworkInfo();
+
   // get all users
   Future<List<Future<UserModel?>>> getAll() async {
     // Get docs from collection reference
@@ -130,8 +133,6 @@ class UserServices {
     required String? phone,
     required String? address,
     required String countryNumber,
-    required NetworkInfo networkInfo,
-    required DeviceInfoPlugin deviceInfoPlugin,
   }) async {
     try {
       dynamic result = _collectionRef
@@ -155,8 +156,8 @@ class UserServices {
             user: user,
             description: "Update Profile Details",
             activityType: "update_profile",
-            networkInfo: networkInfo,
-            deviceInfoPlugin: deviceInfoPlugin,
+            networkInfo: _networkInfo,
+            deviceInfoPlugin: _deviceInfoPlugin,
           );
         }
       });

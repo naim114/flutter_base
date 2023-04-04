@@ -15,7 +15,7 @@ class AuthService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore _db = FirebaseFirestore.instance;
 
-  static final DeviceInfoPlugin _deviceInfo = DeviceInfoPlugin();
+  static final DeviceInfoPlugin _deviceInfoPlugin = DeviceInfoPlugin();
   final NetworkInfo _networkInfo = NetworkInfo();
 
   // auth change user stream
@@ -32,8 +32,6 @@ class AuthService {
     required String name,
     required String email,
     required String password,
-    required NetworkInfo networkInfo,
-    required DeviceInfoPlugin deviceInfoPlugin,
   }) async {
     try {
       // Encrypt password
@@ -71,8 +69,8 @@ class AuthService {
             user: user,
             description: "Sign Up/Create Account",
             activityType: "sign_up",
-            networkInfo: networkInfo,
-            deviceInfoPlugin: deviceInfoPlugin,
+            networkInfo: _networkInfo,
+            deviceInfoPlugin: _deviceInfoPlugin,
           );
         }
       });
@@ -97,8 +95,6 @@ class AuthService {
   Future signIn(
     String email,
     String password,
-    NetworkInfo networkInfo,
-    DeviceInfoPlugin deviceInfoPlugin,
   ) async {
     try {
       // Encrypt password
@@ -118,8 +114,8 @@ class AuthService {
               user: user,
               description: "Sign In",
               activityType: "sign_in",
-              networkInfo: networkInfo,
-              deviceInfoPlugin: deviceInfoPlugin,
+              networkInfo: _networkInfo,
+              deviceInfoPlugin: _deviceInfoPlugin,
             );
           }
         });
@@ -134,11 +130,7 @@ class AuthService {
   }
 
   //sing out
-  Future signOut(
-    UserModel user,
-    NetworkInfo networkInfo,
-    DeviceInfoPlugin deviceInfoPlugin,
-  ) async {
+  Future signOut(UserModel user) async {
     try {
       return await _auth.signOut().then((userCred) async {
         final activity = await UserServices().get(user.id).then((user) {
@@ -147,8 +139,8 @@ class AuthService {
               user: user,
               description: "Sign Out",
               activityType: "sign_out",
-              networkInfo: networkInfo,
-              deviceInfoPlugin: deviceInfoPlugin,
+              networkInfo: _networkInfo,
+              deviceInfoPlugin: _deviceInfoPlugin,
             );
           }
         });

@@ -21,11 +21,9 @@ class LogIn extends StatefulWidget {
 
 class _LogInState extends State<LogIn> {
   final AuthService _authService = AuthService();
-  final NetworkInfo _networkInfo = NetworkInfo();
 
   final passwordController = TextEditingController();
   final emailController = TextEditingController();
-  static final DeviceInfoPlugin _deviceInfo = DeviceInfoPlugin();
 
   bool _submitted = false;
   Widget _buttonChild = const Text('Log In');
@@ -117,8 +115,6 @@ class _LogInState extends State<LogIn> {
                               .signIn(
                             emailController.text,
                             passwordController.text,
-                            _networkInfo,
-                            _deviceInfo,
                           )
                               .onError((error, stackTrace) {
                             Fluttertoast.showToast(msg: "Could not sign in");

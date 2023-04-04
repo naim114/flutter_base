@@ -32,9 +32,6 @@ class _ProfileState extends State<Profile> {
   final TextEditingController addressController = TextEditingController();
   String countryDropdownValue = Countries.abw.number;
 
-  final NetworkInfo _networkInfo = NetworkInfo();
-  static final DeviceInfoPlugin _deviceInfo = DeviceInfoPlugin();
-
   @override
   void initState() {
     nameController.text = widget.user.name ?? "";
@@ -65,8 +62,6 @@ class _ProfileState extends State<Profile> {
             phone: phoneController.text,
             address: addressController.text,
             countryNumber: countryDropdownValue,
-            networkInfo: _networkInfo,
-            deviceInfoPlugin: _deviceInfo,
           );
 
           if (result == true && context.mounted) {
