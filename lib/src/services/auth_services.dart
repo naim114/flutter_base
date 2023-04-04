@@ -124,6 +124,7 @@ class AuthService {
       });
     } catch (e) {
       print(e.toString());
+      Fluttertoast.showToast(msg: e.toString());
 
       return false;
     }
@@ -133,17 +134,19 @@ class AuthService {
   Future signOut(UserModel user) async {
     try {
       return await _auth.signOut().then((userCred) async {
-        final activity = await UserServices().get(user.id).then((user) {
-          if (user != null) {
-            return UserActivityServices().add(
-              user: user,
-              description: "Sign Out",
-              activityType: "sign_out",
-              networkInfo: _networkInfo,
-              deviceInfoPlugin: _deviceInfoPlugin,
-            );
-          }
-        });
+        final activity = await UserServices().get(user.id).then(
+          (user) {
+            if (user != null) {
+              return UserActivityServices().add(
+                user: user,
+                description: "Sign Out",
+                activityType: "sign_out",
+                networkInfo: _networkInfo,
+                deviceInfoPlugin: _deviceInfoPlugin,
+              );
+            }
+          },
+        );
 
         print("Activity: ${activity.toString()}");
       });

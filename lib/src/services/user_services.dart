@@ -1,5 +1,8 @@
+import 'dart:convert';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:country/country.dart';
+import 'package:crypto/crypto.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_base/src/model/user_model.dart';
@@ -12,6 +15,7 @@ class UserServices {
   final FirebaseFirestore _db = FirebaseFirestore.instance;
   final CollectionReference _collectionRef =
       FirebaseFirestore.instance.collection('User');
+  final FirebaseAuth _auth = FirebaseAuth.instance;
 
   static final DeviceInfoPlugin _deviceInfoPlugin = DeviceInfoPlugin();
   final NetworkInfo _networkInfo = NetworkInfo();
@@ -135,18 +139,14 @@ class UserServices {
     required String countryNumber,
   }) async {
     try {
-      dynamic result = _collectionRef
-          .doc(id)
-          .update({
-            'name': name,
-            'birthday': birthday,
-            'phone': phone,
-            'address': address,
-            'country': countryNumber,
-            'updatedAt': DateTime.now(),
-          })
-          .then((value) => print("User Updated"))
-          .catchError((error) => print('Failed: $error'));
+      dynamic result = _collectionRef.doc(id).update({
+        'name': name,
+        'birthday': birthday,
+        'phone': phone,
+        'address': address,
+        'country': countryNumber,
+        'updatedAt': DateTime.now(),
+      }).then((value) => print("User Updated"));
 
       print(result.toString());
 
@@ -175,14 +175,69 @@ class UserServices {
 
   Future updateEmail({
     required UserModel user,
+    required String oldEmail,
     required String newEmail,
-    required String password,
+    required String? password,
     required bool includeAuth,
   }) async {
-    if (includeAuth) {
-      // w/ auth
-    } else {
-      // w/o auth
+    try {
+      if (includeAuth && password != null) {
+        // w/ auth
+
+        // encrypt entered password
+        var bytes = utf8.encode(password);
+        var digest = sha1.convert(bytes);
+
+        // ignore: invalid_use_of_protected_member
+        if (oldEmail == user.email) {
+          await _auth
+              .signInWithEmailAndPassword(
+            email: user.email,
+            password: digest.toString(),
+          )
+              .then((userCred) {
+            print("Log In Success");
+            if (userCred.user != null) {
+              // update user cred at auth
+              userCred.user
+                  ?.updateEmail(newEmail)
+                  .then((value) => print("Email Updated on Auth"));
+
+              // update user on db
+              _collectionRef.doc(userCred.user?.uid).update({
+                'email': newEmail,
+              }).then((value) => print("Email Updated on Firestore"));
+            }
+          });
+
+          return true;
+        } else {
+          throw Exception("Could not authorize credentials.");
+        }
+      } else {
+        // w/o auth
+      }
+
+      final activity = await UserActivityServices().add(
+        user: user,
+        description: "Update Profile Details",
+        activityType: "update_profile",
+        networkInfo: _networkInfo,
+        deviceInfoPlugin: _deviceInfoPlugin,
+      );
+
+      print("Activity: ${activity.toString()}");
+    } catch (e) {
+      print(e.toString());
+
+      if (e.toString().contains('[firebase_auth/email-already-in-use]')) {
+        Fluttertoast.showToast(
+            msg: "Email already taken. Please try different email.");
+      } else {
+        Fluttertoast.showToast(msg: e.toString());
+      }
+
+      return false;
     }
   }
 }

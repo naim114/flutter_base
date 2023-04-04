@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_base/src/model/user_model.dart';
+import 'package:flutter_base/src/services/user_services.dart';
 import 'package:flutter_base/src/widgets/appbar/appbar_confirm_cancel.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 import '../../../services/helpers.dart';
 
@@ -31,14 +33,27 @@ class _UpdateEmailState extends State<UpdateEmail> {
       appBar: appBarConfirmCancel(
         title: "Update Email",
         onCancel: () => Navigator.pop(context),
-        onConfirm: () {
+        onConfirm: () async {
           setState(() => _submitted = true);
 
           if (widget.includeAuth) {
             if (_validateEmptyFieldWAuth() &&
                 validateEmail(newEmailController) &&
                 validateEmail(oldEmailController)) {
-              //
+              final result = await UserServices().updateEmail(
+                user: widget.user,
+                oldEmail: oldEmailController.text,
+                newEmail: newEmailController.text,
+                password: passwordController.text,
+                includeAuth: true,
+              );
+
+              if (result == true && context.mounted) {
+                Fluttertoast.showToast(msg: "Email Updated!");
+                Navigator.pop(context);
+                Fluttertoast.showToast(
+                    msg: "Close application and reopen if no changes happen.");
+              }
             }
           } else {
             if (_validateEmptyField() && validateEmail(newEmailController)) {
@@ -63,7 +78,7 @@ class _UpdateEmailState extends State<UpdateEmail> {
         //   if (result == true && context.mounted) {
         //     Fluttertoast.showToast(msg: "Details sucessfully updated.");
         //     Fluttertoast.showToast(
-        //         msg: "Close application and reopen it if no changes happen.");
+        //         msg: "Close application and reopen if no changes happen.");
         //     Navigator.of(context).pop();
         //   }
         // },

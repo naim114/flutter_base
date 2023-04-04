@@ -111,18 +111,18 @@ class _LogInState extends State<LogIn> {
                         if (_validateEmptyField() &&
                             validateEmail(emailController)) {
                           // if validation success
-                          await _authService
-                              .signIn(
+                          final result = await _authService.signIn(
                             emailController.text,
                             passwordController.text,
-                          )
-                              .onError((error, stackTrace) {
-                            Fluttertoast.showToast(msg: "Could not sign in");
-                            setState(() => _buttonChild = const Text("Log In"));
-                          });
-                        } else {
-                          setState(() => _buttonChild = const Text("Log In"));
+                          );
+
+                          if (result != null && result == false) {
+                            Fluttertoast.showToast(
+                                msg: "Could not sign in with credentials");
+                          }
                         }
+
+                        setState(() => _buttonChild = const Text("Log In"));
                       },
                     ),
                   ],

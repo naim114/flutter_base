@@ -67,7 +67,7 @@ class _ProfileState extends State<Profile> {
           if (result == true && context.mounted) {
             Fluttertoast.showToast(msg: "Details sucessfully updated.");
             Fluttertoast.showToast(
-                msg: "Close application and reopen it if no changes happen.");
+                msg: "Close application and reopen if no changes happen.");
             Navigator.of(context).pop();
           }
         },
