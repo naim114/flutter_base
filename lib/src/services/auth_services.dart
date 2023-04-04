@@ -2,12 +2,14 @@ import 'dart:convert';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:crypto/crypto.dart';
+import 'package:device_info_plus/device_info_plus.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_base/src/model/user_model.dart';
 import 'package:flutter_base/src/services/role_services.dart';
 import 'package:flutter_base/src/services/user_activity_services.dart';
 import 'package:flutter_base/src/services/user_services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:network_info_plus/network_info_plus.dart';
 
 class AuthService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -23,10 +25,13 @@ class AuthService {
   }
 
   //sign up with email & password
-  Future signUp(
-      {required String name,
-      required String email,
-      required String password}) async {
+  Future signUp({
+    required String name,
+    required String email,
+    required String password,
+    required NetworkInfo networkInfo,
+    required DeviceInfoPlugin deviceInfoPlugin,
+  }) async {
     try {
       // Encrypt password
       var bytes = utf8.encode(password);
@@ -63,6 +68,8 @@ class AuthService {
             user: user,
             description: "Sign Up/Create Account",
             activityType: "sign_up",
+            networkInfo: networkInfo,
+            deviceInfoPlugin: deviceInfoPlugin,
           );
         }
       });
@@ -84,7 +91,12 @@ class AuthService {
   }
 
   // sign in with email and password
-  Future signIn(String email, String password) async {
+  Future signIn(
+    String email,
+    String password,
+    NetworkInfo networkInfo,
+    DeviceInfoPlugin deviceInfoPlugin,
+  ) async {
     try {
       // Encrypt password
       var bytes = utf8.encode(password);
@@ -103,6 +115,8 @@ class AuthService {
               user: user,
               description: "Sign In",
               activityType: "sign_in",
+              networkInfo: networkInfo,
+              deviceInfoPlugin: deviceInfoPlugin,
             );
           }
         });
@@ -112,12 +126,16 @@ class AuthService {
     } catch (e) {
       print(e.toString());
 
-      return null;
+      return false;
     }
   }
 
   //sing out
-  Future signOut(UserModel user) async {
+  Future signOut(
+    UserModel user,
+    NetworkInfo networkInfo,
+    DeviceInfoPlugin deviceInfoPlugin,
+  ) async {
     try {
       return await _auth.signOut().then((userCred) async {
         final activity = await UserServices().get(user.id).then((user) {
@@ -126,6 +144,8 @@ class AuthService {
               user: user,
               description: "Sign Out",
               activityType: "sign_out",
+              networkInfo: networkInfo,
+              deviceInfoPlugin: deviceInfoPlugin,
             );
           }
         });

@@ -1,10 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:country/country.dart';
+import 'package:device_info_plus/device_info_plus.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_base/src/model/user_model.dart';
 import 'package:flutter_base/src/services/role_services.dart';
 import 'package:flutter_base/src/services/user_activity_services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:network_info_plus/network_info_plus.dart';
 
 class UserServices {
   final FirebaseFirestore _db = FirebaseFirestore.instance;
@@ -128,6 +130,8 @@ class UserServices {
     required String? phone,
     required String? address,
     required String countryNumber,
+    required NetworkInfo networkInfo,
+    required DeviceInfoPlugin deviceInfoPlugin,
   }) async {
     try {
       dynamic result = _collectionRef
@@ -151,6 +155,8 @@ class UserServices {
             user: user,
             description: "Update Profile Details",
             activityType: "update_profile",
+            networkInfo: networkInfo,
+            deviceInfoPlugin: deviceInfoPlugin,
           );
         }
       });

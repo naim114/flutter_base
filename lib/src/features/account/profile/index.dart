@@ -1,4 +1,5 @@
 import 'package:country/country.dart';
+import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_base/src/model/user_model.dart';
 import 'package:flutter_base/src/services/helpers.dart';
@@ -6,6 +7,7 @@ import 'package:flutter_base/src/services/user_services.dart';
 import 'package:flutter_base/src/widgets/appbar/appbar_confirm_cancel.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
+import 'package:network_info_plus/network_info_plus.dart';
 
 import '../../../widgets/editor/image_uploader.dart';
 
@@ -29,7 +31,8 @@ class _ProfileState extends State<Profile> {
   final TextEditingController birthdayController = TextEditingController();
   final TextEditingController addressController = TextEditingController();
   String countryDropdownValue = Countries.abw.number;
-
+  final NetworkInfo _networkInfo = NetworkInfo();
+  static final DeviceInfoPlugin _deviceInfo = DeviceInfoPlugin();
   @override
   void initState() {
     nameController.text = widget.user.name ?? "";
@@ -60,6 +63,8 @@ class _ProfileState extends State<Profile> {
             phone: phoneController.text,
             address: addressController.text,
             countryNumber: countryDropdownValue,
+            networkInfo: _networkInfo,
+            deviceInfoPlugin: _deviceInfo,
           );
 
           if (result == true && context.mounted) {

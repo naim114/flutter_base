@@ -1,3 +1,4 @@
+import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_base/src/features/auth/sign_up.dart';
@@ -8,6 +9,7 @@ import 'package:flutter_base/src/widgets/appbar/custom_appbar.dart';
 import 'package:flutter_base/src/widgets/button/custom_button.dart';
 import 'package:flutter_base/src/widgets/typography/custom_textfield.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:network_info_plus/network_info_plus.dart';
 import '../../services/auth_services.dart';
 
 class LogIn extends StatefulWidget {
@@ -19,9 +21,11 @@ class LogIn extends StatefulWidget {
 
 class _LogInState extends State<LogIn> {
   final AuthService _authService = AuthService();
+  final NetworkInfo _networkInfo = NetworkInfo();
 
   final passwordController = TextEditingController();
   final emailController = TextEditingController();
+  static final DeviceInfoPlugin _deviceInfo = DeviceInfoPlugin();
 
   bool _submitted = false;
   Widget _buttonChild = const Text('Log In');
@@ -107,16 +111,17 @@ class _LogInState extends State<LogIn> {
 
                         if (_validateEmptyField() && _validateEmail()) {
                           // if validation success
-                          dynamic result = await _authService.signIn(
+                          await _authService
+                              .signIn(
                             emailController.text,
                             passwordController.text,
-                          );
-
-                          if (result == null) {
-                            Fluttertoast.showToast(
-                                msg: "Could not sign in with credentials");
+                            _networkInfo,
+                            _deviceInfo,
+                          )
+                              .onError((error, stackTrace) {
+                            Fluttertoast.showToast(msg: "Could not sign in");
                             setState(() => _buttonChild = const Text("Log In"));
-                          }
+                          });
                         } else {
                           setState(() => _buttonChild = const Text("Log In"));
                         }

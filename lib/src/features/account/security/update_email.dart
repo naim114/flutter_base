@@ -28,9 +28,7 @@ class UpdateEmail extends StatelessWidget {
             const Padding(
               padding: EdgeInsets.symmetric(vertical: 8.0),
               child: TextField(
-                decoration: InputDecoration(
-                  labelText: 'New Email',
-                ),
+                decoration: InputDecoration(labelText: 'New Email'),
                 keyboardType: TextInputType.emailAddress,
                 autofillHints: [AutofillHints.email],
               ),
@@ -39,9 +37,7 @@ class UpdateEmail extends StatelessWidget {
                 ? const Padding(
                     padding: EdgeInsets.symmetric(vertical: 8.0),
                     child: TextField(
-                      decoration: InputDecoration(
-                        labelText: 'Old Email',
-                      ),
+                      decoration: InputDecoration(labelText: 'Old Email'),
                       keyboardType: TextInputType.emailAddress,
                       autofillHints: [AutofillHints.email],
                     ),
@@ -52,9 +48,7 @@ class UpdateEmail extends StatelessWidget {
                     padding: EdgeInsets.symmetric(vertical: 8.0),
                     child: TextField(
                       obscureText: true,
-                      decoration: InputDecoration(
-                        labelText: 'Password',
-                      ),
+                      decoration: InputDecoration(labelText: 'Password'),
                     ),
                   )
                 : const SizedBox(),
