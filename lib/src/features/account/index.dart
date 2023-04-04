@@ -177,7 +177,7 @@ class _AccountState extends State<Account> {
                           TextButton(
                             onPressed: () {
                               Navigator.pop(context);
-                              _authService.signOut();
+                              _authService.signOut(user);
                             },
                             child: const Text(
                               'OK',

@@ -5,6 +5,7 @@ import 'package:crypto/crypto.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_base/src/model/user_model.dart';
 import 'package:flutter_base/src/services/role_services.dart';
+import 'package:flutter_base/src/services/user_activity_services.dart';
 import 'package:flutter_base/src/services/user_services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
@@ -56,6 +57,18 @@ class AuthService {
             ).toJson(),
           );
 
+      final activity = await UserServices().get(user.uid).then((user) {
+        if (user != null) {
+          return UserActivityServices().add(
+            user: user,
+            description: "Sign Up/Create Account",
+            activityType: "sign_up",
+          );
+        }
+      });
+
+      print("Activity: ${activity.toString()}");
+
       Fluttertoast.showToast(
           msg: "Sign up success! Please log in first before continue.");
       return true;
@@ -77,10 +90,25 @@ class AuthService {
       var bytes = utf8.encode(password);
       var digest = sha1.convert(bytes);
 
-      return await _auth.signInWithEmailAndPassword(
+      return await _auth
+          .signInWithEmailAndPassword(
         email: email,
         password: digest.toString(),
-      );
+      )
+          .then((userCred) async {
+        final activity =
+            await UserServices().get(userCred.user!.uid).then((user) {
+          if (user != null) {
+            return UserActivityServices().add(
+              user: user,
+              description: "Sign In",
+              activityType: "sign_in",
+            );
+          }
+        });
+
+        print("Activity: ${activity.toString()}");
+      });
     } catch (e) {
       print(e.toString());
 
@@ -89,9 +117,21 @@ class AuthService {
   }
 
   //sing out
-  Future signOut() async {
+  Future signOut(UserModel user) async {
     try {
-      return await _auth.signOut();
+      return await _auth.signOut().then((userCred) async {
+        final activity = await UserServices().get(user.id).then((user) {
+          if (user != null) {
+            return UserActivityServices().add(
+              user: user,
+              description: "Sign Out",
+              activityType: "sign_out",
+            );
+          }
+        });
+
+        print("Activity: ${activity.toString()}");
+      });
     } catch (e) {
       print(e.toString());
       return null;
