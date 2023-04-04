@@ -2,13 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_base/src/features/account/security/login_activity.dart';
 import 'package:flutter_base/src/features/account/security/update_email.dart';
 import 'package:flutter_base/src/features/account/security/update_password.dart';
+import 'package:flutter_base/src/model/user_model.dart';
 
 import '../../../services/helpers.dart';
 import '../../../widgets/list_tile/list_tile_icon.dart';
 
 class Security extends StatelessWidget {
-  const Security({super.key});
+  const Security({super.key, required this.user});
 
+  final UserModel user;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -38,7 +40,7 @@ class Security extends StatelessWidget {
             title: "Update Email",
             onTap: () => Navigator.of(context).push(
               MaterialPageRoute(
-                builder: (context) => const UpdateEmail(),
+                builder: (context) => UpdateEmail(user: user),
               ),
             ),
           ),

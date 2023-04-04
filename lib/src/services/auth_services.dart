@@ -15,6 +15,9 @@ class AuthService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore _db = FirebaseFirestore.instance;
 
+  static final DeviceInfoPlugin _deviceInfo = DeviceInfoPlugin();
+  final NetworkInfo _networkInfo = NetworkInfo();
+
   // auth change user stream
   Stream<UserModel?> get onAuthStateChanged {
     return _auth.authStateChanges().asyncMap((User? user) {

@@ -109,24 +109,7 @@ class _MyAppState extends State<MyApp> {
                     iconColor: MaterialStatePropertyAll(CustomColor.neutral1)),
               ),
             ),
-            home: FutureBuilder(
-              future: Future.delayed(const Duration(seconds: 2)),
-              builder: (context, snapshot) {
-                return snapshot.connectionState == ConnectionState.waiting
-                    ? Scaffold(
-                        body: Center(
-                          child: Center(
-                            child: LoadingAnimationWidget.flickr(
-                              leftDotColor: CustomColor.primary,
-                              rightDotColor: CustomColor.secondary,
-                              size: 50,
-                            ),
-                          ),
-                        ),
-                      )
-                    : Wrapper();
-              },
-            ),
+            home: const Wrapper(),
           ),
         );
       },

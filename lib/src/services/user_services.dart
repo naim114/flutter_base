@@ -171,4 +171,17 @@ class UserServices {
       return false;
     }
   }
+
+  Future updateEmail({
+    required UserModel user,
+    required String newEmail,
+    required String password,
+    required bool includeAuth,
+  }) async {
+    if (includeAuth) {
+      // w/ auth
+    } else {
+      // w/o auth
+    }
+  }
 }

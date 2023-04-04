@@ -80,7 +80,7 @@ class _AccountState extends State<Account> {
                     title: "Security",
                     onTap: () => Navigator.of(widget.mainContext).push(
                       MaterialPageRoute(
-                        builder: (context) => const Security(),
+                        builder: (context) => Security(user: user),
                       ),
                     ),
                   ),
