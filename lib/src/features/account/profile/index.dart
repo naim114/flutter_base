@@ -51,12 +51,6 @@ class _ProfileState extends State<Profile> {
       appBar: appBarConfirmCancel(
         onCancel: () => Navigator.pop(context),
         onConfirm: () async {
-          print("nameController: ${nameController.text}");
-          print("phoneController: ${phoneController.text}");
-          print("birthdayController: ${birthdayController.text}");
-          print("addressController: ${addressController.text}");
-          print("countryDropdownValue: $countryDropdownValue");
-
           dynamic result = await UserServices().updateUserDetails(
             id: widget.user.id,
             name: nameController.text,
@@ -68,10 +62,11 @@ class _ProfileState extends State<Profile> {
             countryNumber: countryDropdownValue,
           );
 
-          if (result == true) {
+          if (result == true && context.mounted) {
             Fluttertoast.showToast(msg: "Details sucessfully updated.");
             Fluttertoast.showToast(
                 msg: "Close application and reopen it if no changes happen.");
+            Navigator.of(context).pop();
           }
         },
         title: "Edit Profile",

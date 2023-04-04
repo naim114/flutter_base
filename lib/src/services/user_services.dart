@@ -10,6 +10,7 @@ class UserServices {
   final CollectionReference _collectionRef =
       FirebaseFirestore.instance.collection('User');
 
+  // get all users
   Future<List<Future<UserModel?>>> getAll() async {
     // Get docs from collection reference
     QuerySnapshot querySnapshot = await _collectionRef.get();
@@ -22,6 +23,7 @@ class UserServices {
     return allData;
   }
 
+  // get user by id
   Future<UserModel?> get(String id) async {
     return _collectionRef.doc(id).get().then((DocumentSnapshot doc) async {
       if (doc.exists) {
@@ -33,6 +35,7 @@ class UserServices {
     });
   }
 
+  // get user by custom field
   Future<List<UserModel?>> getBy(String fieldName, String value) async {
     List<UserModel?> dataList = List.empty(growable: true);
 
@@ -54,7 +57,7 @@ class UserServices {
     return dataList;
   }
 
-  //create an userModel object based on Firebase User object
+  // create an userModel object based on Firebase User object
   Future<UserModel?> getUserModelFromFirebase(User? user) async {
     if (user != null) {
       String email = user.email.toString();
@@ -67,6 +70,7 @@ class UserServices {
     }
   }
 
+  // convert DocumentSnapshot to userModel object
   Future<UserModel?> fromDocumentSnapshot(DocumentSnapshot<Object?> doc) async {
     return UserModel(
       id: doc.get('id'),
@@ -90,6 +94,7 @@ class UserServices {
     );
   }
 
+  // convert QueryDocumentSnapshot to userModel object
   Future<UserModel?> fromQueryDocumentSnapshot(
       QueryDocumentSnapshot<Object?> doc) async {
     return UserModel(
@@ -114,6 +119,7 @@ class UserServices {
     );
   }
 
+  // Update user details (name, birthday, phone, address, country)
   Future updateUserDetails({
     required String id,
     required String? name,
