@@ -224,17 +224,20 @@ class UserServices {
         // TODO test this code
         User? userCred = await FirebaseAuth.instance
             .userChanges()
-            .firstWhere((userCred) => userCred?.uid == user.id);
+            .firstWhere((userCred) => userCred?.uid == user.id)
+            .onError((error, stackTrace) => throw Exception(error));
 
         if (userCred != null) {
           // update user cred at auth
-          userCred.updateEmail(newEmail).then((value) {
+          await userCred.updateEmail(newEmail).then((value) {
             print("Email Updated on Auth");
             // update user on db
-            return _collectionRef.doc(userCred.uid).update({
-              'email': newEmail,
-            }).then((value) => print("Email Updated on Firestore"));
-          });
+            return _collectionRef
+                .doc(userCred.uid)
+                .update({'email': newEmail})
+                .then((value) => print("Email Updated on Firestore"))
+                .onError((error, stackTrace) => throw Exception(error));
+          }).onError((error, stackTrace) => throw Exception(error));
         }
       }
 
@@ -253,6 +256,7 @@ class UserServices {
                 deviceInfoPlugin: _deviceInfoPlugin,
               )
               .then((value) => print("Activity Added"));
+          return true;
         }
       });
 
@@ -265,6 +269,14 @@ class UserServices {
       if (e.toString().contains('[firebase_auth/email-already-in-use]')) {
         Fluttertoast.showToast(
             msg: "Email already taken. Please try different email.");
+      } else if (e
+          .toString()
+          .contains('[firebase_auth/requires-recent-login]')) {
+        Fluttertoast.showToast(
+            msg:
+                "This operation is sensitive and requires recent authentication.");
+        Fluttertoast.showToast(
+            msg: "Log in again before retrying this request.");
       } else {
         Fluttertoast.showToast(msg: e.toString());
       }
