@@ -46,6 +46,15 @@ class _ProfileState extends State<Profile> {
   }
 
   @override
+  void dispose() {
+    nameController.dispose();
+    phoneController.dispose();
+    birthdayController.dispose();
+    addressController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: appBarConfirmCancel(

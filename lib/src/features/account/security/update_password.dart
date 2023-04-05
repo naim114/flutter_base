@@ -1,12 +1,31 @@
 import 'package:flutter/material.dart';
 import '../../../widgets/appbar/appbar_confirm_cancel.dart';
 
-class UpdatePassword extends StatelessWidget {
+class UpdatePassword extends StatefulWidget {
   const UpdatePassword({
     super.key,
     this.includeAuth = true,
   });
   final bool includeAuth;
+
+  @override
+  State<UpdatePassword> createState() => _UpdatePasswordState();
+}
+
+class _UpdatePasswordState extends State<UpdatePassword> {
+  final TextEditingController newPasswordController = TextEditingController();
+  final TextEditingController oldPasswordController = TextEditingController();
+  final TextEditingController emailController = TextEditingController();
+
+  bool _submitted = false;
+
+  @override
+  void dispose() {
+    newPasswordController.dispose();
+    oldPasswordController.dispose();
+    emailController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +40,7 @@ class UpdatePassword extends StatelessWidget {
         padding: const EdgeInsets.symmetric(vertical: 15.0, horizontal: 30.0),
         child: ListView(
           children: [
-            Text(includeAuth
+            Text(widget.includeAuth
                 ? "Enter new password, email and old password then click submmit button at top right."
                 : "Enter new password then click submmit button at top right."),
             const Padding(
@@ -33,7 +52,7 @@ class UpdatePassword extends StatelessWidget {
                 obscureText: true,
               ),
             ),
-            includeAuth
+            widget.includeAuth
                 ? const Padding(
                     padding: EdgeInsets.symmetric(vertical: 8.0),
                     child: TextField(
@@ -45,7 +64,7 @@ class UpdatePassword extends StatelessWidget {
                     ),
                   )
                 : const SizedBox(),
-            includeAuth
+            widget.includeAuth
                 ? const Padding(
                     padding: EdgeInsets.symmetric(vertical: 8.0),
                     child: TextField(

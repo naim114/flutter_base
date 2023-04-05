@@ -28,6 +28,14 @@ class _UpdateEmailState extends State<UpdateEmail> {
   bool _submitted = false;
 
   @override
+  void dispose() {
+    newEmailController.dispose();
+    oldEmailController.dispose();
+    passwordController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: appBarConfirmCancel(
@@ -76,27 +84,6 @@ class _UpdateEmailState extends State<UpdateEmail> {
             }
           }
         },
-        // onConfirm: () async {
-        //   dynamic result = await UserServices().updateDetails(
-        //     id: widget.user.id,
-        //     name: nameController.text,
-        //     birthday: birthdayController.text == ""
-        //         ? null
-        //         : DateFormat('dd/MM/yyyy').parse(birthdayController.text),
-        //     phone: phoneController.text,
-        //     address: addressController.text,
-        //     countryNumber: countryDropdownValue,
-        //     networkInfo: _networkInfo,
-        //     deviceInfoPlugin: _deviceInfo,
-        //   );
-
-        //   if (result == true && context.mounted) {
-        //     Fluttertoast.showToast(msg: "Details sucessfully updated.");
-        //     Fluttertoast.showToast(
-        //         msg: "Close application and reopen if no changes happen.");
-        //     Navigator.of(context).pop();
-        //   }
-        // },
         context: context,
       ),
       body: Padding(

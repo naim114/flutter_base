@@ -221,7 +221,6 @@ class UserServices {
         }
       } else {
         // w/o auth
-        // TODO test this code
         User? userCred = await FirebaseAuth.instance
             .userChanges()
             .firstWhere((userCred) => userCred?.uid == user.id)
@@ -261,6 +260,111 @@ class UserServices {
       });
 
       print("Activity: ${activity.toString()}");
+
+      return true;
+    } catch (e) {
+      print(e.toString());
+
+      if (e.toString().contains('[firebase_auth/email-already-in-use]')) {
+        Fluttertoast.showToast(
+            msg: "Email already taken. Please try different email.");
+      } else if (e
+          .toString()
+          .contains('[firebase_auth/requires-recent-login]')) {
+        Fluttertoast.showToast(
+            msg:
+                "This operation is sensitive and requires recent authentication.");
+        Fluttertoast.showToast(
+            msg: "Log in again before retrying this request.");
+      } else {
+        Fluttertoast.showToast(msg: e.toString());
+      }
+
+      return false;
+    }
+  }
+
+  Future updatePassword({
+    required UserModel user,
+    String? email,
+    String? oldPassword,
+    required String newPassword,
+    required bool includeAuth,
+  }) async {
+    try {
+      if (includeAuth && oldPassword != null) {
+        // w/ auth
+
+        // encrypt entered password
+        var bytes = utf8.encode(oldPassword);
+        var digest = sha1.convert(bytes);
+
+        // ignore: invalid_use_of_protected_member
+        if (oldPassword == user.password) {
+          await _auth
+              .signInWithEmailAndPassword(
+            email: user.email,
+            password: digest.toString(),
+          )
+              .then((userCred) {
+            print("Log In Success");
+            if (userCred.user != null) {
+              // update user cred at auth
+              userCred.user
+                  ?.updatePassword(newPassword)
+                  .then((value) => print("Password Updated on Auth"));
+
+              // update user on db
+              _collectionRef
+                  .doc(userCred.user?.uid)
+                  .update({'password': newPassword}).then(
+                      (value) => print("Password Updated on Firestore"));
+            }
+          });
+        } else {
+          throw Exception("Could not authorize credentials.");
+        }
+      } else {
+        // w/o auth
+        User? userCred = await FirebaseAuth.instance
+            .userChanges()
+            .firstWhere((userCred) => userCred?.uid == user.id)
+            .onError((error, stackTrace) => throw Exception(error));
+
+        if (userCred != null) {
+          // update user cred at auth
+          await userCred.updatePassword(newPassword).then((value) {
+            print("Password Updated on Auth");
+            // update user on db
+            return _collectionRef
+                .doc(userCred.uid)
+                .update({'password': newPassword})
+                .then((value) => print("Password Updated on Firestore"))
+                .onError((error, stackTrace) => throw Exception(error));
+          }).onError((error, stackTrace) => throw Exception(error));
+        }
+      }
+
+      // final activity = await UserServices()
+      //     .get(_auth.currentUser!.uid)
+      //     .then((currentUser) async {
+      //   print("Get current user");
+      //   if (currentUser != null) {
+      //     await UserActivityServices()
+      //         .add(
+      //           user: currentUser,
+      //           description:
+      //               "Update Profile Passowrd. Target: ${user.email} (ID: ${user.id})",
+      //           activityType: "user_update_password",
+      //           networkInfo: _networkInfo,
+      //           deviceInfoPlugin: _deviceInfoPlugin,
+      //         )
+      //         .then((value) => print("Activity Added"));
+      //     return true;
+      //   }
+      // });
+
+      // print("Activity: ${activity.toString()}");
 
       return true;
     } catch (e) {
