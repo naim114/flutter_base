@@ -50,7 +50,7 @@ class Security extends StatelessWidget {
             title: "Update Password",
             onTap: () => Navigator.of(context).push(
               MaterialPageRoute(
-                builder: (context) => const UpdatePassword(),
+                builder: (context) => UpdatePassword(user: user),
               ),
             ),
           ),

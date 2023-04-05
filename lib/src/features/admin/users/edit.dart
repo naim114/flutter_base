@@ -46,7 +46,7 @@ class EditUser extends StatelessWidget {
                   onTap: () => Navigator.of(context).push(
                     MaterialPageRoute(
                       builder: (context) =>
-                          const UpdatePassword(includeAuth: false),
+                          UpdatePassword(includeAuth: false, user: user),
                     ),
                   ),
                 ),

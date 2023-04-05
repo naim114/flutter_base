@@ -300,7 +300,7 @@ class UserServices {
         var digest = sha1.convert(bytes);
 
         // ignore: invalid_use_of_protected_member
-        if (oldPassword == user.password) {
+        if (email == user.email) {
           await _auth
               .signInWithEmailAndPassword(
             email: user.email,
@@ -309,15 +309,19 @@ class UserServices {
               .then((userCred) {
             print("Log In Success");
             if (userCred.user != null) {
+              // encrypt new password
+              var bytes = utf8.encode(newPassword);
+              var digest = sha1.convert(bytes);
+
               // update user cred at auth
               userCred.user
-                  ?.updatePassword(newPassword)
+                  ?.updatePassword(digest.toString())
                   .then((value) => print("Password Updated on Auth"));
 
               // update user on db
               _collectionRef
                   .doc(userCred.user?.uid)
-                  .update({'password': newPassword}).then(
+                  .update({'password': digest.toString()}).then(
                       (value) => print("Password Updated on Firestore"));
             }
           });
@@ -332,13 +336,17 @@ class UserServices {
             .onError((error, stackTrace) => throw Exception(error));
 
         if (userCred != null) {
+          // encrypt new password
+          var bytes = utf8.encode(newPassword);
+          var digest = sha1.convert(bytes);
+
           // update user cred at auth
-          await userCred.updatePassword(newPassword).then((value) {
+          await userCred.updatePassword(digest.toString()).then((value) {
             print("Password Updated on Auth");
             // update user on db
             return _collectionRef
                 .doc(userCred.uid)
-                .update({'password': newPassword})
+                .update({'password': digest.toString()})
                 .then((value) => print("Password Updated on Firestore"))
                 .onError((error, stackTrace) => throw Exception(error));
           }).onError((error, stackTrace) => throw Exception(error));
