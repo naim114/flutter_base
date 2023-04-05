@@ -1,5 +1,4 @@
 import 'package:country/country.dart';
-import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_base/src/model/user_model.dart';
 import 'package:flutter_base/src/services/helpers.dart';
@@ -7,7 +6,6 @@ import 'package:flutter_base/src/services/user_services.dart';
 import 'package:flutter_base/src/widgets/appbar/appbar_confirm_cancel.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
-import 'package:network_info_plus/network_info_plus.dart';
 
 import '../../../widgets/editor/image_uploader.dart';
 
@@ -54,7 +52,7 @@ class _ProfileState extends State<Profile> {
         onCancel: () => Navigator.pop(context),
         onConfirm: () async {
           dynamic result = await UserServices().updateDetails(
-            id: widget.user.id,
+            user: widget.user,
             name: nameController.text,
             birthday: birthdayController.text == ""
                 ? null

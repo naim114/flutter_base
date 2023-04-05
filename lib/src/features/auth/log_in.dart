@@ -1,15 +1,11 @@
-import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_base/src/features/auth/sign_up.dart';
-import 'package:flutter_base/src/features/main/index.dart';
-import 'package:flutter_base/src/model/user_model.dart';
 import 'package:flutter_base/src/services/helpers.dart';
 import 'package:flutter_base/src/widgets/appbar/custom_appbar.dart';
 import 'package:flutter_base/src/widgets/button/custom_button.dart';
 import 'package:flutter_base/src/widgets/typography/custom_textfield.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:network_info_plus/network_info_plus.dart';
 import '../../services/auth_services.dart';
 
 class LogIn extends StatefulWidget {

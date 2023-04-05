@@ -1,6 +1,4 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_base/src/features/auth/log_in.dart';
 import 'package:flutter_base/src/model/user_model.dart';
 import 'package:flutter_base/src/services/auth_services.dart';
 import 'package:flutter_base/src/services/helpers.dart';
@@ -29,8 +27,6 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  final FirebaseAuth _auth = FirebaseAuth.instance;
-
   MaterialColor primaryColorShades = const MaterialColor(
     0xFF643FDB,
     <int, Color>{
@@ -53,7 +49,6 @@ class _MyAppState extends State<MyApp> {
       initialData: null,
       value: AuthService().onAuthStateChanged,
       catchError: (context, error) {
-        // TODO try loadingbuilder? and try to print user here
         print('An error occurred: $error');
         return null;
       },

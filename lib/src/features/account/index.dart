@@ -1,4 +1,3 @@
-import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_base/src/features/account/about/index.dart';
@@ -9,7 +8,6 @@ import 'package:flutter_base/src/features/admin/index.dart';
 import 'package:flutter_base/src/features/admin/settings/index.dart';
 import 'package:flutter_base/src/services/helpers.dart';
 import 'package:flutter_base/src/widgets/typography/page_title_icon.dart';
-import 'package:network_info_plus/network_info_plus.dart';
 import 'package:provider/provider.dart';
 
 import '../../model/user_model.dart';

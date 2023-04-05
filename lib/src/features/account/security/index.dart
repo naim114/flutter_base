@@ -40,7 +40,8 @@ class Security extends StatelessWidget {
             title: "Update Email",
             onTap: () => Navigator.of(context).push(
               MaterialPageRoute(
-                builder: (context) => UpdateEmail(user: user),
+                builder: (context) =>
+                    UpdateEmail(user: user, includeAuth: false),
               ),
             ),
           ),

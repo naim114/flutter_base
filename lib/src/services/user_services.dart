@@ -131,7 +131,7 @@ class UserServices {
 
   // Update user details (name, birthday, phone, address, country)
   Future updateDetails({
-    required String id,
+    required UserModel user,
     required String? name,
     required DateTime? birthday,
     required String? phone,
@@ -139,7 +139,7 @@ class UserServices {
     required String countryNumber,
   }) async {
     try {
-      dynamic result = _collectionRef.doc(id).update({
+      dynamic result = _collectionRef.doc(user.id).update({
         'name': name,
         'birthday': birthday,
         'phone': phone,
@@ -150,15 +150,21 @@ class UserServices {
 
       print(result.toString());
 
-      final activity = await UserServices().get(id).then((user) {
-        if (user != null) {
-          return UserActivityServices().add(
-            user: user,
-            description: "Update Profile Details",
-            activityType: "update_profile",
-            networkInfo: _networkInfo,
-            deviceInfoPlugin: _deviceInfoPlugin,
-          );
+      final activity = await UserServices()
+          .get(_auth.currentUser!.uid)
+          .then((currentUser) async {
+        print("Get current user");
+        if (currentUser != null) {
+          await UserActivityServices()
+              .add(
+                user: currentUser,
+                description:
+                    "Update Profile Details. Target: ${user.email} (ID: ${user.id})",
+                activityType: "user_update_detail",
+                networkInfo: _networkInfo,
+                deviceInfoPlugin: _deviceInfoPlugin,
+              )
+              .then((value) => print("Activity Added"));
         }
       });
 
@@ -173,9 +179,10 @@ class UserServices {
     }
   }
 
+  // Updae user email
   Future updateEmail({
     required UserModel user,
-    required String oldEmail,
+    required String? oldEmail,
     required String newEmail,
     required String? password,
     required bool includeAuth,
@@ -209,24 +216,50 @@ class UserServices {
               }).then((value) => print("Email Updated on Firestore"));
             }
           });
-
-          return true;
         } else {
           throw Exception("Could not authorize credentials.");
         }
       } else {
         // w/o auth
+        // TODO test this code
+        User? userCred = await FirebaseAuth.instance
+            .userChanges()
+            .firstWhere((userCred) => userCred?.uid == user.id);
+
+        if (userCred != null) {
+          // update user cred at auth
+          userCred
+              .updateEmail(newEmail)
+              .then((value) => print("Email Updated on Auth"));
+
+          // update user on db
+          _collectionRef.doc(userCred.uid).update({
+            'email': newEmail,
+          }).then((value) => print("Email Updated on Firestore"));
+        }
       }
 
-      final activity = await UserActivityServices().add(
-        user: user,
-        description: "Update Profile Details",
-        activityType: "update_profile",
-        networkInfo: _networkInfo,
-        deviceInfoPlugin: _deviceInfoPlugin,
-      );
+      final activity = await UserServices()
+          .get(_auth.currentUser!.uid)
+          .then((currentUser) async {
+        print("Get current user");
+        if (currentUser != null) {
+          await UserActivityServices()
+              .add(
+                user: currentUser,
+                description:
+                    "Update Profile Email. Target: ${user.email} (ID: ${user.id})",
+                activityType: "user_update_email",
+                networkInfo: _networkInfo,
+                deviceInfoPlugin: _deviceInfoPlugin,
+              )
+              .then((value) => print("Activity Added"));
+        }
+      });
 
       print("Activity: ${activity.toString()}");
+
+      return true;
     } catch (e) {
       print(e.toString());
 

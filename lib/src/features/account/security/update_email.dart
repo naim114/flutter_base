@@ -57,7 +57,23 @@ class _UpdateEmailState extends State<UpdateEmail> {
             }
           } else {
             if (_validateEmptyField() && validateEmail(newEmailController)) {
-              //
+              if (_validateEmptyField() && validateEmail(newEmailController)) {
+                final result = await UserServices().updateEmail(
+                  user: widget.user,
+                  oldEmail: oldEmailController.text,
+                  newEmail: newEmailController.text,
+                  password: passwordController.text,
+                  includeAuth: true,
+                );
+
+                if (result == true && context.mounted) {
+                  Fluttertoast.showToast(msg: "Email Updated!");
+                  Navigator.pop(context);
+                  Fluttertoast.showToast(
+                      msg:
+                          "Close application and reopen if no changes happen.");
+                }
+              }
             }
           }
         },
