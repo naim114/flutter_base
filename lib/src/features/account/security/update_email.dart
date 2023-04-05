@@ -60,10 +60,9 @@ class _UpdateEmailState extends State<UpdateEmail> {
               if (_validateEmptyField() && validateEmail(newEmailController)) {
                 final result = await UserServices().updateEmail(
                   user: widget.user,
-                  oldEmail: oldEmailController.text,
                   newEmail: newEmailController.text,
                   password: passwordController.text,
-                  includeAuth: true,
+                  includeAuth: false,
                 );
 
                 if (result == true && context.mounted) {

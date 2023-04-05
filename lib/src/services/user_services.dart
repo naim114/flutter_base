@@ -182,9 +182,9 @@ class UserServices {
   // Updae user email
   Future updateEmail({
     required UserModel user,
-    required String? oldEmail,
+    String? oldEmail,
     required String newEmail,
-    required String? password,
+    String? password,
     required bool includeAuth,
   }) async {
     try {
@@ -228,14 +228,13 @@ class UserServices {
 
         if (userCred != null) {
           // update user cred at auth
-          userCred
-              .updateEmail(newEmail)
-              .then((value) => print("Email Updated on Auth"));
-
-          // update user on db
-          _collectionRef.doc(userCred.uid).update({
-            'email': newEmail,
-          }).then((value) => print("Email Updated on Firestore"));
+          userCred.updateEmail(newEmail).then((value) {
+            print("Email Updated on Auth");
+            // update user on db
+            return _collectionRef.doc(userCred.uid).update({
+              'email': newEmail,
+            }).then((value) => print("Email Updated on Firestore"));
+          });
         }
       }
 
