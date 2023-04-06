@@ -157,7 +157,7 @@ class _SignUpState extends State<SignUp> {
                           // if validation success
 
                           try {
-                            var result = await _authService.signUp(
+                            final result = await _authService.signUp(
                               name: nameController.text,
                               email: emailController.text,
                               password: passwordController.text,
@@ -171,6 +171,9 @@ class _SignUpState extends State<SignUp> {
                             } else {
                               setState(() =>
                                   _buttonChild = const Text("Register Now"));
+
+                              final signOut = _authService.signOut(result);
+                              print("Sign Out: ${signOut.toString()}");
 
                               if (context.mounted) {
                                 Fluttertoast.showToast(

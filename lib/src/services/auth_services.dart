@@ -96,7 +96,11 @@ class AuthService {
 
       print("Added: $addedUser");
 
-      return addedUser;
+      if (addedUser != null) {
+        return addedUser;
+      } else {
+        return null;
+      }
     } catch (e) {
       Fluttertoast.showToast(
           msg: e.toString().contains(
