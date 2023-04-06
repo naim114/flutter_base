@@ -2,7 +2,7 @@ import 'package:flutter_base/src/model/user_model.dart';
 
 class UserActivityModel {
   final String id;
-  final UserModel user;
+  final UserModel? user;
   final String description;
   final String activityType;
 
@@ -25,7 +25,7 @@ class UserActivityModel {
 
   UserActivityModel({
     required this.id,
-    required this.user,
+    this.user,
     required this.description,
     required this.activityType,
     required this.createdAt,
@@ -40,6 +40,11 @@ class UserActivityModel {
     this.wifiSubmask,
     this.deviceInfo,
   });
+
+  @override
+  String toString() {
+    return 'UserModel(id: $id, user: $user, description: $description, activityType: $activityType, createdAt: $createdAt, updatedAt: $updatedAt, deletedAt: $deletedAt, wifiName: $wifiName, wifiBSSID: $wifiBSSID, wifiIPv4: $wifiIPv4, wifiIPv6: $wifiIPv6, wifiGatewayIP: $wifiGatewayIP, wifiBroadcast: $wifiBroadcast, wifiSubmask: $wifiSubmask, deviceInfo: $deviceInfo)';
+  }
 
   UserActivityModel.fromJson(Map<String, Object?> json)
       : this(
@@ -63,7 +68,7 @@ class UserActivityModel {
   Map<String, Object?> toJson() {
     return {
       'id': id,
-      'user': user.id,
+      'user': user!.id,
       'description': description,
       'activityType': activityType,
       'createdAt': createdAt,

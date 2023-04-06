@@ -1,10 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_base/src/features/admin/users/user_activity.dart';
+import 'package:flutter_base/src/model/user_model.dart';
+import 'package:flutter_base/src/services/user_activity_services.dart';
 
+import '../../../model/user_activity_model.dart';
 import '../../../services/helpers.dart';
 import '../../../widgets/list_tile/list_tile_activity.dart';
 
 class LoginActivity extends StatelessWidget {
-  const LoginActivity({super.key});
+  final UserModel user;
+
+  const LoginActivity({super.key, required this.user});
 
   @override
   Widget build(BuildContext context) {
@@ -27,23 +33,35 @@ class LoginActivity extends StatelessWidget {
           ),
         ),
       ),
-      body: ListView(
-        children: [
-          listTileActivity(
-            context: context,
-            deviceName: 'iPhone X',
-            dateTime: '15 March 2023',
-            deviceInfo: 'blablabalbalbablalab',
-            networkInfo: 'blablabalbalbablalab',
-          ),
-          listTileActivity(
-            context: context,
-            deviceName: 'Samsung Something',
-            dateTime: '11 December 2020',
-            deviceInfo: 'blablabalbalbablalab',
-            networkInfo: 'blablabalbalbablalab',
-          ),
-        ],
+      body: FutureBuilder<List<UserActivityModel?>>(
+        future: UserActivityServices().getBy('activityType', 'sign_in'),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(child: CircularProgressIndicator());
+          } else if (snapshot.error != null) {
+            print(snapshot.error.toString());
+          } else if (!snapshot.hasData) {
+            return const Center(child: Text("No data to display"));
+          }
+
+          List<UserActivityModel?>? dataList = snapshot.data;
+
+          return ListView(
+            children: List.generate(
+              dataList!.length,
+              (index) {
+                UserActivityModel? activity = dataList.elementAt(index);
+
+                return activity == null
+                    ? const SizedBox()
+                    : listTileActivity(
+                        context: context,
+                        activity: activity,
+                      );
+              },
+            ),
+          );
+        },
       ),
     );
   }

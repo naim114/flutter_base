@@ -28,15 +28,11 @@ class UserActivity extends StatelessWidget {
       ),
       body: ListView(
         children: [
-          listTileActivity(
-            context: context,
-            action: "Update Email",
-            deviceName:
-                'Samsung Something Samsung Something Samsung Something Samsung Something',
-            dateTime: '11 December 2020',
-            deviceInfo: 'blablabalbalbablalab',
-            networkInfo: 'blablabalbalbablalab',
-          ),
+          // listTileActivity(
+          //       context: context,
+          //       activity: list.elementAt(index),
+          //       includeNetworkInfo: true,
+          //     );
         ],
       ),
     );

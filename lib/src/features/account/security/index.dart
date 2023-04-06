@@ -61,7 +61,7 @@ class Security extends StatelessWidget {
             title: "Login activity",
             onTap: () => Navigator.of(context).push(
               MaterialPageRoute(
-                builder: (context) => const LoginActivity(),
+                builder: (context) => LoginActivity(user: user),
               ),
             ),
           ),

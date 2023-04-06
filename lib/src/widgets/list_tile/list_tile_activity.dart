@@ -1,33 +1,34 @@
 import 'package:flutter/material.dart';
-
+import 'package:intl/intl.dart';
+import '../../model/user_activity_model.dart';
 import '../../services/helpers.dart';
 
 Widget listTileActivity({
   required BuildContext context,
-  required String deviceName,
-  required String dateTime,
-  required String deviceInfo,
-  required String networkInfo,
-  String action = "",
+  required UserActivityModel activity,
+  bool includeNetworkInfo = false,
 }) =>
     ExpansionTile(
       title: Text(
-        action != "" ? action : deviceName,
+        activity.activityType == "sign_in"
+            ? activity.deviceInfo ?? "None"
+            : activity.description,
         style: const TextStyle(fontWeight: FontWeight.bold),
         overflow: TextOverflow.ellipsis,
       ),
-      subtitle: Text(dateTime),
+      subtitle:
+          Text(DateFormat('dd/MM/yyyy HH:mm:ss').format(activity.createdAt)),
       children: <Widget>[
-        action != ""
+        activity.activityType != "sign_in"
             ? ListTile(
                 title: RichText(
                   text: TextSpan(
                     style: TextStyle(color: getColorByBackground(context)),
                     children: <TextSpan>[
                       const TextSpan(
-                          text: 'Action: \n',
+                          text: 'Description: \n',
                           style: TextStyle(fontWeight: FontWeight.bold)),
-                      TextSpan(text: action),
+                      TextSpan(text: activity.description),
                     ],
                   ),
                 ),
@@ -41,7 +42,9 @@ Widget listTileActivity({
                 const TextSpan(
                     text: 'Date Time: \n',
                     style: TextStyle(fontWeight: FontWeight.bold)),
-                TextSpan(text: dateTime),
+                TextSpan(
+                    text: DateFormat('dd/MM/yyyy HH:mm:ss')
+                        .format(activity.createdAt)),
               ],
             ),
           ),
@@ -54,23 +57,107 @@ Widget listTileActivity({
                 const TextSpan(
                     text: 'Device info: \n',
                     style: TextStyle(fontWeight: FontWeight.bold)),
-                TextSpan(text: deviceInfo),
+                TextSpan(text: activity.deviceInfo),
               ],
             ),
           ),
         ),
-        ListTile(
-          title: RichText(
-            text: TextSpan(
-              style: TextStyle(color: getColorByBackground(context)),
-              children: <TextSpan>[
-                const TextSpan(
-                    text: 'Network info: \n',
-                    style: TextStyle(fontWeight: FontWeight.bold)),
-                TextSpan(text: networkInfo),
-              ],
-            ),
-          ),
-        ),
+        !includeNetworkInfo
+            ? const SizedBox()
+            : Column(
+                children: [
+                  ListTile(
+                    title: RichText(
+                      text: TextSpan(
+                        style: TextStyle(color: getColorByBackground(context)),
+                        children: <TextSpan>[
+                          const TextSpan(
+                              text: 'Wifi Name: \n',
+                              style: TextStyle(fontWeight: FontWeight.bold)),
+                          TextSpan(text: activity.wifiName),
+                        ],
+                      ),
+                    ),
+                  ),
+                  ListTile(
+                    title: RichText(
+                      text: TextSpan(
+                        style: TextStyle(color: getColorByBackground(context)),
+                        children: <TextSpan>[
+                          const TextSpan(
+                              text: 'Wifi BSSID: \n',
+                              style: TextStyle(fontWeight: FontWeight.bold)),
+                          TextSpan(text: activity.wifiBSSID),
+                        ],
+                      ),
+                    ),
+                  ),
+                  ListTile(
+                    title: RichText(
+                      text: TextSpan(
+                        style: TextStyle(color: getColorByBackground(context)),
+                        children: <TextSpan>[
+                          const TextSpan(
+                              text: 'Wifi IPv4: \n',
+                              style: TextStyle(fontWeight: FontWeight.bold)),
+                          TextSpan(text: activity.wifiIPv4),
+                        ],
+                      ),
+                    ),
+                  ),
+                  ListTile(
+                    title: RichText(
+                      text: TextSpan(
+                        style: TextStyle(color: getColorByBackground(context)),
+                        children: <TextSpan>[
+                          const TextSpan(
+                              text: 'Wifi IPv6: \n',
+                              style: TextStyle(fontWeight: FontWeight.bold)),
+                          TextSpan(text: activity.wifiIPv6),
+                        ],
+                      ),
+                    ),
+                  ),
+                  ListTile(
+                    title: RichText(
+                      text: TextSpan(
+                        style: TextStyle(color: getColorByBackground(context)),
+                        children: <TextSpan>[
+                          const TextSpan(
+                              text: 'Wifi GatewayIP: \n',
+                              style: TextStyle(fontWeight: FontWeight.bold)),
+                          TextSpan(text: activity.wifiGatewayIP),
+                        ],
+                      ),
+                    ),
+                  ),
+                  ListTile(
+                    title: RichText(
+                      text: TextSpan(
+                        style: TextStyle(color: getColorByBackground(context)),
+                        children: <TextSpan>[
+                          const TextSpan(
+                              text: 'Wifi Broadcast: \n',
+                              style: TextStyle(fontWeight: FontWeight.bold)),
+                          TextSpan(text: activity.wifiBroadcast),
+                        ],
+                      ),
+                    ),
+                  ),
+                  ListTile(
+                    title: RichText(
+                      text: TextSpan(
+                        style: TextStyle(color: getColorByBackground(context)),
+                        children: <TextSpan>[
+                          const TextSpan(
+                              text: 'Wifi Submask: \n',
+                              style: TextStyle(fontWeight: FontWeight.bold)),
+                          TextSpan(text: activity.wifiSubmask),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
+              ),
       ],
     );

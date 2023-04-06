@@ -20,16 +20,21 @@ class UserServices {
   final NetworkInfo _networkInfo = NetworkInfo();
 
   // get all users
-  Future<List<Future<UserModel?>>> getAll() async {
+  Future<List<UserModel?>> getAll() async {
     // Get docs from collection reference
     QuerySnapshot querySnapshot = await _collectionRef.get();
 
-    // Get data from docs and convert map to List of Role Model
-    final allData = querySnapshot.docs
-        .map((doc) => UserServices().fromQueryDocumentSnapshot(doc))
-        .toList();
+    if (querySnapshot.docs.isNotEmpty) {
+      List<DocumentSnapshot> docList = querySnapshot.docs;
 
-    return allData;
+      List<Future<UserModel?>> futures = docList
+          .map((doc) => UserServices().fromDocumentSnapshot(doc))
+          .toList();
+
+      return await Future.wait(futures);
+    } else {
+      return List.empty();
+    }
   }
 
   // get user by id

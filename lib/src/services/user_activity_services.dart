@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter_base/src/model/user_activity_model.dart';
+import 'package:flutter_base/src/services/user_services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'dart:async';
 import 'dart:developer' as developer;
@@ -17,11 +18,106 @@ class UserActivityServices {
   final CollectionReference _collectionRef =
       FirebaseFirestore.instance.collection('UserActivity');
 
-  // get
+  // get all
+  Future<List<UserActivityModel?>> getAll() async {
+    // Get docs from collection reference
+    QuerySnapshot querySnapshot = await _collectionRef.get();
 
-  // getAll
+    if (querySnapshot.docs.isNotEmpty) {
+      List<DocumentSnapshot> docList = querySnapshot.docs;
+
+      List<Future<UserActivityModel?>> futures = docList
+          .map((doc) => UserActivityServices().fromDocumentSnapshot(doc))
+          .toList();
+
+      return await Future.wait(futures);
+    } else {
+      return List.empty();
+    }
+  }
+
+  // get
+  Future<UserActivityModel?> get(String id) {
+    return _collectionRef.doc(id).get().then((DocumentSnapshot doc) {
+      if (doc.exists) {
+        return UserActivityServices().fromDocumentSnapshot(doc);
+      } else {
+        print('Document does not exist on the database');
+        return null;
+      }
+    });
+  }
 
   // getBy
+  Future<List<UserActivityModel?>> getBy(String fieldName, String value) async {
+    List<UserActivityModel?> dataList = List.empty(growable: true);
+
+    QuerySnapshot querySnapshot = await _collectionRef.get();
+
+    final List<QueryDocumentSnapshot<Object?>> allDoc =
+        querySnapshot.docs.toList();
+
+    for (var doc in allDoc) {
+      if (doc.get(fieldName) == value) {
+        UserActivityModel? activity =
+            await UserActivityServices().fromDocumentSnapshot(doc);
+
+        if (activity != null) {
+          dataList.add(activity);
+        }
+      }
+    }
+
+    return dataList;
+  }
+
+  // convert DocumentSnapshot to model object
+  Future<UserActivityModel?> fromDocumentSnapshot(
+      DocumentSnapshot<Object?> doc) async {
+    return UserActivityModel(
+      id: doc.get('id'),
+      user: await UserServices().get(doc.get('user')),
+      description: doc.get('description'),
+      activityType: doc.get('activityType'),
+      createdAt: doc.get('createdAt').toDate(),
+      updatedAt: doc.get('updatedAt').toDate(),
+      deletedAt: doc.get('deletedAt') == null
+          ? doc.get('deletedAt')
+          : doc.get('deletedAt').toDate(),
+      wifiName: doc.get('wifiName'),
+      wifiBSSID: doc.get('wifiBSSID'),
+      wifiIPv4: doc.get('wifiIPv4'),
+      wifiIPv6: doc.get('wifiIPv6'),
+      wifiGatewayIP: doc.get('wifiGatewayIP'),
+      wifiBroadcast: doc.get('wifiBroadcast'),
+      wifiSubmask: doc.get('wifiSubmask'),
+      deviceInfo: doc.get('deviceInfo'),
+    );
+  }
+
+  // convert QueryDocumentSnapshot to model object
+  Future<UserActivityModel?> fromQueryDocumentSnapshot(
+      QueryDocumentSnapshot<Object?> doc) async {
+    return UserActivityModel(
+      id: doc.get('id'),
+      user: await UserServices().get(doc.get('user')),
+      description: doc.get('description'),
+      activityType: doc.get('activityType'),
+      createdAt: doc.get('createdAt').toDate(),
+      updatedAt: doc.get('updatedAt').toDate(),
+      deletedAt: doc.get('deletedAt') == null
+          ? doc.get('deletedAt')
+          : doc.get('deletedAt').toDate(),
+      wifiName: doc.get('wifiName'),
+      wifiBSSID: doc.get('wifiBSSID'),
+      wifiIPv4: doc.get('wifiIPv4'),
+      wifiIPv6: doc.get('wifiIPv6'),
+      wifiGatewayIP: doc.get('wifiGatewayIP'),
+      wifiBroadcast: doc.get('wifiBroadcast'),
+      wifiSubmask: doc.get('wifiSubmask'),
+      deviceInfo: doc.get('deviceInfo'),
+    );
+  }
 
   // add activity
   Future add({
