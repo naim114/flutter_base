@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:country/country.dart';
 import 'package:crypto/crypto.dart';
@@ -129,7 +128,7 @@ class UserServices {
     );
   }
 
-  // Update user details (name, birthday, phone, address, country)
+  // update user details (name, birthday, phone, address, country)
   Future updateDetails({
     required UserModel user,
     required String? name,
@@ -168,8 +167,6 @@ class UserServices {
         }
       });
 
-      print("Activity: ${activity.toString()}");
-
       return true;
     } catch (e) {
       print(e.toString());
@@ -179,7 +176,7 @@ class UserServices {
     }
   }
 
-  // Updae user email
+  // update user email
   Future updateEmail({
     required UserModel user,
     String? oldEmail,
@@ -259,8 +256,6 @@ class UserServices {
         }
       });
 
-      print("Activity: ${activity.toString()}");
-
       return true;
     } catch (e) {
       print(e.toString());
@@ -284,6 +279,7 @@ class UserServices {
     }
   }
 
+  // update user password
   Future updatePassword({
     required UserModel user,
     String? email,
@@ -353,26 +349,24 @@ class UserServices {
         }
       }
 
-      // final activity = await UserServices()
-      //     .get(_auth.currentUser!.uid)
-      //     .then((currentUser) async {
-      //   print("Get current user");
-      //   if (currentUser != null) {
-      //     await UserActivityServices()
-      //         .add(
-      //           user: currentUser,
-      //           description:
-      //               "Update Profile Passowrd. Target: ${user.email} (ID: ${user.id})",
-      //           activityType: "user_update_password",
-      //           networkInfo: _networkInfo,
-      //           deviceInfoPlugin: _deviceInfoPlugin,
-      //         )
-      //         .then((value) => print("Activity Added"));
-      //     return true;
-      //   }
-      // });
-
-      // print("Activity: ${activity.toString()}");
+      final activity = await UserServices()
+          .get(_auth.currentUser!.uid)
+          .then((currentUser) async {
+        print("Get current user");
+        if (currentUser != null) {
+          await UserActivityServices()
+              .add(
+                user: currentUser,
+                description:
+                    "Update Profile Passowrd. Target: ${user.email} (ID: ${user.id})",
+                activityType: "user_update_password",
+                networkInfo: _networkInfo,
+                deviceInfoPlugin: _deviceInfoPlugin,
+              )
+              .then((value) => print("Activity Added"));
+          return true;
+        }
+      });
 
       return true;
     } catch (e) {

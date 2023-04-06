@@ -5,10 +5,13 @@ import 'package:flutter_base/src/features/notification/index.dart';
 import 'package:flutter_base/src/services/helpers.dart';
 import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 
+import '../../model/user_model.dart';
 import '../news/index.dart';
 
 class FrontFrame extends StatefulWidget {
-  const FrontFrame({super.key});
+  const FrontFrame({super.key, required this.user});
+
+  final UserModel user;
 
   @override
   State<FrontFrame> createState() => _FrontFrameState();
@@ -28,7 +31,7 @@ class _FrontFrameState extends State<FrontFrame> {
     return [
       News(mainContext: context),
       Notifications(mainContext: context),
-      Account(mainContext: context),
+      Account(mainContext: context, user: widget.user),
     ];
   }
 

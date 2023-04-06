@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_base/src/model/user_model.dart';
 import 'package:flutter_base/src/services/auth_services.dart';
@@ -47,16 +49,17 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return StreamProvider<UserModel?>.value(
       initialData: null,
+      lazy: true,
       value: AuthService().onAuthStateChanged,
       catchError: (context, error) {
         print('An error occurred: $error');
         return null;
       },
-      // updateShouldNotify: (previous, current) {
-      //   print('Previous Stream UserModel: ${previous.toString()}');
-      //   print('Current Stream UserModel: ${current.toString()}');
-      //   return true;
-      // },
+      updateShouldNotify: (previous, current) {
+        print('Previous Stream UserModel: ${previous.toString()}');
+        print('Current Stream UserModel: ${current.toString()}');
+        return true;
+      },
       builder: (context, snapshot) {
         return ThemeModeHandler(
           manager: MyThemeModeManager(),

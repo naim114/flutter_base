@@ -11,7 +11,7 @@ class Wrapper extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final user = Provider.of<UserModel?>(context);
+    final user = context.watch<UserModel?>();
 
     return FutureBuilder(
       future: Future.delayed(const Duration(seconds: 3)),
@@ -29,7 +29,11 @@ class Wrapper extends StatelessWidget {
             ),
           );
         } else {
-          return user == null ? const LogIn() : const FrontFrame();
+          if (user == null) {
+            return const LogIn();
+          } else {
+            return FrontFrame(user: user);
+          }
         }
       },
     );

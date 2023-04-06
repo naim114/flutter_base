@@ -11,6 +11,7 @@ class Security extends StatelessWidget {
   const Security({super.key, required this.user});
 
   final UserModel user;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

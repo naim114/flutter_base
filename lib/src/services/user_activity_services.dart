@@ -17,7 +17,13 @@ class UserActivityServices {
   final CollectionReference _collectionRef =
       FirebaseFirestore.instance.collection('UserActivity');
 
-  // Add activity
+  // get
+
+  // getAll
+
+  // getBy
+
+  // add activity
   Future add({
     required UserModel user,
     required String description,
@@ -114,6 +120,7 @@ class UserActivityServices {
     }
   }
 
+  // get network info
   Future<Map<String, String?>> getNetworkInfo(NetworkInfo networkInfo) async {
     String? wifiName,
         wifiBSSID,
@@ -217,6 +224,7 @@ class UserActivityServices {
     };
   }
 
+  // get device info
   Future<Map<String, dynamic>> getDeviceInfo(
       DeviceInfoPlugin deviceInfoPlugin) async {
     var deviceData = <String, dynamic>{};
@@ -248,6 +256,7 @@ class UserActivityServices {
     return deviceData;
   }
 
+  // read device info
   Map<String, dynamic> _readAndroidBuildData(AndroidDeviceInfo build) {
     return <String, dynamic>{
       'deviceInfo':

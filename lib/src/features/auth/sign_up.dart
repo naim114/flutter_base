@@ -5,6 +5,10 @@ import 'package:flutter_base/src/services/helpers.dart';
 import 'package:flutter_base/src/widgets/appbar/custom_appbar.dart';
 import 'package:flutter_base/src/widgets/button/custom_button.dart';
 import 'package:flutter_base/src/widgets/typography/custom_textfield.dart';
+import 'package:flutter_base/wrapper.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+
+import '../main/index.dart';
 
 class SignUp extends StatefulWidget {
   const SignUp({super.key});
@@ -22,7 +26,7 @@ class _SignUpState extends State<SignUp> {
   final confirmPasswordController = TextEditingController();
 
   bool _submitted = false;
-  Widget _buttonChild = const Text('Sign Up Now');
+  Widget _buttonChild = const Text('Register Now');
 
   @override
   void dispose() {
@@ -147,24 +151,40 @@ class _SignUpState extends State<SignUp> {
                             validatePassword(passwordController) &&
                             _validateConfirmPassword()) {
                           // if validation success
-                          dynamic result = await _authService.signUp(
-                            name: nameController.text,
-                            email: emailController.text,
-                            password: passwordController.text,
-                          );
 
-                          print(result);
-                          if (result == null || result == false) {
-                            setState(
-                                () => _buttonChild = const Text("Sign Up Now"));
-                          } else if (result == true && context.mounted) {
-                            setState(
-                                () => _buttonChild = const Text("Sign Up Now"));
-                            Navigator.pop(context);
+                          try {
+                            var result = await _authService.signUp(
+                              name: nameController.text,
+                              email: emailController.text,
+                              password: passwordController.text,
+                            );
+
+                            print(result);
+
+                            if (result == null) {
+                              setState(() =>
+                                  _buttonChild = const Text("Register Now"));
+                            } else {
+                              setState(() =>
+                                  _buttonChild = const Text("Register Now"));
+
+                              if (context.mounted) {
+                                Navigator.of(context).pushAndRemoveUntil(
+                                  MaterialPageRoute(
+                                    builder: (context) =>
+                                        FrontFrame(user: result),
+                                  ),
+                                  (route) => false,
+                                );
+                              }
+                            }
+                          } catch (e) {
+                            print(e.toString());
+                            Fluttertoast.showToast(msg: e.toString());
                           }
                         } else {
                           setState(
-                              () => _buttonChild = const Text("Sign Up Now"));
+                              () => _buttonChild = const Text("Register Now"));
                         }
                       },
                     ),

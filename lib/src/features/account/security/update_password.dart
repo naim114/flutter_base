@@ -49,7 +49,6 @@ class _UpdatePasswordState extends State<UpdatePassword> {
           print("oldPasswordController: ${oldPasswordController.text}");
           print("emailController: ${emailController.text}");
 
-          // TODO test this
           if (widget.includeAuth) {
             if (_validateEmptyFieldWAuth() &&
                 validateEmail(emailController) &&

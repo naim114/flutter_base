@@ -20,15 +20,25 @@ class AuthService {
 
   // auth change user stream
   Stream<UserModel?> get onAuthStateChanged {
-    return _auth.authStateChanges().asyncMap((User? user) {
-      return user == null
-          ? null
-          : UserServices().getUserModelFromFirebase(user);
+    return _auth.authStateChanges().asyncMap((User? user) async {
+      if (user == null) {
+        return null;
+      } else {
+        try {
+          final tokenChanges = _auth.idTokenChanges();
+          print("tokenChanges: ${tokenChanges.toString()}");
+
+          return await UserServices().getUserModelFromFirebase(user);
+        } catch (e) {
+          print(e.toString());
+          return null;
+        }
+      }
     });
   }
 
-  //sign up with email & password
-  Future signUp({
+  // sign up with email & password
+  Future<UserModel?> signUp({
     required String name,
     required String email,
     required String password,
@@ -51,17 +61,19 @@ class AuthService {
       final userRole = await RoleServices().getBy('name', 'user');
 
       // Add to firestore
-      await _db.collection("User").doc(user.uid).set(
-            UserModel(
-              name: name,
-              createdAt: DateTime.now(),
-              email: email,
-              password: digest.toString(),
-              role: userRole.first,
-              id: user.uid,
-              updatedAt: DateTime.now(),
-            ).toJson(),
-          );
+      if (userRole.isNotEmpty) {
+        await _db.collection("User").doc(user.uid).set(
+              UserModel(
+                name: name,
+                createdAt: DateTime.now(),
+                email: email,
+                password: digest.toString(),
+                role: userRole.first,
+                id: user.uid,
+                updatedAt: DateTime.now(),
+              ).toJson(),
+            );
+      }
 
       final activity = await UserServices().get(user.uid).then((user) {
         if (user != null) {
@@ -75,11 +87,10 @@ class AuthService {
         }
       });
 
-      print("Activity: ${activity.toString()}");
-
       Fluttertoast.showToast(
           msg: "Sign up success! Please log in first before continue.");
-      return true;
+
+      return await UserServices().get(user.uid);
     } catch (e) {
       Fluttertoast.showToast(
           msg: e.toString().contains(
@@ -87,7 +98,7 @@ class AuthService {
               ? "The email address is already in use by another account."
               : e.toString());
 
-      return false;
+      return null;
     }
   }
 
@@ -119,8 +130,6 @@ class AuthService {
             );
           }
         });
-
-        print("Activity: ${activity.toString()}");
       });
     } catch (e) {
       print(e.toString());
@@ -130,7 +139,7 @@ class AuthService {
     }
   }
 
-  //sing out
+  //sign out
   Future signOut(UserModel user) async {
     try {
       return await _auth.signOut().then((userCred) async {
@@ -147,8 +156,6 @@ class AuthService {
             }
           },
         );
-
-        print("Activity: ${activity.toString()}");
       });
     } catch (e) {
       print(e.toString());
