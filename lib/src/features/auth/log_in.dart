@@ -114,6 +114,8 @@ class _LogInState extends State<LogIn> {
                             passwordController.text,
                           );
 
+                          print("Log In: ${result.toString()}");
+
                           if (result != null && result == false) {
                             Fluttertoast.showToast(
                                 msg: "Could not sign in with credentials");

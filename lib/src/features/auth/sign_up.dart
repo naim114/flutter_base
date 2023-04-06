@@ -1,5 +1,8 @@
+import 'dart:async';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_base/src/model/user_model.dart';
 import 'package:flutter_base/src/services/auth_services.dart';
 import 'package:flutter_base/src/services/helpers.dart';
 import 'package:flutter_base/src/widgets/appbar/custom_appbar.dart';
@@ -7,6 +10,7 @@ import 'package:flutter_base/src/widgets/button/custom_button.dart';
 import 'package:flutter_base/src/widgets/typography/custom_textfield.dart';
 import 'package:flutter_base/wrapper.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:provider/provider.dart';
 
 import '../main/index.dart';
 
@@ -159,7 +163,7 @@ class _SignUpState extends State<SignUp> {
                               password: passwordController.text,
                             );
 
-                            print(result);
+                            print("Result: $result");
 
                             if (result == null) {
                               setState(() =>
@@ -169,13 +173,10 @@ class _SignUpState extends State<SignUp> {
                                   _buttonChild = const Text("Register Now"));
 
                               if (context.mounted) {
-                                Navigator.of(context).pushAndRemoveUntil(
-                                  MaterialPageRoute(
-                                    builder: (context) =>
-                                        FrontFrame(user: result),
-                                  ),
-                                  (route) => false,
-                                );
+                                Fluttertoast.showToast(
+                                    msg:
+                                        "Please log in first before continue.");
+                                Navigator.pop(context);
                               }
                             }
                           } catch (e) {

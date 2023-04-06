@@ -32,7 +32,7 @@ class Wrapper extends StatelessWidget {
           if (user == null) {
             return const LogIn();
           } else {
-            return FrontFrame(user: user);
+            return const FrontFrame();
           }
         }
       },

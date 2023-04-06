@@ -25,6 +25,9 @@ class AuthService {
         return null;
       } else {
         try {
+          final authStateChanges = _auth.authStateChanges();
+          print("authStateChanges: ${authStateChanges.toString()}");
+
           final tokenChanges = _auth.idTokenChanges();
           print("tokenChanges: ${tokenChanges.toString()}");
 
@@ -75,7 +78,7 @@ class AuthService {
             );
       }
 
-      final activity = await UserServices().get(user.uid).then((user) {
+      await UserServices().get(user.uid).then((user) {
         if (user != null) {
           return UserActivityServices().add(
             user: user,
@@ -87,10 +90,13 @@ class AuthService {
         }
       });
 
-      Fluttertoast.showToast(
-          msg: "Sign up success! Please log in first before continue.");
+      Fluttertoast.showToast(msg: "Sign up success!");
 
-      return await UserServices().get(user.uid);
+      final addedUser = await UserServices().get(user.uid);
+
+      print("Added: $addedUser");
+
+      return addedUser;
     } catch (e) {
       Fluttertoast.showToast(
           msg: e.toString().contains(
