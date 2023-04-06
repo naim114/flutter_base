@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_base/src/features/admin/users/user_activity.dart';
 import 'package:flutter_base/src/model/user_model.dart';
 import 'package:flutter_base/src/services/user_activity_services.dart';
 
@@ -34,7 +33,8 @@ class LoginActivity extends StatelessWidget {
         ),
       ),
       body: FutureBuilder<List<UserActivityModel?>>(
-        future: UserActivityServices().getBy('activityType', 'sign_in'),
+        future: UserActivityServices()
+            .getByFromUser('activityType', 'sign_in', user),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(child: CircularProgressIndicator());

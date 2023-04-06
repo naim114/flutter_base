@@ -101,7 +101,7 @@ class _AccountState extends State<Account> {
                     ),
                   ),
                   // ADMIN ONLY
-                  user.role?.name == "user"
+                  user.role!.name == "user"
                       ? const SizedBox()
                       : Column(
                           crossAxisAlignment: CrossAxisAlignment.start,

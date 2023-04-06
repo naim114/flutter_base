@@ -71,6 +71,30 @@ class UserActivityServices {
     return dataList;
   }
 
+  // getByFromUser
+  Future<List<UserActivityModel?>> getByFromUser(
+      String fieldName, String value, UserModel user) async {
+    List<UserActivityModel?> dataList = List.empty(growable: true);
+
+    QuerySnapshot querySnapshot = await _collectionRef.get();
+
+    final List<QueryDocumentSnapshot<Object?>> allDoc =
+        querySnapshot.docs.toList();
+
+    for (var doc in allDoc) {
+      if (doc.get('user') == user.id && doc.get(fieldName) == value) {
+        UserActivityModel? activity =
+            await UserActivityServices().fromDocumentSnapshot(doc);
+
+        if (activity != null) {
+          dataList.add(activity);
+        }
+      }
+    }
+
+    return dataList;
+  }
+
   // convert DocumentSnapshot to model object
   Future<UserActivityModel?> fromDocumentSnapshot(
       DocumentSnapshot<Object?> doc) async {

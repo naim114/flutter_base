@@ -154,7 +154,7 @@ class UserServices {
 
       print(result.toString());
 
-      final activity = await UserServices()
+      await UserServices()
           .get(_auth.currentUser!.uid)
           .then((currentUser) async {
         print("Get current user");
@@ -242,7 +242,7 @@ class UserServices {
         }
       }
 
-      final activity = await UserServices()
+      await UserServices()
           .get(_auth.currentUser!.uid)
           .then((currentUser) async {
         print("Get current user");
@@ -354,7 +354,7 @@ class UserServices {
         }
       }
 
-      final activity = await UserServices()
+      await UserServices()
           .get(_auth.currentUser!.uid)
           .then((currentUser) async {
         print("Get current user");
