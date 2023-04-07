@@ -1,22 +1,67 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_base/src/model/user_model.dart';
-import 'package:provider/provider.dart';
+import 'package:shimmer/shimmer.dart';
 
 import '../../services/helpers.dart';
 
 Widget listTileProfile({
   required BuildContext context,
   required void Function() onEdit,
+  required UserModel user,
 }) {
-  final user = Provider.of<UserModel?>(context);
-
-  String name = user!.name ?? "No Name";
+  String name = user.name ?? "No Name";
 
   return ListTile(
-    leading: const CircleAvatar(
-      backgroundImage: AssetImage('assets/images/default-profile-picture.png'),
-    ),
+    leading: user.avatarPath == null
+        ? Container(
+            height: MediaQuery.of(context).size.height * 0.06,
+            width: MediaQuery.of(context).size.height * 0.06,
+            decoration: const BoxDecoration(
+              shape: BoxShape.circle,
+              image: DecorationImage(
+                  image:
+                      AssetImage('assets/images/default-profile-picture.png'),
+                  fit: BoxFit.cover),
+            ),
+          )
+        : CachedNetworkImage(
+            imageUrl: user.avatarPath!,
+            //  'https://sunnycrew.jp/wp-content/themes/dp-colors/img/post_thumbnail/noimage.png',
+            fit: BoxFit.cover,
+            imageBuilder: (context, imageProvider) => Container(
+              height: MediaQuery.of(context).size.height * 0.06,
+              width: MediaQuery.of(context).size.height * 0.06,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                image: DecorationImage(image: imageProvider, fit: BoxFit.cover),
+              ),
+            ),
+            placeholder: (context, url) => Shimmer.fromColors(
+              baseColor: CupertinoColors.systemGrey,
+              highlightColor: CupertinoColors.systemGrey2,
+              child: Container(
+                color: Colors.grey,
+                height: MediaQuery.of(context).size.height * 0.06,
+                width: MediaQuery.of(context).size.height * 0.06,
+                decoration: const BoxDecoration(
+                  shape: BoxShape.circle,
+                ),
+              ),
+            ),
+            errorWidget: (context, url, error) => Container(
+              height: MediaQuery.of(context).size.height * 0.06,
+              width: MediaQuery.of(context).size.height * 0.06,
+              decoration: const BoxDecoration(
+                shape: BoxShape.circle,
+                image: DecorationImage(
+                    image:
+                        AssetImage('assets/images/default-profile-picture.png'),
+                    fit: BoxFit.cover),
+              ),
+            ),
+          ),
     title: Text(
       name != " " && name != "" ? name : "No Name",
       style: const TextStyle(fontWeight: FontWeight.bold),

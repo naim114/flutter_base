@@ -57,6 +57,7 @@ class _AccountState extends State<Account> {
                         builder: (context) => Profile(user: user),
                       ),
                     ),
+                    user: user,
                   ),
                   // SETTINGS
                   const Padding(

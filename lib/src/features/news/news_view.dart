@@ -148,7 +148,7 @@ class NewsView extends StatelessWidget {
             errorWidget: (context, url, error) => Image.asset(
               'assets/images/noimage.png',
               fit: BoxFit.cover,
-              height: MediaQuery.of(context).size.height * 0.8,
+              height: MediaQuery.of(context).size.height * 0.4,
             ),
           ),
           Padding(

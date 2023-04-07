@@ -1,4 +1,6 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:country/country.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_base/src/model/user_model.dart';
 import 'package:flutter_base/src/services/helpers.dart';
@@ -6,6 +8,7 @@ import 'package:flutter_base/src/services/user_services.dart';
 import 'package:flutter_base/src/widgets/appbar/appbar_confirm_cancel.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
+import 'package:shimmer/shimmer.dart';
 
 import '../../../widgets/editor/image_uploader.dart';
 
@@ -124,13 +127,57 @@ class _ProfileState extends State<Profile> {
               },
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
-                children: const [
-                  CircleAvatar(
-                    radius: 40,
-                    backgroundImage:
-                        AssetImage('assets/images/default-profile-picture.png'),
-                  ),
-                  Padding(
+                children: [
+                  widget.user.avatarPath == null
+                      ? Container(
+                          height: MediaQuery.of(context).size.height * 0.11,
+                          width: MediaQuery.of(context).size.height * 0.11,
+                          decoration: const BoxDecoration(
+                            shape: BoxShape.circle,
+                            image: DecorationImage(
+                                image: AssetImage(
+                                    'assets/images/default-profile-picture.png'),
+                                fit: BoxFit.cover),
+                          ),
+                        )
+                      : CachedNetworkImage(
+                          imageUrl: widget.user.avatarPath!,
+                          //  'https://sunnycrew.jp/wp-content/themes/dp-colors/img/post_thumbnail/noimage.png',
+                          fit: BoxFit.cover,
+                          imageBuilder: (context, imageProvider) => Container(
+                            height: MediaQuery.of(context).size.height * 0.11,
+                            width: MediaQuery.of(context).size.height * 0.11,
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              image: DecorationImage(
+                                  image: imageProvider, fit: BoxFit.cover),
+                            ),
+                          ),
+                          placeholder: (context, url) => Shimmer.fromColors(
+                            baseColor: CupertinoColors.systemGrey,
+                            highlightColor: CupertinoColors.systemGrey2,
+                            child: Container(
+                              color: Colors.grey,
+                              height: MediaQuery.of(context).size.height * 0.11,
+                              width: MediaQuery.of(context).size.height * 0.11,
+                              decoration: const BoxDecoration(
+                                shape: BoxShape.circle,
+                              ),
+                            ),
+                          ),
+                          errorWidget: (context, url, error) => Container(
+                            height: MediaQuery.of(context).size.height * 0.11,
+                            width: MediaQuery.of(context).size.height * 0.11,
+                            decoration: const BoxDecoration(
+                              shape: BoxShape.circle,
+                              image: DecorationImage(
+                                  image: AssetImage(
+                                      'assets/images/default-profile-picture.png'),
+                                  fit: BoxFit.cover),
+                            ),
+                          ),
+                        ),
+                  const Padding(
                     padding: EdgeInsets.symmetric(vertical: 10.0),
                     child: Text(
                       'Edit Profile Picture',

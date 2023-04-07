@@ -62,12 +62,12 @@ class ImageFileEditorState extends State<ImageUploader> {
                       ListTile(
                         leading: const Icon(Icons.image),
                         title: const Text('Upload Image from Gallery'),
-                        onTap: () => uploadImage(ImageSource.gallery),
+                        onTap: () => _uploadImage(ImageSource.gallery),
                       ),
                       ListTile(
                         leading: const Icon(Icons.camera),
                         title: const Text('Upload Image from Camera'),
-                        onTap: () => uploadImage(ImageSource.camera),
+                        onTap: () => _uploadImage(ImageSource.camera),
                       ),
                     ],
                   );
@@ -109,7 +109,7 @@ class ImageFileEditorState extends State<ImageUploader> {
     );
   }
 
-  Future<void> uploadImage(ImageSource source) async {
+  Future<void> _uploadImage(ImageSource source) async {
     XFile image = await imagePicker.pickImage(
       source: source,
       imageQuality: 50,

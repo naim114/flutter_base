@@ -4,6 +4,7 @@ import 'package:country/country.dart';
 import 'package:crypto/crypto.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter_base/src/model/user_model.dart';
 import 'package:flutter_base/src/services/role_services.dart';
 import 'package:flutter_base/src/services/user_activity_services.dart';
@@ -15,7 +16,7 @@ class UserServices {
   final CollectionReference _collectionRef =
       FirebaseFirestore.instance.collection('User');
   final FirebaseAuth _auth = FirebaseAuth.instance;
-
+  final _firebaseStorage = FirebaseStorage.instance;
   static final DeviceInfoPlugin _deviceInfoPlugin = DeviceInfoPlugin();
   final NetworkInfo _networkInfo = NetworkInfo();
 
@@ -394,5 +395,10 @@ class UserServices {
 
       return false;
     }
+  }
+
+  // update profile picture
+  Future updateProfilePicture() async {
+    //
   }
 }
