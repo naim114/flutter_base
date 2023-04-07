@@ -104,7 +104,13 @@ class _ProfileState extends State<Profile> {
                               builder: (context) => ImageUploader(
                                 appBarTitle: "Upload New Profile Picture",
                                 onCancel: () => Navigator.of(context).pop(),
-                                onConfirm: () {},
+                                onConfirm: (imageFile) {
+                                  print("Image file: ${imageFile.toString()}");
+
+                                  Navigator.pop(context);
+
+                                  // TODO call uploadProfilePicture method
+                                },
                               ),
                             ),
                           ),

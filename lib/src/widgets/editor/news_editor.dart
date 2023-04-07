@@ -65,7 +65,7 @@ Widget newsEditor({
                   width: 350,
                   height: 196.88,
                   onCancel: () => Navigator.of(context).pop(),
-                  onConfirm: () {},
+                  onConfirm: (imageFile) {},
                 ),
               ),
             ),

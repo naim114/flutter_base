@@ -2,18 +2,19 @@ import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_picker/image_picker.dart';
 import '../appbar/appbar_confirm_cancel.dart';
 
 // ignore: must_be_immutable
 class ImageUploader extends StatefulWidget {
   final void Function() onCancel;
-  final void Function() onConfirm;
+  final void Function(File imageFile) onConfirm;
   final String appBarTitle;
   final double width;
   final double height;
   final String desc;
-  dynamic imageFile;
+  File? imageFile;
 
   ImageUploader({
     super.key,
@@ -45,7 +46,15 @@ class ImageFileEditorState extends State<ImageUploader> {
     return Scaffold(
       appBar: appBarConfirmCancel(
         onCancel: widget.onCancel,
-        onConfirm: widget.onConfirm,
+        onConfirm: () {
+          if (widget.imageFile != null) {
+            widget.onConfirm(widget.imageFile!);
+            Fluttertoast.showToast(msg: "Image uploaded");
+            Navigator.pop(context);
+          } else {
+            Fluttertoast.showToast(msg: "Please upload an image first");
+          }
+        },
         title: widget.appBarTitle,
         context: context,
       ),
@@ -75,7 +84,7 @@ class ImageFileEditorState extends State<ImageUploader> {
               ),
               child: widget.imageFile != null
                   ? Image.file(
-                      widget.imageFile,
+                      widget.imageFile!,
                       width: widget.width,
                       height: widget.height,
                       fit: BoxFit.cover,

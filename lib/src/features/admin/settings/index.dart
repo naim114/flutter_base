@@ -125,7 +125,7 @@ class AppSettings extends StatelessWidget {
                 builder: (context) => ImageUploader(
                   appBarTitle: "Upload Logo",
                   onCancel: () => Navigator.pop(context),
-                  onConfirm: () {},
+                  onConfirm: (imageFile) {},
                 ),
               ),
             ),
