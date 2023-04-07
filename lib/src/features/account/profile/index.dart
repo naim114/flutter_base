@@ -88,7 +88,7 @@ class _ProfileState extends State<Profile> {
         padding: const EdgeInsets.symmetric(vertical: 15.0),
         child: ListView(
           children: [
-            // Profile Picture
+            // Avatar
             GestureDetector(
               onTap: () {
                 showModalBottomSheet(
@@ -98,18 +98,33 @@ class _ProfileState extends State<Profile> {
                       children: [
                         ListTile(
                           leading: const Icon(Icons.image_outlined),
-                          title: const Text('New profile picture'),
+                          title: const Text('New avatar'),
                           onTap: () => Navigator.of(context).push(
                             MaterialPageRoute(
                               builder: (context) => ImageUploader(
-                                appBarTitle: "Upload New Profile Picture",
+                                appBarTitle: "Upload New Avatar",
                                 onCancel: () => Navigator.of(context).pop(),
-                                onConfirm: (imageFile) {
+                                onConfirm: (imageFile) async {
                                   print("Image file: ${imageFile.toString()}");
 
                                   Navigator.pop(context);
 
                                   // TODO call uploadProfilePicture method
+                                  final result =
+                                      await UserServices().updateAvatar(
+                                    imageFile: imageFile,
+                                    user: widget.user,
+                                  );
+
+                                  print("Update Avatar: ${result.toString()}");
+
+                                  if (result == true) {
+                                    Fluttertoast.showToast(
+                                        msg: "Avatar Updated!");
+                                    Fluttertoast.showToast(
+                                        msg:
+                                            "Close application and reopen if no changes happen.");
+                                  }
                                 },
                               ),
                             ),
@@ -134,46 +149,12 @@ class _ProfileState extends State<Profile> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  widget.user.avatarPath == null
-                      ? Container(
-                          height: MediaQuery.of(context).size.height * 0.11,
-                          width: MediaQuery.of(context).size.height * 0.11,
-                          decoration: const BoxDecoration(
-                            shape: BoxShape.circle,
-                            image: DecorationImage(
-                                image: AssetImage(
-                                    'assets/images/default-profile-picture.png'),
-                                fit: BoxFit.cover),
-                          ),
-                        )
-                      : CachedNetworkImage(
-                          imageUrl: widget.user.avatarPath!,
-                          //  'https://sunnycrew.jp/wp-content/themes/dp-colors/img/post_thumbnail/noimage.png',
-                          fit: BoxFit.cover,
-                          imageBuilder: (context, imageProvider) => Container(
-                            height: MediaQuery.of(context).size.height * 0.11,
-                            width: MediaQuery.of(context).size.height * 0.11,
-                            decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              image: DecorationImage(
-                                  image: imageProvider, fit: BoxFit.cover),
-                            ),
-                          ),
-                          placeholder: (context, url) => Shimmer.fromColors(
-                            baseColor: CupertinoColors.systemGrey,
-                            highlightColor: CupertinoColors.systemGrey2,
-                            child: Container(
-                              color: Colors.grey,
-                              height: MediaQuery.of(context).size.height * 0.11,
-                              width: MediaQuery.of(context).size.height * 0.11,
-                              decoration: const BoxDecoration(
-                                shape: BoxShape.circle,
-                              ),
-                            ),
-                          ),
-                          errorWidget: (context, url, error) => Container(
-                            height: MediaQuery.of(context).size.height * 0.11,
-                            width: MediaQuery.of(context).size.height * 0.11,
+                  SizedBox(
+                    width: MediaQuery.of(context).size.height * 0.17,
+                    child: widget.user.avatarURL == null
+                        ? Container(
+                            height: MediaQuery.of(context).size.height * 0.17,
+                            width: MediaQuery.of(context).size.height * 0.17,
                             decoration: const BoxDecoration(
                               shape: BoxShape.circle,
                               image: DecorationImage(
@@ -181,12 +162,51 @@ class _ProfileState extends State<Profile> {
                                       'assets/images/default-profile-picture.png'),
                                   fit: BoxFit.cover),
                             ),
+                          )
+                        : CachedNetworkImage(
+                            imageUrl: widget.user.avatarURL!,
+                            //  'https://sunnycrew.jp/wp-content/themes/dp-colors/img/post_thumbnail/noimage.png',
+                            fit: BoxFit.cover,
+                            imageBuilder: (context, imageProvider) => Container(
+                              height: MediaQuery.of(context).size.height * 0.17,
+                              width: MediaQuery.of(context).size.height * 0.17,
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                image: DecorationImage(
+                                    image: imageProvider, fit: BoxFit.cover),
+                              ),
+                            ),
+                            placeholder: (context, url) => Shimmer.fromColors(
+                              baseColor: CupertinoColors.systemGrey,
+                              highlightColor: CupertinoColors.systemGrey2,
+                              child: Container(
+                                height:
+                                    MediaQuery.of(context).size.height * 0.17,
+                                width:
+                                    MediaQuery.of(context).size.height * 0.17,
+                                decoration: const BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  color: Colors.grey,
+                                ),
+                              ),
+                            ),
+                            errorWidget: (context, url, error) => Container(
+                              height: MediaQuery.of(context).size.height * 0.17,
+                              width: MediaQuery.of(context).size.height * 0.17,
+                              decoration: const BoxDecoration(
+                                shape: BoxShape.circle,
+                                image: DecorationImage(
+                                    image: AssetImage(
+                                        'assets/images/default-profile-picture.png'),
+                                    fit: BoxFit.cover),
+                              ),
+                            ),
                           ),
-                        ),
+                  ),
                   const Padding(
                     padding: EdgeInsets.symmetric(vertical: 10.0),
                     child: Text(
-                      'Edit Profile Picture',
+                      'Edit Avatar',
                       style: TextStyle(
                         color: CustomColor.primary,
                         fontWeight: FontWeight.bold,

@@ -1,4 +1,6 @@
 import 'dart:convert';
+import 'dart:io';
+import 'package:path/path.dart' as path;
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:country/country.dart';
 import 'package:crypto/crypto.dart';
@@ -10,6 +12,7 @@ import 'package:flutter_base/src/services/role_services.dart';
 import 'package:flutter_base/src/services/user_activity_services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:network_info_plus/network_info_plus.dart';
+import 'package:path_provider/path_provider.dart';
 
 class UserServices {
   final FirebaseFirestore _db = FirebaseFirestore.instance;
@@ -99,6 +102,7 @@ class UserServices {
       country: Countries.values
           .firstWhere((country) => country.number == doc.get('country')),
       avatarPath: doc.get('avatarPath'),
+      avatarURL: doc.get('avatarURL'),
       role: await RoleServices().get(doc.get('role')),
       createdAt: doc.get('createdAt').toDate(),
       updatedAt: doc.get('updatedAt').toDate(),
@@ -124,6 +128,7 @@ class UserServices {
       country: Countries.values
           .firstWhere((country) => country.number == doc.get('country')),
       avatarPath: doc.get('avatarPath'),
+      avatarURL: doc.get('avatarURL'),
       role: await RoleServices().get(doc.get('role')),
       createdAt: doc.get('createdAt').toDate(),
       updatedAt: doc.get('updatedAt').toDate(),
@@ -364,7 +369,7 @@ class UserServices {
               .add(
                 user: currentUser,
                 description:
-                    "Update Profile Passowrd. Target: ${user.email} (ID: ${user.id})",
+                    "Update Profile Password. Target: ${user.email} (ID: ${user.id})",
                 activityType: "user_update_password",
                 networkInfo: _networkInfo,
                 deviceInfoPlugin: _deviceInfoPlugin,
@@ -397,8 +402,102 @@ class UserServices {
     }
   }
 
-  // update profile picture
-  Future updateProfilePicture() async {
-    //
+  // update avatar
+  Future updateAvatar({
+    required File imageFile,
+    required UserModel user,
+  }) async {
+    try {
+      if (user.avatarPath != null && user.avatarURL != null) {
+        print("Previous file exist");
+
+        // delete previous file
+        final Reference ref = _firebaseStorage.ref().child(user.avatarPath!);
+        await ref.delete();
+
+        print("Previous file deleted");
+      }
+
+      // UPLOAD TO FIREBASE STORAGE
+      // Get file extension
+      String extension = path.extension(imageFile.path);
+      print("Extension: $extension");
+
+      // Create the file metadata
+      final metadata = SettableMetadata(contentType: "image/jpeg");
+
+      // Create a reference to the file path in Firebase Storage
+      final storageRef =
+          _firebaseStorage.ref().child('avatar/${user.id}$extension');
+
+      // Upload the file to Firebase Storage
+      final uploadTask = storageRef.putFile(imageFile, metadata);
+
+      uploadTask.snapshotEvents.listen((TaskSnapshot taskSnapshot) {
+        switch (taskSnapshot.state) {
+          case TaskState.running:
+            final progress = 100.0 *
+                (taskSnapshot.bytesTransferred / taskSnapshot.totalBytes);
+            print("Upload is $progress% complete.");
+            break;
+          case TaskState.paused:
+            print("Upload is paused.");
+            break;
+          case TaskState.canceled:
+            print("Upload was canceled");
+            break;
+          case TaskState.error:
+            // Handle unsuccessful uploads
+            print("Upload encounter error");
+            throw Exception();
+          case TaskState.success:
+            // Handle successful uploads on complete
+            print("Avatar uploaded");
+            break;
+        }
+      });
+
+      // Get the download URL of the uploaded file
+      final downloadUrl =
+          await uploadTask.then((TaskSnapshot taskSnapshot) async {
+        final url = await taskSnapshot.ref.getDownloadURL();
+        return url;
+      });
+
+      print("URL: $downloadUrl");
+
+      // UPDATE ON FIRESTORE
+      // update user on db
+      _collectionRef.doc(user.id).update({
+        'avatarPath': 'avatar/${user.id}$extension',
+        'avatarURL': downloadUrl,
+      }).then((value) => print("Avatar Path Updated on Firestore"));
+
+      await UserServices()
+          .get(_auth.currentUser!.uid)
+          .then((currentUser) async {
+        print("Get current user");
+        if (currentUser != null) {
+          await UserActivityServices()
+              .add(
+                user: currentUser,
+                description:
+                    "Update Profile Avatar. Target: ${user.email} (ID: ${user.id})",
+                activityType: "user_update_avatar",
+                networkInfo: _networkInfo,
+                deviceInfoPlugin: _deviceInfoPlugin,
+              )
+              .then((value) => print("Activity Added"));
+          return true;
+        }
+      });
+
+      return true;
+    } catch (e) {
+      print("Error occured: ${e.toString()}");
+      Fluttertoast.showToast(msg: e.toString());
+
+      return false;
+    }
   }
 }

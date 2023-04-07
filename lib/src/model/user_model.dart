@@ -11,6 +11,7 @@ class UserModel {
   final String? address;
   final Country country;
   final String? avatarPath;
+  final String? avatarURL;
   final RoleModel? role;
 
   // date
@@ -31,6 +32,7 @@ class UserModel {
     required this.email,
     required this.password,
     this.avatarPath,
+    this.avatarURL,
     required this.role,
     required this.createdAt,
     required this.updatedAt,
@@ -39,7 +41,7 @@ class UserModel {
 
   @override
   String toString() {
-    return 'UserModel(id: $id, email: $email, name: $name, birthday: $birthday, phone: $phone, address: $address, country: ${country.isoShortName}, avatarPath: $avatarPath, role: $role, createdAt: $createdAt, updatedAt: $updatedAt, deletedAt: $deletedAt, password: $password)';
+    return 'UserModel(id: $id, email: $email, name: $name, birthday: $birthday, phone: $phone, address: $address, country: ${country.isoShortName}, avatarPath: $avatarPath, avatarURL: $avatarURL, role: $role, createdAt: $createdAt, updatedAt: $updatedAt, deletedAt: $deletedAt, password: $password)';
   }
 
   UserModel.fromMap(Map<String, dynamic> map)
@@ -52,6 +54,7 @@ class UserModel {
           address: map['address'],
           country: map['country'],
           avatarPath: map['avatarPath'],
+          avatarURL: map['avatarURL'],
           role: map['role'],
           createdAt: map['createdAt'],
           updatedAt: map['updatedAt'],
@@ -69,6 +72,7 @@ class UserModel {
       'address': address,
       'country': country,
       'avatarPath': avatarPath,
+      'avatarURL': avatarURL,
       'role': role?.id,
       'createdAt': createdAt,
       'updatedAt': updatedAt,
@@ -87,6 +91,7 @@ class UserModel {
           address: json['address']! as String,
           country: json['country']! as Country,
           avatarPath: json['avatarPath']! as String,
+          avatarURL: json['avatarURL']! as String,
           role: json['role']! as RoleModel,
           createdAt: json['createdAt']! as DateTime,
           updatedAt: json['updatedAt']! as DateTime,
@@ -104,6 +109,7 @@ class UserModel {
       'address': address,
       'country': country.number,
       'avatarPath': avatarPath,
+      'avatarURL': avatarURL,
       'role': role?.id,
       'createdAt': createdAt,
       'updatedAt': updatedAt,
