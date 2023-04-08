@@ -228,10 +228,14 @@ class UserServices {
         }
       } else {
         // w/o auth
+        print("w/o auth");
+
         User? userCred = await FirebaseAuth.instance
             .userChanges()
             .firstWhere((userCred) => userCred?.uid == user.id)
             .onError((error, stackTrace) => throw Exception(error));
+
+        print("Got user cred");
 
         if (userCred != null) {
           // update user cred at auth
@@ -244,6 +248,8 @@ class UserServices {
                 .then((value) => print("Email Updated on Firestore"))
                 .onError((error, stackTrace) => throw Exception(error));
           }).onError((error, stackTrace) => throw Exception(error));
+        } else {
+          print("No User Cred");
         }
       }
 

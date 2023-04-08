@@ -57,6 +57,7 @@ class LoginActivity extends StatelessWidget {
                     : listTileActivity(
                         context: context,
                         activity: activity,
+                        signInFormat: true,
                       );
               },
             ),

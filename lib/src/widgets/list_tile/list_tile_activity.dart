@@ -7,19 +7,18 @@ Widget listTileActivity({
   required BuildContext context,
   required UserActivityModel activity,
   bool includeNetworkInfo = false,
+  bool signInFormat = false,
 }) =>
     ExpansionTile(
       title: Text(
-        activity.activityType == "sign_in"
-            ? activity.deviceInfo ?? "None"
-            : activity.description,
+        signInFormat ? activity.deviceInfo ?? "None" : activity.description,
         style: const TextStyle(fontWeight: FontWeight.bold),
         overflow: TextOverflow.ellipsis,
       ),
       subtitle:
           Text(DateFormat('dd/MM/yyyy HH:mm:ss').format(activity.createdAt)),
       children: <Widget>[
-        activity.activityType != "sign_in"
+        !signInFormat
             ? ListTile(
                 title: RichText(
                   text: TextSpan(

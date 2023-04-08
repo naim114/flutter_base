@@ -16,21 +16,6 @@ class AdminPanelUsers extends StatefulWidget {
 }
 
 class _AdminPanelUsersState extends State<AdminPanelUsers> {
-  // List<dynamic> data = [
-  //   {
-  //     "Profile Picture":
-  //         "https://img.theculturetrip.com/1000x/wp-content/uploads/2017/02/nasi-lemak.jpg",
-  //     "Email": "admin@email.com",
-  //     "Role": "Admin",
-  //   },
-  //   {
-  //     "Profile Picture":
-  //         "https://www.goodnewsfromindonesia.id/wp-content/uploads/images/source/bagusdr/penyu-6.jpg",
-  //     "Email": "user@email.com",
-  //     "Role": "User",
-  //   },
-  // ];
-
   List<UserModel> filteredData = [];
 
   final searchController = TextEditingController();
@@ -244,7 +229,7 @@ class _AdminPanelUsersState extends State<AdminPanelUsers> {
                                 icon: const Icon(Icons.edit),
                                 onPressed: () => Navigator.of(context).push(
                                   MaterialPageRoute(
-                                    builder: (context) => const EditUser(),
+                                    builder: (context) => EditUser(user: user),
                                   ),
                                 ),
                               ),
