@@ -4,7 +4,9 @@ import 'package:flutter_base/src/features/account/profile/index.dart';
 import 'package:flutter_base/src/features/account/security/login_activity.dart';
 import 'package:flutter_base/src/features/admin/users/user_activity.dart';
 import 'package:flutter_base/src/services/helpers.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import '../../../model/user_model.dart';
+import '../../../services/user_services.dart';
 
 class EditUser extends StatelessWidget {
   const EditUser({super.key, required this.user});
@@ -40,44 +42,101 @@ class EditUser extends StatelessWidget {
               ),
             ),
           ),
-          ListTile(
-            contentPadding: const EdgeInsets.all(0),
-            title: const Text(
-              "Ban User",
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-                color: CustomColor.danger,
-              ),
-            ),
-            onTap: () => showDialog<String>(
-              context: context,
-              builder: (BuildContext context) => AlertDialog(
-                title: const Text('Ban User?'),
-                content: const Text(
-                    'Are you sure you want to ban this user? Select OK to confirm.'),
-                actions: <Widget>[
-                  TextButton(
-                    onPressed: () => Navigator.pop(context),
-                    child: const Text(
-                      'Cancel',
-                      style: TextStyle(
-                        color: CupertinoColors.systemGrey,
-                      ),
+          user.disableAt == null
+              ? ListTile(
+                  contentPadding: const EdgeInsets.all(0),
+                  title: const Text(
+                    "Disable User",
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      color: CustomColor.danger,
                     ),
                   ),
-                  TextButton(
-                    onPressed: () {},
-                    child: const Text(
-                      'OK',
-                      style: TextStyle(
-                        color: CustomColor.danger,
-                      ),
+                  onTap: () => showDialog<String>(
+                    context: context,
+                    builder: (BuildContext context) => AlertDialog(
+                      title: const Text('Disable User?'),
+                      content: const Text(
+                          'Are you sure you want to disable this user? Select OK to confirm.'),
+                      actions: <Widget>[
+                        TextButton(
+                          onPressed: () => Navigator.pop(context),
+                          child: const Text(
+                            'Cancel',
+                            style: TextStyle(
+                              color: CupertinoColors.systemGrey,
+                            ),
+                          ),
+                        ),
+                        TextButton(
+                          onPressed: () async {
+                            final result =
+                                await UserServices().disableUser(user: user);
+
+                            if (result == true) {
+                              print("User disabled");
+                              Fluttertoast.showToast(msg: "User disabled");
+                            }
+                            Navigator.pop(context);
+                          },
+                          child: const Text(
+                            'OK',
+                            style: TextStyle(
+                              color: CustomColor.danger,
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
                   ),
-                ],
-              ),
-            ),
-          ),
+                )
+              : ListTile(
+                  contentPadding: const EdgeInsets.all(0),
+                  title: const Text(
+                    "Enable User",
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      color: CustomColor.danger,
+                    ),
+                  ),
+                  onTap: () => showDialog<String>(
+                    context: context,
+                    builder: (BuildContext context) => AlertDialog(
+                      title: const Text('Enable User?'),
+                      content: const Text(
+                          'Are you sure you want to enable this user? Select OK to confirm.'),
+                      actions: <Widget>[
+                        TextButton(
+                          onPressed: () => Navigator.pop(context),
+                          child: const Text(
+                            'Cancel',
+                            style: TextStyle(
+                              color: CupertinoColors.systemGrey,
+                            ),
+                          ),
+                        ),
+                        TextButton(
+                          onPressed: () async {
+                            final result =
+                                await UserServices().enableUser(user: user);
+
+                            if (result == true) {
+                              print("User enabled");
+                              Fluttertoast.showToast(msg: "User enabled");
+                            }
+                            Navigator.pop(context);
+                          },
+                          child: const Text(
+                            'OK',
+                            style: TextStyle(
+                              color: CustomColor.danger,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
         ],
       ),
     );

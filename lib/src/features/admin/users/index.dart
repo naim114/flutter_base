@@ -254,8 +254,8 @@ class _AdminPanelUsersState extends State<AdminPanelUsers> {
                                   ),
                                 ),
                               ),
-                              // Disable
                               user.disableAt == null
+                                  // Disable
                                   ? IconButton(
                                       icon: const Icon(Icons.person_remove),
                                       onPressed: () => showDialog<String>(
@@ -279,7 +279,6 @@ class _AdminPanelUsersState extends State<AdminPanelUsers> {
                                             ),
                                             TextButton(
                                               onPressed: () async {
-                                                // TODO this
                                                 final result =
                                                     await UserServices()
                                                         .disableUser(
@@ -304,6 +303,7 @@ class _AdminPanelUsersState extends State<AdminPanelUsers> {
                                         ),
                                       ),
                                     )
+                                  // Enable
                                   : IconButton(
                                       icon: const Icon(Icons.person_add),
                                       onPressed: () => showDialog<String>(
