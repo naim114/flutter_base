@@ -11,7 +11,9 @@ import '../../../services/helpers.dart';
 
 class AdminPanelUsers extends StatefulWidget {
   final List<UserModel> userList;
-  const AdminPanelUsers({super.key, required this.userList});
+  final UserModel currentUser;
+  const AdminPanelUsers(
+      {super.key, required this.userList, required this.currentUser});
 
   @override
   State<AdminPanelUsers> createState() => _AdminPanelUsersState();
@@ -250,7 +252,10 @@ class _AdminPanelUsersState extends State<AdminPanelUsers> {
                                 icon: const Icon(Icons.edit),
                                 onPressed: () => Navigator.of(context).push(
                                   MaterialPageRoute(
-                                    builder: (context) => EditUser(user: user),
+                                    builder: (context) => EditUser(
+                                      user: user,
+                                      currentUser: widget.currentUser,
+                                    ),
                                   ),
                                 ),
                               ),

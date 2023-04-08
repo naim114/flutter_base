@@ -5,7 +5,8 @@ import 'package:flutter_base/src/services/user_services.dart';
 import '../../../model/user_model.dart';
 
 class AdminPanelUsersBuilder extends StatelessWidget {
-  const AdminPanelUsersBuilder({super.key});
+  const AdminPanelUsersBuilder({super.key, required this.currentUser});
+  final UserModel currentUser;
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +20,10 @@ class AdminPanelUsersBuilder extends StatelessWidget {
           List<UserModel> userList =
               snapshot.data!.whereType<UserModel>().toList();
 
-          return AdminPanelUsers(userList: userList);
+          return AdminPanelUsers(
+            userList: userList,
+            currentUser: currentUser,
+          );
         }
 
         return const Center(child: CircularProgressIndicator());

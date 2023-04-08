@@ -137,7 +137,9 @@ class _AccountState extends State<Account> {
                                   onTap: () =>
                                       Navigator.of(widget.mainContext).push(
                                     MaterialPageRoute(
-                                      builder: (context) => const AdminPanel(),
+                                      builder: (context) => AdminPanel(
+                                        currentUser: user,
+                                      ),
                                     ),
                                   ),
                                 ),

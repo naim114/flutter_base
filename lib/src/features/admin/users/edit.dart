@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_base/src/features/account/profile/index.dart';
 import 'package:flutter_base/src/features/account/security/login_activity.dart';
+import 'package:flutter_base/src/features/admin/users/role.dart';
 import 'package:flutter_base/src/features/admin/users/user_activity.dart';
 import 'package:flutter_base/src/services/helpers.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -9,8 +10,9 @@ import '../../../model/user_model.dart';
 import '../../../services/user_services.dart';
 
 class EditUser extends StatelessWidget {
-  const EditUser({super.key, required this.user});
+  const EditUser({super.key, required this.user, required this.currentUser});
   final UserModel user;
+  final UserModel currentUser;
 
   @override
   Widget build(BuildContext context) {
@@ -42,6 +44,20 @@ class EditUser extends StatelessWidget {
               ),
             ),
           ),
+          currentUser.role!.name != "super_admin"
+              ? const SizedBox()
+              : ListTile(
+                  contentPadding: const EdgeInsets.all(0),
+                  title: const Text(
+                    "Edit Role",
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                  onTap: () => Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) => EditUserRole(user: user),
+                    ),
+                  ),
+                ),
           user.disableAt == null
               ? ListTile(
                   contentPadding: const EdgeInsets.all(0),

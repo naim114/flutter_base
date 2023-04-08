@@ -4,11 +4,13 @@ import 'package:flutter_base/src/features/admin/news/index.dart';
 import 'package:flutter_base/src/features/admin/notification/index.dart';
 import 'package:flutter_base/src/features/admin/users/builder.dart';
 
+import '../../model/user_model.dart';
 import '../../services/helpers.dart';
 import '../../widgets/list_tile/list_tile_icon.dart';
 
 class AdminPanel extends StatelessWidget {
-  const AdminPanel({super.key});
+  const AdminPanel({super.key, required this.currentUser});
+  final UserModel currentUser;
 
   @override
   Widget build(BuildContext context) {
@@ -39,7 +41,9 @@ class AdminPanel extends StatelessWidget {
             title: "Users",
             onTap: () => Navigator.of(context).push(
               MaterialPageRoute(
-                builder: (context) => const AdminPanelUsersBuilder(),
+                builder: (context) => AdminPanelUsersBuilder(
+                  currentUser: currentUser,
+                ),
               ),
             ),
           ),

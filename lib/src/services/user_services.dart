@@ -524,6 +524,25 @@ class UserServices {
 
         print("Previous file deleted");
 
+        await UserServices()
+            .get(_auth.currentUser!.uid)
+            .then((currentUser) async {
+          print("Get current user");
+          if (currentUser != null) {
+            await UserActivityServices()
+                .add(
+                  user: currentUser,
+                  description:
+                      "Remove Profile Avatar. Target: ${user.email} (ID: ${user.id})",
+                  activityType: "user_update_avatar_remove",
+                  networkInfo: _networkInfo,
+                  deviceInfoPlugin: _deviceInfoPlugin,
+                )
+                .then((value) => print("Activity Added"));
+            return true;
+          }
+        });
+
         return true;
       } else {
         Fluttertoast.showToast(msg: "No avatar uploaded previously");
@@ -547,6 +566,25 @@ class UserServices {
       _collectionRef.doc(user.id).update({'disableAt': DateTime.now()}).then(
           (value) => print("User Status Updated on Firestore"));
 
+      await UserServices()
+          .get(_auth.currentUser!.uid)
+          .then((currentUser) async {
+        print("Get current user");
+        if (currentUser != null) {
+          await UserActivityServices()
+              .add(
+                user: currentUser,
+                description:
+                    "Disable User. Target: ${user.email} (ID: ${user.id})",
+                activityType: "user_update_status_disable",
+                networkInfo: _networkInfo,
+                deviceInfoPlugin: _deviceInfoPlugin,
+              )
+              .then((value) => print("Activity Added"));
+          return true;
+        }
+      });
+
       return true;
     } catch (e) {
       print("Error occured: ${e.toString()}");
@@ -565,6 +603,44 @@ class UserServices {
       // update user on db
       _collectionRef.doc(user.id).update({'disableAt': null}).then(
           (value) => print("User Status Updated on Firestore"));
+
+      await UserServices()
+          .get(_auth.currentUser!.uid)
+          .then((currentUser) async {
+        print("Get current user");
+        if (currentUser != null) {
+          await UserActivityServices()
+              .add(
+                user: currentUser,
+                description:
+                    "Enable User. Target: ${user.email} (ID: ${user.id})",
+                activityType: "user_update_status_enable",
+                networkInfo: _networkInfo,
+                deviceInfoPlugin: _deviceInfoPlugin,
+              )
+              .then((value) => print("Activity Added"));
+          return true;
+        }
+      });
+
+      return true;
+    } catch (e) {
+      print("Error occured: ${e.toString()}");
+
+      Fluttertoast.showToast(msg: e.toString());
+
+      return false;
+    }
+  }
+
+  Future updateRole({
+    required UserModel user,
+    required String roleId,
+  }) async {
+    try {
+      // update user on db
+      _collectionRef.doc(user.id).update({'role': roleId}).then(
+          (value) => print("User Role  Updated on Firestore"));
 
       return true;
     } catch (e) {
