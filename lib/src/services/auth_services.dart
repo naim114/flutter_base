@@ -122,14 +122,28 @@ class AuthService {
       var bytes = utf8.encode(password);
       var digest = sha1.convert(bytes);
 
-      return await _auth
+      await _auth
           .signInWithEmailAndPassword(
         email: email,
         password: digest.toString(),
       )
           .then((userCred) async {
-        await UserServices().get(userCred.user!.uid).then((user) {
+        await UserServices().get(userCred.user!.uid).then((user) async {
           if (user != null) {
+            // check if user is disabled
+            if (user.disableAt != null) {
+              print("Disable at: ${user.disableAt}");
+
+              Fluttertoast.showToast(
+                  msg:
+                      "User is disabled. Please contact admin to get this account back.");
+
+              await _auth.signOut();
+
+              return false;
+            }
+
+            // activity log
             return UserActivityServices().add(
               user: user,
               description: "Sign In",

@@ -17,7 +17,7 @@ class UserModel {
   // date
   final DateTime createdAt;
   final DateTime updatedAt;
-  final DateTime? deletedAt;
+  final DateTime? disableAt;
 
   @protected
   final String password;
@@ -36,12 +36,12 @@ class UserModel {
     required this.role,
     required this.createdAt,
     required this.updatedAt,
-    this.deletedAt,
+    this.disableAt,
   });
 
   @override
   String toString() {
-    return 'UserModel(id: $id, email: $email, name: $name, birthday: $birthday, phone: $phone, address: $address, country: ${country.isoShortName}, avatarPath: $avatarPath, avatarURL: $avatarURL, role: $role, createdAt: $createdAt, updatedAt: $updatedAt, deletedAt: $deletedAt, password: $password)';
+    return 'UserModel(id: $id, email: $email, name: $name, birthday: $birthday, phone: $phone, address: $address, country: ${country.isoShortName}, avatarPath: $avatarPath, avatarURL: $avatarURL, role: $role, createdAt: $createdAt, updatedAt: $updatedAt, disableAt: $disableAt, password: $password)';
   }
 
   UserModel.fromMap(Map<String, dynamic> map)
@@ -58,7 +58,7 @@ class UserModel {
           role: map['role'],
           createdAt: map['createdAt'],
           updatedAt: map['updatedAt'],
-          deletedAt: map['deletedAt'],
+          disableAt: map['disableAt'],
           password: map['password'],
         );
 
@@ -76,7 +76,7 @@ class UserModel {
       'role': role?.id,
       'createdAt': createdAt,
       'updatedAt': updatedAt,
-      'deletedAt': deletedAt,
+      'disableAt': disableAt,
       'password': password,
     };
   }
@@ -95,7 +95,7 @@ class UserModel {
           role: json['role']! as RoleModel,
           createdAt: json['createdAt']! as DateTime,
           updatedAt: json['updatedAt']! as DateTime,
-          deletedAt: json['deletedAt']! as DateTime,
+          disableAt: json['disableAt']! as DateTime,
           password: json['password']! as String,
         );
 
@@ -113,7 +113,7 @@ class UserModel {
       'role': role?.id,
       'createdAt': createdAt,
       'updatedAt': updatedAt,
-      'deletedAt': deletedAt,
+      'disableAt': disableAt,
       'password': password,
     };
   }

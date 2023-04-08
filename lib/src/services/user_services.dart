@@ -105,9 +105,9 @@ class UserServices {
       role: await RoleServices().get(doc.get('role')),
       createdAt: doc.get('createdAt').toDate(),
       updatedAt: doc.get('updatedAt').toDate(),
-      deletedAt: doc.get('deletedAt') == null
-          ? doc.get('deletedAt')
-          : doc.get('deletedAt').toDate(),
+      disableAt: doc.get('disableAt') == null
+          ? doc.get('disableAt')
+          : doc.get('disableAt').toDate(),
       password: doc.get('password'),
     );
   }
@@ -131,9 +131,9 @@ class UserServices {
       role: await RoleServices().get(doc.get('role')),
       createdAt: doc.get('createdAt').toDate(),
       updatedAt: doc.get('updatedAt').toDate(),
-      deletedAt: doc.get('deletedAt') == null
-          ? doc.get('deletedAt')
-          : doc.get('deletedAt').toDate(),
+      disableAt: doc.get('disableAt') == null
+          ? doc.get('disableAt')
+          : doc.get('disableAt').toDate(),
       password: doc.get('password'),
     );
   }
@@ -230,7 +230,7 @@ class UserServices {
         // w/o auth
         print("w/o auth");
 
-        User? userCred = await FirebaseAuth.instance
+        User? userCred = await _auth
             .userChanges()
             .firstWhere((userCred) => userCred?.uid == user.id)
             .onError((error, stackTrace) => throw Exception(error));
@@ -311,7 +311,6 @@ class UserServices {
         var bytes = utf8.encode(oldPassword);
         var digest = sha1.convert(bytes);
 
-        // ignore: invalid_use_of_protected_member
         if (email == user.email) {
           await _auth
               .signInWithEmailAndPassword(
@@ -342,7 +341,7 @@ class UserServices {
         }
       } else {
         // w/o auth
-        User? userCred = await FirebaseAuth.instance
+        User? userCred = await _auth
             .userChanges()
             .firstWhere((userCred) => userCred?.uid == user.id)
             .onError((error, stackTrace) => throw Exception(error));
@@ -358,10 +357,9 @@ class UserServices {
             // update user on db
             return _collectionRef
                 .doc(userCred.uid)
-                .update({'password': digest.toString()})
-                .then((value) => print("Password Updated on Firestore"))
-                .onError((error, stackTrace) => throw Exception(error));
-          }).onError((error, stackTrace) => throw Exception(error));
+                .update({'password': digest.toString()}).then(
+                    (value) => print("Password Updated on Firestore"));
+          });
         }
       }
 
@@ -506,6 +504,7 @@ class UserServices {
     }
   }
 
+  // remove avatar
   Future removeAvatar({
     required UserModel user,
   }) async {
@@ -533,6 +532,44 @@ class UserServices {
       }
     } catch (e) {
       print("Error occured: ${e.toString()}");
+      Fluttertoast.showToast(msg: e.toString());
+
+      return false;
+    }
+  }
+
+  // disable user
+  Future disableUser({
+    required UserModel user,
+  }) async {
+    try {
+      // update user on db
+      _collectionRef.doc(user.id).update({'disableAt': DateTime.now()}).then(
+          (value) => print("User Status Updated on Firestore"));
+
+      return true;
+    } catch (e) {
+      print("Error occured: ${e.toString()}");
+
+      Fluttertoast.showToast(msg: e.toString());
+
+      return false;
+    }
+  }
+
+  // enable user
+  Future enableUser({
+    required UserModel user,
+  }) async {
+    try {
+      // update user on db
+      _collectionRef.doc(user.id).update({'disableAt': null}).then(
+          (value) => print("User Status Updated on Firestore"));
+
+      return true;
+    } catch (e) {
+      print("Error occured: ${e.toString()}");
+
       Fluttertoast.showToast(msg: e.toString());
 
       return false;

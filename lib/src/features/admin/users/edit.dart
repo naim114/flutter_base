@@ -2,12 +2,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_base/src/features/account/profile/index.dart';
 import 'package:flutter_base/src/features/account/security/login_activity.dart';
-import 'package:flutter_base/src/features/account/security/update_email.dart';
 import 'package:flutter_base/src/features/admin/users/user_activity.dart';
 import 'package:flutter_base/src/services/helpers.dart';
-
 import '../../../model/user_model.dart';
-import '../../account/security/update_password.dart';
 
 class EditUser extends StatelessWidget {
   const EditUser({super.key, required this.user});

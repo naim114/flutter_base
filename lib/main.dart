@@ -63,12 +63,14 @@ class _MyAppState extends State<MyApp> {
       builder: (context, snapshot) {
         return ThemeModeHandler(
           manager: MyThemeModeManager(),
-          placeholderWidget: Scaffold(
-            body: Center(
-              child: LoadingAnimationWidget.flickr(
-                leftDotColor: CustomColor.primary,
-                rightDotColor: CustomColor.secondary,
-                size: 50,
+          placeholderWidget: MaterialApp(
+            home: Scaffold(
+              body: Center(
+                child: LoadingAnimationWidget.flickr(
+                  leftDotColor: CustomColor.primary,
+                  rightDotColor: CustomColor.secondary,
+                  size: 50,
+                ),
               ),
             ),
           ),

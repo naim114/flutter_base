@@ -2,6 +2,8 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_base/src/features/admin/users/edit.dart';
+import 'package:flutter_base/src/services/user_services.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:shimmer/shimmer.dart';
 
 import '../../../model/user_model.dart';
@@ -77,7 +79,7 @@ class _AdminPanelUsersState extends State<AdminPanelUsers> {
               bottom: 10.0,
             ),
             child: Text(
-              'View all user here. Search for user by typing user email or role. Edit or Delete users by clicking on the actions button.',
+              'View all user here. Search for user by typing user email or role. Edit or Disable users by clicking on the actions button.',
               textAlign: TextAlign.justify,
             ),
           ),
@@ -133,6 +135,23 @@ class _AdminPanelUsersState extends State<AdminPanelUsers> {
                             _isAscending = true;
                             widget.userList.sort((userA, userB) =>
                                 userB.email.compareTo(userA.email));
+                          }
+                        });
+                      },
+                    ),
+                    DataColumn(
+                      label: const Text('Status'),
+                      onSort: (columnIndex, _) {
+                        setState(() {
+                          _currentSortColumn = columnIndex;
+                          if (_isAscending == true) {
+                            _isAscending = false;
+                            widget.userList.sort((userA, userB) =>
+                                userA.disableAt!.compareTo(userB.disableAt!));
+                          } else {
+                            _isAscending = true;
+                            widget.userList.sort((userA, userB) =>
+                                userB.disableAt!.compareTo(userA.disableAt!));
                           }
                         });
                       },
@@ -221,6 +240,8 @@ class _AdminPanelUsersState extends State<AdminPanelUsers> {
                         ),
                         DataCell(Text(user.role!.displayName)),
                         DataCell(Text(user.email)),
+                        DataCell(Text(
+                            user.disableAt == null ? "Active" : "Disabled")),
                         DataCell(
                           Row(
                             children: [
@@ -233,39 +254,102 @@ class _AdminPanelUsersState extends State<AdminPanelUsers> {
                                   ),
                                 ),
                               ),
-                              // Delete
-                              IconButton(
-                                icon: const Icon(Icons.delete),
-                                onPressed: () => showDialog<String>(
-                                  context: context,
-                                  builder: (BuildContext context) =>
-                                      AlertDialog(
-                                    title: const Text('Delete User?'),
-                                    content: const Text(
-                                        'Are you sure you want to delete this user? Deleted data may can\'t be retrieved back. Select OK to confirm.'),
-                                    actions: <Widget>[
-                                      TextButton(
-                                        onPressed: () => Navigator.pop(context),
-                                        child: const Text(
-                                          'Cancel',
-                                          style: TextStyle(
-                                            color: CupertinoColors.systemGrey,
-                                          ),
+                              // Disable
+                              user.disableAt == null
+                                  ? IconButton(
+                                      icon: const Icon(Icons.person_remove),
+                                      onPressed: () => showDialog<String>(
+                                        context: context,
+                                        builder: (BuildContext context) =>
+                                            AlertDialog(
+                                          title: const Text('Disable User?'),
+                                          content: const Text(
+                                              'Are you sure you want to disable this user? Select OK to confirm.'),
+                                          actions: <Widget>[
+                                            TextButton(
+                                              onPressed: () =>
+                                                  Navigator.pop(context),
+                                              child: const Text(
+                                                'Cancel',
+                                                style: TextStyle(
+                                                  color: CupertinoColors
+                                                      .systemGrey,
+                                                ),
+                                              ),
+                                            ),
+                                            TextButton(
+                                              onPressed: () async {
+                                                // TODO this
+                                                final result =
+                                                    await UserServices()
+                                                        .disableUser(
+                                                            user: user);
+
+                                                if (result == true) {
+                                                  print("User disabled");
+                                                  Fluttertoast.showToast(
+                                                      msg: "User disabled");
+                                                }
+
+                                                Navigator.pop(context);
+                                              },
+                                              child: const Text(
+                                                'OK',
+                                                style: TextStyle(
+                                                  color: CustomColor.danger,
+                                                ),
+                                              ),
+                                            ),
+                                          ],
                                         ),
                                       ),
-                                      TextButton(
-                                        onPressed: () {},
-                                        child: const Text(
-                                          'OK',
-                                          style: TextStyle(
-                                            color: CustomColor.danger,
-                                          ),
+                                    )
+                                  : IconButton(
+                                      icon: const Icon(Icons.person_add),
+                                      onPressed: () => showDialog<String>(
+                                        context: context,
+                                        builder: (BuildContext context) =>
+                                            AlertDialog(
+                                          title: const Text('Enable User?'),
+                                          content: const Text(
+                                              'Are you sure you want to enable this user? Select OK to confirm.'),
+                                          actions: <Widget>[
+                                            TextButton(
+                                              onPressed: () =>
+                                                  Navigator.pop(context),
+                                              child: const Text(
+                                                'Cancel',
+                                                style: TextStyle(
+                                                  color: CupertinoColors
+                                                      .systemGrey,
+                                                ),
+                                              ),
+                                            ),
+                                            TextButton(
+                                              onPressed: () async {
+                                                final result =
+                                                    await UserServices()
+                                                        .enableUser(user: user);
+
+                                                if (result == true) {
+                                                  print("User enabled");
+                                                  Fluttertoast.showToast(
+                                                      msg: "User enabled");
+                                                }
+
+                                                Navigator.pop(context);
+                                              },
+                                              child: const Text(
+                                                'OK',
+                                                style: TextStyle(
+                                                  color: CustomColor.danger,
+                                                ),
+                                              ),
+                                            ),
+                                          ],
                                         ),
                                       ),
-                                    ],
-                                  ),
-                                ),
-                              ),
+                                    ),
                             ],
                           ),
                         ),
