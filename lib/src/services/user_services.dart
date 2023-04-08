@@ -500,4 +500,37 @@ class UserServices {
       return false;
     }
   }
+
+  Future removeAvatar({
+    required UserModel user,
+  }) async {
+    try {
+      if (user.avatarPath != null && user.avatarURL != null) {
+        print("Previous file exist");
+
+        // delete previous file
+        final Reference ref = _firebaseStorage.ref().child(user.avatarPath!);
+        await ref.delete();
+
+        // update user on db
+        _collectionRef.doc(user.id).update({
+          'avatarPath': null,
+          'avatarURL': null,
+        }).then((value) => print("Avatar Path Updated to Null on Firestore"));
+
+        print("Previous file deleted");
+
+        return true;
+      } else {
+        Fluttertoast.showToast(msg: "No avatar uploaded previously");
+
+        return false;
+      }
+    } catch (e) {
+      print("Error occured: ${e.toString()}");
+      Fluttertoast.showToast(msg: e.toString());
+
+      return false;
+    }
+  }
 }

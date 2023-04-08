@@ -109,7 +109,6 @@ class _ProfileState extends State<Profile> {
 
                                   Navigator.pop(context);
 
-                                  // TODO call uploadProfilePicture method
                                   final result =
                                       await UserServices().updateAvatar(
                                     imageFile: imageFile,
@@ -139,7 +138,52 @@ class _ProfileState extends State<Profile> {
                             'Remove current picture',
                             style: TextStyle(color: CustomColor.danger),
                           ),
-                          onTap: () {},
+                          onTap: () => showDialog<String>(
+                            context: context,
+                            builder: (BuildContext context) => AlertDialog(
+                              title: const Text(
+                                  'Are you sure you want to remove your avatar?'),
+                              content: const Text(
+                                  'Deleted data can\'t be retrieve back. Select OK to log out.'),
+                              actions: <Widget>[
+                                TextButton(
+                                  onPressed: () => Navigator.pop(context),
+                                  child: const Text(
+                                    'Cancel',
+                                    style: TextStyle(
+                                      color: CupertinoColors.systemGrey,
+                                    ),
+                                  ),
+                                ),
+                                TextButton(
+                                  onPressed: () async {
+                                    Navigator.pop(context);
+                                    Navigator.pop(context);
+
+                                    final result =
+                                        await UserServices().removeAvatar(
+                                      user: widget.user,
+                                    );
+
+                                    print(
+                                        "Remove Avatar: ${result.toString()}");
+
+                                    if (result == true) {
+                                      Fluttertoast.showToast(
+                                          msg: "Avatar Removed");
+                                      Fluttertoast.showToast(
+                                          msg:
+                                              "Close application and reopen if no changes happen.");
+                                    }
+                                  },
+                                  child: const Text(
+                                    'OK',
+                                    style: TextStyle(color: CustomColor.danger),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
                         ),
                       ],
                     );
