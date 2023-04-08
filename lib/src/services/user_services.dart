@@ -12,7 +12,6 @@ import 'package:flutter_base/src/services/role_services.dart';
 import 'package:flutter_base/src/services/user_activity_services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:network_info_plus/network_info_plus.dart';
-import 'package:path_provider/path_provider.dart';
 
 class UserServices {
   final FirebaseFirestore _db = FirebaseFirestore.instance;

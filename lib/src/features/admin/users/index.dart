@@ -1,33 +1,37 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_base/src/features/admin/users/edit.dart';
+import 'package:shimmer/shimmer.dart';
 
+import '../../../model/user_model.dart';
 import '../../../services/helpers.dart';
 
 class AdminPanelUsers extends StatefulWidget {
-  const AdminPanelUsers({super.key});
+  final List<UserModel> userList;
+  const AdminPanelUsers({super.key, required this.userList});
 
   @override
   State<AdminPanelUsers> createState() => _AdminPanelUsersState();
 }
 
 class _AdminPanelUsersState extends State<AdminPanelUsers> {
-  List<dynamic> data = [
-    {
-      "Profile Picture":
-          "https://img.theculturetrip.com/1000x/wp-content/uploads/2017/02/nasi-lemak.jpg",
-      "Email": "admin@email.com",
-      "Role": "Admin",
-    },
-    {
-      "Profile Picture":
-          "https://www.goodnewsfromindonesia.id/wp-content/uploads/images/source/bagusdr/penyu-6.jpg",
-      "Email": "user@email.com",
-      "Role": "User",
-    },
-  ];
+  // List<dynamic> data = [
+  //   {
+  //     "Profile Picture":
+  //         "https://img.theculturetrip.com/1000x/wp-content/uploads/2017/02/nasi-lemak.jpg",
+  //     "Email": "admin@email.com",
+  //     "Role": "Admin",
+  //   },
+  //   {
+  //     "Profile Picture":
+  //         "https://www.goodnewsfromindonesia.id/wp-content/uploads/images/source/bagusdr/penyu-6.jpg",
+  //     "Email": "user@email.com",
+  //     "Role": "User",
+  //   },
+  // ];
 
-  List<dynamic> filteredData = [];
+  List<UserModel> filteredData = [];
 
   final searchController = TextEditingController();
 
@@ -36,7 +40,7 @@ class _AdminPanelUsersState extends State<AdminPanelUsers> {
 
   @override
   void initState() {
-    filteredData = data;
+    filteredData = widget.userList;
     super.initState();
   }
 
@@ -49,11 +53,11 @@ class _AdminPanelUsersState extends State<AdminPanelUsers> {
   void _onSearchTextChanged(String text) {
     setState(() {
       filteredData = text.isEmpty
-          ? data
-          : data
-              .where((item) =>
-                  item['Email'].toLowerCase().contains(text.toLowerCase()) ||
-                  item['Role'].toLowerCase().contains(text.toLowerCase()))
+          ? widget.userList
+          : widget.userList
+              .where((user) =>
+                  user.email.toLowerCase().contains(text.toLowerCase()) ||
+                  user.role!.name.toLowerCase().contains(text.toLowerCase()))
               .toList();
     });
   }
@@ -121,12 +125,12 @@ class _AdminPanelUsersState extends State<AdminPanelUsers> {
                           _currentSortColumn = columnIndex;
                           if (_isAscending == true) {
                             _isAscending = false;
-                            data.sort((itemA, itemB) =>
-                                itemB['Role'].compareTo(itemA['Role']));
+                            widget.userList.sort((userA, userB) =>
+                                userA.role!.name.compareTo(userB.role!.name));
                           } else {
                             _isAscending = true;
-                            data.sort((itemA, itemB) =>
-                                itemA['Role'].compareTo(itemB['Role']));
+                            widget.userList.sort((userA, userB) =>
+                                userB.role!.name.compareTo(userA.role!.name));
                           }
                         });
                       },
@@ -138,12 +142,12 @@ class _AdminPanelUsersState extends State<AdminPanelUsers> {
                           _currentSortColumn = columnIndex;
                           if (_isAscending == true) {
                             _isAscending = false;
-                            data.sort((itemA, itemB) =>
-                                itemB['Email'].compareTo(itemA['Email']));
+                            widget.userList.sort((userA, userB) =>
+                                userA.email.compareTo(userB.email));
                           } else {
                             _isAscending = true;
-                            data.sort((itemA, itemB) =>
-                                itemA['Email'].compareTo(itemB['Email']));
+                            widget.userList.sort((userA, userB) =>
+                                userB.email.compareTo(userA.email));
                           }
                         });
                       },
@@ -153,18 +157,85 @@ class _AdminPanelUsersState extends State<AdminPanelUsers> {
                     ),
                   ],
                   rows: List.generate(filteredData.length, (index) {
-                    final item = filteredData[index];
+                    final user = filteredData[index];
                     return DataRow(
                       cells: [
                         DataCell(
-                          CircleAvatar(
-                            radius: 20,
-                            backgroundImage:
-                                NetworkImage(item['Profile Picture']),
+                          SizedBox(
+                            width: MediaQuery.of(context).size.height * 0.055,
+                            child: user.avatarURL == null
+                                ? Container(
+                                    height: MediaQuery.of(context).size.height *
+                                        0.055,
+                                    width: MediaQuery.of(context).size.height *
+                                        0.055,
+                                    decoration: const BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      image: DecorationImage(
+                                          image: AssetImage(
+                                              'assets/images/default-profile-picture.png'),
+                                          fit: BoxFit.cover),
+                                    ),
+                                  )
+                                : CachedNetworkImage(
+                                    imageUrl: user.avatarURL!,
+                                    fit: BoxFit.cover,
+                                    imageBuilder: (context, imageProvider) =>
+                                        Container(
+                                      height:
+                                          MediaQuery.of(context).size.height *
+                                              0.055,
+                                      width:
+                                          MediaQuery.of(context).size.height *
+                                              0.055,
+                                      decoration: BoxDecoration(
+                                        shape: BoxShape.circle,
+                                        image: DecorationImage(
+                                            image: imageProvider,
+                                            fit: BoxFit.cover),
+                                      ),
+                                    ),
+                                    placeholder: (context, url) =>
+                                        Shimmer.fromColors(
+                                      baseColor: CupertinoColors.systemGrey,
+                                      highlightColor:
+                                          CupertinoColors.systemGrey2,
+                                      child: Container(
+                                        height:
+                                            MediaQuery.of(context).size.height *
+                                                0.055,
+                                        width:
+                                            MediaQuery.of(context).size.height *
+                                                0.055,
+                                        decoration: const BoxDecoration(
+                                          shape: BoxShape.circle,
+                                          color: Colors.grey,
+                                        ),
+                                      ),
+                                    ),
+                                    errorWidget: (context, url, error) {
+                                      print("Avatar Error: $error");
+                                      return Container(
+                                        height:
+                                            MediaQuery.of(context).size.height *
+                                                0.055,
+                                        width:
+                                            MediaQuery.of(context).size.height *
+                                                0.055,
+                                        decoration: const BoxDecoration(
+                                          shape: BoxShape.circle,
+                                          image: DecorationImage(
+                                              image: AssetImage(
+                                                  'assets/images/default-profile-picture.png'),
+                                              fit: BoxFit.cover),
+                                        ),
+                                      );
+                                    },
+                                  ),
                           ),
                         ),
-                        DataCell(Text(item['Role'])),
-                        DataCell(Text(item['Email'])),
+                        DataCell(Text(user.role!.displayName)),
+                        DataCell(Text(user.email)),
                         DataCell(
                           Row(
                             children: [
