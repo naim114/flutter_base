@@ -1,37 +1,38 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_base/src/widgets/appbar/appbar_confirm_cancel.dart';
+import 'package:intl/intl.dart';
+
+import '../../model/user_model.dart';
 
 class UsersPicker extends StatefulWidget {
-  const UsersPicker({super.key});
+  final List<UserModel> userList;
+  final Function(List<UserModel> selectedUsers, BuildContext pickerContext)
+      onPost;
+
+  const UsersPicker({super.key, required this.userList, required this.onPost});
 
   @override
   State<UsersPicker> createState() => _UsersPickerState();
 }
 
 class _UsersPickerState extends State<UsersPicker> {
-  List<dynamic> data = [
-    {
-      "Email": "admin@email.com",
-      "Role": "Admin",
-    },
-    {
-      "Email": "user@email.com",
-      "Role": "User",
-    },
-  ];
+  List<UserModel> filteredData = [];
 
-  List<dynamic> filteredData = [];
-
-  List<dynamic> selected = [];
+  List<UserModel> selected = [];
 
   final searchController = TextEditingController();
 
   int _currentSortColumn = 0;
   bool _isAscending = true;
 
+  void post(BuildContext context) {
+    print("Selected: $selected");
+    widget.onPost(selected, context);
+  }
+
   @override
   void initState() {
-    filteredData = data;
+    filteredData = widget.userList;
     super.initState();
   }
 
@@ -44,11 +45,11 @@ class _UsersPickerState extends State<UsersPicker> {
   void _onSearchTextChanged(String text) {
     setState(() {
       filteredData = text.isEmpty
-          ? data
-          : data
-              .where((item) =>
-                  item['Email'].toLowerCase().contains(text.toLowerCase()) ||
-                  item['Role'].toLowerCase().contains(text.toLowerCase()))
+          ? widget.userList
+          : widget.userList
+              .where((user) =>
+                  user.email.toLowerCase().contains(text.toLowerCase()) ||
+                  user.role!.name.toLowerCase().contains(text.toLowerCase()))
               .toList();
     });
   }
@@ -58,7 +59,9 @@ class _UsersPickerState extends State<UsersPicker> {
     return Scaffold(
       appBar: appBarConfirmCancel(
         onCancel: () => Navigator.pop(context),
-        onConfirm: () {},
+        onConfirm: () {
+          post(context);
+        },
         context: context,
         title: "Select Users",
       ),
@@ -84,35 +87,77 @@ class _UsersPickerState extends State<UsersPicker> {
                   sortAscending: _isAscending,
                   columns: <DataColumn>[
                     DataColumn(
-                      label: const Text('Role'),
-                      onSort: (columnIndex, _) {
-                        setState(() {
-                          _currentSortColumn = columnIndex;
-                          if (_isAscending == true) {
-                            _isAscending = false;
-                            data.sort((itemA, itemB) =>
-                                itemB['Role'].compareTo(itemA['Role']));
-                          } else {
-                            _isAscending = true;
-                            data.sort((itemA, itemB) =>
-                                itemA['Role'].compareTo(itemB['Role']));
-                          }
-                        });
-                      },
-                    ),
-                    DataColumn(
                       label: const Text('Email'),
                       onSort: (columnIndex, _) {
                         setState(() {
                           _currentSortColumn = columnIndex;
                           if (_isAscending == true) {
                             _isAscending = false;
-                            data.sort((itemA, itemB) =>
-                                itemB['Email'].compareTo(itemA['Email']));
+                            widget.userList.sort((userA, userB) =>
+                                userA.email.compareTo(userB.email));
                           } else {
                             _isAscending = true;
-                            data.sort((itemA, itemB) =>
-                                itemA['Email'].compareTo(itemB['Email']));
+                            widget.userList.sort((userA, userB) =>
+                                userB.email.compareTo(userA.email));
+                          }
+                        });
+                      },
+                    ),
+                    DataColumn(
+                      label: const Text('Name'),
+                      onSort: (columnIndex, _) {
+                        setState(() {
+                          _currentSortColumn = columnIndex;
+                          if (_isAscending == true) {
+                            _isAscending = false;
+                            widget.userList.sort((userA, userB) {
+                              String userAName = userA.name ?? "None";
+                              String userBName = userB.name ?? "None";
+
+                              return userAName.compareTo(userBName);
+                            });
+                          } else {
+                            _isAscending = true;
+                            widget.userList.sort((userA, userB) {
+                              String userAName = userA.name ?? "None";
+                              String userBName = userB.name ?? "None";
+
+                              return userBName.compareTo(userAName);
+                            });
+                          }
+                        });
+                      },
+                    ),
+                    DataColumn(
+                      label: const Text('Role'),
+                      onSort: (columnIndex, _) {
+                        setState(() {
+                          _currentSortColumn = columnIndex;
+                          if (_isAscending == true) {
+                            _isAscending = false;
+                            widget.userList.sort((userA, userB) =>
+                                userA.role!.name.compareTo(userB.role!.name));
+                          } else {
+                            _isAscending = true;
+                            widget.userList.sort((userA, userB) =>
+                                userB.role!.name.compareTo(userA.role!.name));
+                          }
+                        });
+                      },
+                    ),
+                    DataColumn(
+                      label: const Text('Created at'),
+                      onSort: (columnIndex, _) {
+                        setState(() {
+                          _currentSortColumn = columnIndex;
+                          if (_isAscending == true) {
+                            _isAscending = false;
+                            widget.userList.sort((userA, userB) =>
+                                userA.createdAt.compareTo(userB.createdAt));
+                          } else {
+                            _isAscending = true;
+                            widget.userList.sort((userA, userB) =>
+                                userB.createdAt.compareTo(userA.createdAt));
                           }
                         });
                       },
@@ -121,8 +166,8 @@ class _UsersPickerState extends State<UsersPicker> {
                   onSelectAll: (isSelectedAll) {
                     setState(() {
                       if (isSelectedAll == true) {
-                        for (var item in data) {
-                          selected.add(item['Email']);
+                        for (var user in widget.userList) {
+                          selected.add(user);
                         }
                       } else {
                         selected = [];
@@ -130,7 +175,7 @@ class _UsersPickerState extends State<UsersPicker> {
                     });
                   },
                   rows: List.generate(filteredData.length, (index) {
-                    final item = filteredData[index];
+                    final UserModel user = filteredData[index];
                     return DataRow(
                       color: MaterialStateProperty.resolveWith<Color?>(
                           (Set<MaterialState> states) {
@@ -148,16 +193,19 @@ class _UsersPickerState extends State<UsersPicker> {
                         return null; // Use default value for other states and odd rows.
                       }),
                       cells: [
-                        DataCell(Text(item['Role'])),
-                        DataCell(Text(item['Email'])),
+                        DataCell(Text(user.email)),
+                        DataCell(Text(user.name ?? "None")),
+                        DataCell(Text(user.role!.displayName)),
+                        DataCell(Text(
+                            DateFormat('dd/MM/yyyy').format(user.createdAt))),
                       ],
-                      selected: selected.contains(item['Email']),
+                      selected: selected.contains(user),
                       onSelectChanged: (bool? isSelected) {
                         if (isSelected != null) {
                           setState(() {
                             isSelected
-                                ? selected.add(item['Email'])
-                                : selected.remove(item['Email']);
+                                ? selected.add(user)
+                                : selected.remove(user);
                           });
                         }
                       },

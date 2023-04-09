@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_base/src/features/admin/news/index.dart';
 import 'package:flutter_base/src/features/admin/notification/index.dart';
-import 'package:flutter_base/src/features/admin/users/builder.dart';
+import 'package:flutter_base/src/widgets/builder/user_builder.dart';
 
 import '../../model/user_model.dart';
 import '../../services/helpers.dart';
@@ -41,8 +41,9 @@ class AdminPanel extends StatelessWidget {
             title: "Users",
             onTap: () => Navigator.of(context).push(
               MaterialPageRoute(
-                builder: (context) => AdminPanelUsersBuilder(
+                builder: (context) => UsersBuilder(
                   currentUser: currentUser,
+                  pushTo: 'AdminPanelUsers',
                 ),
               ),
             ),
@@ -53,7 +54,9 @@ class AdminPanel extends StatelessWidget {
             title: "Notification",
             onTap: () => Navigator.of(context).push(
               MaterialPageRoute(
-                builder: (context) => const AdminPanelNotification(),
+                builder: (context) => AdminPanelNotification(
+                  currentUser: currentUser,
+                ),
               ),
             ),
           ),

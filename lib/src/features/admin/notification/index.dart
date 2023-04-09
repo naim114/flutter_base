@@ -3,10 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_base/src/features/admin/notification/add.dart';
 import 'package:flutter_base/src/features/admin/notification/edit.dart';
 
+import '../../../model/user_model.dart';
 import '../../../services/helpers.dart';
 
 class AdminPanelNotification extends StatefulWidget {
-  const AdminPanelNotification({super.key});
+  const AdminPanelNotification({super.key, required this.currentUser});
+  final UserModel currentUser;
 
   @override
   State<AdminPanelNotification> createState() => _AdminPanelNotificationState();
@@ -82,7 +84,9 @@ class _AdminPanelNotificationState extends State<AdminPanelNotification> {
           IconButton(
             onPressed: () => Navigator.of(context).push(
               MaterialPageRoute(
-                builder: (context) => AddNotification(),
+                builder: (context) => AddNotification(
+                  currentUser: widget.currentUser,
+                ),
               ),
             ),
             icon: Icon(
@@ -200,7 +204,9 @@ class _AdminPanelNotificationState extends State<AdminPanelNotification> {
                               icon: const Icon(Icons.edit),
                               onPressed: () => Navigator.of(context).push(
                                 MaterialPageRoute(
-                                  builder: (context) => EditNotification(),
+                                  builder: (context) => EditNotification(
+                                    currentUser: widget.currentUser,
+                                  ),
                                 ),
                               ),
                             ),

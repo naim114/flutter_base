@@ -1,15 +1,17 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_base/src/widgets/editor/select_user.dart';
+import 'package:flutter_base/src/widgets/builder/user_builder.dart';
 import 'package:flutter_quill/flutter_quill.dart' hide Text;
 
+import '../../model/user_model.dart';
 import '../../services/helpers.dart';
 
-class NotificationEditor extends StatelessWidget {
+class NotificationEditor extends StatefulWidget {
   final QuillController controller;
   final BuildContext context;
-  final String appBarTitle = "Add/Edit Notification";
-  final Function onPost;
+  final Function(QuillController quillController, List<UserModel> receiverList)
+      onPost;
+  final UserModel currentUser;
 
   const NotificationEditor({
     super.key,
@@ -17,10 +19,21 @@ class NotificationEditor extends StatelessWidget {
     required this.context,
     String appBarTitle = "Add/Edit Notification",
     required this.onPost,
+    required this.currentUser,
   });
 
+  @override
+  State<NotificationEditor> createState() => _NotificationEditorState();
+}
+
+class _NotificationEditorState extends State<NotificationEditor> {
+  final String appBarTitle = "Add/Edit Notification";
+
+  List<UserModel> receiverList = List.empty();
+
   void post() {
-    onPost(controller);
+    print("receiverList: $receiverList");
+    widget.onPost(widget.controller, receiverList);
   }
 
   @override
@@ -77,7 +90,15 @@ class NotificationEditor extends StatelessWidget {
           ListTile(
             onTap: () => Navigator.of(context).push(
               MaterialPageRoute(
-                builder: (context) => const UsersPicker(),
+                builder: (context) => UsersBuilder(
+                  currentUser: widget.currentUser,
+                  pushTo: 'UsersPicker',
+                  onPost: (userList, pickerContext) {
+                    print("notification editor: $userList");
+                    setState(() => receiverList = userList);
+                    Navigator.pop(pickerContext);
+                  },
+                ),
               ),
             ),
             title: RichText(
@@ -114,7 +135,7 @@ class NotificationEditor extends StatelessWidget {
           ),
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 10.0),
-            child: QuillToolbar.basic(controller: controller),
+            child: QuillToolbar.basic(controller: widget.controller),
           ),
           Padding(
             padding: const EdgeInsets.symmetric(
@@ -122,7 +143,7 @@ class NotificationEditor extends StatelessWidget {
               vertical: 5,
             ),
             child: QuillEditor.basic(
-              controller: controller,
+              controller: widget.controller,
               readOnly: false,
             ),
           ),

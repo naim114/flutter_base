@@ -18,7 +18,8 @@ class UserServices {
   final CollectionReference _collectionRef =
       FirebaseFirestore.instance.collection('User');
   final FirebaseAuth _auth = FirebaseAuth.instance;
-  final _firebaseStorage = FirebaseStorage.instance;
+  final FirebaseStorage _firebaseStorage = FirebaseStorage.instance;
+
   static final DeviceInfoPlugin _deviceInfoPlugin = DeviceInfoPlugin();
   final NetworkInfo _networkInfo = NetworkInfo();
 
@@ -220,6 +221,7 @@ class UserServices {
               // update user on db
               _collectionRef.doc(userCred.user?.uid).update({
                 'email': newEmail,
+                'updated_at': DateTime.now(),
               }).then((value) => print("Email Updated on Firestore"));
             }
           });
@@ -244,7 +246,10 @@ class UserServices {
             // update user on db
             return _collectionRef
                 .doc(userCred.uid)
-                .update({'email': newEmail})
+                .update({
+                  'email': newEmail,
+                  'updated_at': DateTime.now(),
+                })
                 .then((value) => print("Email Updated on Firestore"))
                 .onError((error, stackTrace) => throw Exception(error));
           }).onError((error, stackTrace) => throw Exception(error));
@@ -330,10 +335,10 @@ class UserServices {
                   .then((value) => print("Password Updated on Auth"));
 
               // update user on db
-              _collectionRef
-                  .doc(userCred.user?.uid)
-                  .update({'password': digest.toString()}).then(
-                      (value) => print("Password Updated on Firestore"));
+              _collectionRef.doc(userCred.user?.uid).update({
+                'password': digest.toString(),
+                'updated_at': DateTime.now(),
+              }).then((value) => print("Password Updated on Firestore"));
             }
           });
         } else {
@@ -355,10 +360,10 @@ class UserServices {
           await userCred.updatePassword(digest.toString()).then((value) {
             print("Password Updated on Auth");
             // update user on db
-            return _collectionRef
-                .doc(userCred.uid)
-                .update({'password': digest.toString()}).then(
-                    (value) => print("Password Updated on Firestore"));
+            return _collectionRef.doc(userCred.uid).update({
+              'password': digest.toString(),
+              'updated_at': DateTime.now(),
+            }).then((value) => print("Password Updated on Firestore"));
           });
         }
       }
@@ -474,6 +479,7 @@ class UserServices {
       _collectionRef.doc(user.id).update({
         'avatarPath': 'avatar/${user.id}$extension',
         'avatarURL': downloadUrl,
+        'updated_at': DateTime.now(),
       }).then((value) => print("Avatar Path Updated on Firestore"));
 
       await UserServices()
@@ -520,6 +526,7 @@ class UserServices {
         _collectionRef.doc(user.id).update({
           'avatarPath': null,
           'avatarURL': null,
+          'updated_at': DateTime.now(),
         }).then((value) => print("Avatar Path Updated to Null on Firestore"));
 
         print("Previous file deleted");
@@ -563,8 +570,10 @@ class UserServices {
   }) async {
     try {
       // update user on db
-      _collectionRef.doc(user.id).update({'disableAt': DateTime.now()}).then(
-          (value) => print("User Status Updated on Firestore"));
+      _collectionRef.doc(user.id).update({
+        'disableAt': DateTime.now(),
+        'updated_at': DateTime.now(),
+      }).then((value) => print("User Status Updated on Firestore"));
 
       await UserServices()
           .get(_auth.currentUser!.uid)
@@ -601,8 +610,10 @@ class UserServices {
   }) async {
     try {
       // update user on db
-      _collectionRef.doc(user.id).update({'disableAt': null}).then(
-          (value) => print("User Status Updated on Firestore"));
+      _collectionRef.doc(user.id).update({
+        'disableAt': null,
+        'updated_at': DateTime.now(),
+      }).then((value) => print("User Status Updated on Firestore"));
 
       await UserServices()
           .get(_auth.currentUser!.uid)
@@ -639,8 +650,10 @@ class UserServices {
   }) async {
     try {
       // update user on db
-      _collectionRef.doc(user.id).update({'role': roleId}).then(
-          (value) => print("User Role  Updated on Firestore"));
+      _collectionRef.doc(user.id).update({
+        'role': roleId,
+        'updated_at': DateTime.now(),
+      }).then((value) => print("User Role Updated on Firestore"));
 
       return true;
     } catch (e) {
