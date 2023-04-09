@@ -22,13 +22,6 @@ class UsersBuilder extends StatefulWidget {
 }
 
 class _UsersBuilderState extends State<UsersBuilder> {
-  // List<UserModel> returnUserList = List.empty();
-
-  // void post() {
-  //   print("returnUserList: $returnUserList");
-  //   widget.onPost!(returnUserList);
-  // }
-
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<List<UserModel?>>(
@@ -50,7 +43,6 @@ class _UsersBuilderState extends State<UsersBuilder> {
             return UsersPicker(
               userList: userList,
               onPost: (selectedUserList, pickerContext) {
-                print("user builder: $selectedUserList");
                 widget.onPost!(selectedUserList, pickerContext);
               },
             );

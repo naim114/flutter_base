@@ -7,6 +7,7 @@ class NotificationModel {
   final UserModel? author;
   final UserModel? receiver;
   final String jsonContent;
+  final int receiversCount;
 
   // date
   final DateTime createdAt;
@@ -21,11 +22,12 @@ class NotificationModel {
     required this.jsonContent,
     required this.createdAt,
     required this.updatedAt,
+    required this.receiversCount,
   });
 
   @override
   String toString() {
-    return 'NotificationModel(id: $id, groupId: $groupId, title: $title, author: $author, receiver: $receiver, jsonContent: $jsonContent, createdAt: $createdAt, updatedAt: $updatedAt)';
+    return 'NotificationModel(id: $id, groupId: $groupId, title: $title, author: $author, receiver: $receiver, receiversCount: $receiversCount, jsonContent: $jsonContent, createdAt: $createdAt, updatedAt: $updatedAt)';
   }
 
   Map<String, Object?> toJson() {
@@ -35,6 +37,7 @@ class NotificationModel {
       'title': title,
       'author': author!.id,
       'receiver': receiver!.id,
+      'receiversCount': receiversCount,
       'jsonContent': jsonContent,
       'createdAt': createdAt,
       'updatedAt': updatedAt,

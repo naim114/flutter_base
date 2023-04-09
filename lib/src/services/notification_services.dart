@@ -25,6 +25,7 @@ class NotificationServices {
       title: doc.get('title'),
       author: await UserServices().get(doc.get('author')),
       receiver: await UserServices().get(doc.get('receiver')),
+      receiversCount: doc.get('receiversCount'),
       jsonContent: doc.get('jsonContent'),
       createdAt: doc.get('createdAt'),
       updatedAt: doc.get('updatedAt'),
@@ -40,6 +41,7 @@ class NotificationServices {
       title: doc.get('title'),
       author: await UserServices().get(doc.get('author')),
       receiver: await UserServices().get(doc.get('receiver')),
+      receiversCount: doc.get('receiversCount'),
       jsonContent: doc.get('jsonContent'),
       createdAt: doc.get('createdAt'),
       updatedAt: doc.get('updatedAt'),
@@ -103,6 +105,7 @@ class NotificationServices {
     required String title,
     required String jsonContent,
     required UserModel author,
+    required int receiversCount,
     required List<UserModel> receivers,
   }) async {
     try {
@@ -111,33 +114,34 @@ class NotificationServices {
 
       print("Group Id: $groupId");
 
-      // for (UserModel receiver in receivers) {
-      //   dynamic add = await _collectionRef.add({
-      //     'createdAt': DateTime.now(),
-      //     'updatedAt': DateTime.now(),
-      //     'deletedAt': null,
-      //   }).then((docRef) {
-      //     _collectionRef
-      //         .doc(docRef.id)
-      //         .set(NotificationModel(
-      //           id: docRef.id,
-      //           groupId: groupId,
-      //           title: title,
-      //           author: author,
-      //           receiver: receiver,
-      //           jsonContent: jsonContent,
-      //           createdAt: DateTime.now(),
-      //           updatedAt: DateTime.now(),
-      //         ).toJson())
-      //         .then((value) => print("Notification Sent to ${receiver.email}"))
-      //         .catchError(
-      //             (error) => print("Failed to ent notification: $error"));
-      //   });
-
-      //   print("Add: ${add.toString()}");
-      // }
+      for (UserModel receiver in receivers) {
+        dynamic add = await _collectionRef.add({
+          'createdAt': DateTime.now(),
+          'updatedAt': DateTime.now(),
+          'deletedAt': null,
+        }).then((docRef) {
+          _collectionRef
+              .doc(docRef.id)
+              .set(NotificationModel(
+                id: docRef.id,
+                groupId: groupId,
+                title: title,
+                author: author,
+                receiver: receiver,
+                receiversCount: receiversCount,
+                jsonContent: jsonContent,
+                createdAt: DateTime.now(),
+                updatedAt: DateTime.now(),
+              ).toJson())
+              .then((value) => print("Notification Sent to ${receiver.email}"))
+              .catchError(
+                  (error) => print("Failed to sent notification: $error"));
+        });
+      }
 
       // TODO log activity
+      // TODO try to receive to test this code
+
       return true;
     } catch (e) {
       print(e.toString());
