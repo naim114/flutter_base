@@ -1,6 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:device_info_plus/device_info_plus.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_base/src/model/notification_model.dart';
+import 'package:flutter_base/src/services/user_activity_services.dart';
 import 'package:flutter_base/src/services/user_services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
@@ -12,6 +14,7 @@ class NotificationServices {
   final FirebaseFirestore _db = FirebaseFirestore.instance;
   final CollectionReference _collectionRef =
       FirebaseFirestore.instance.collection('Notification');
+  final FirebaseAuth _auth = FirebaseAuth.instance;
 
   static final DeviceInfoPlugin _deviceInfoPlugin = DeviceInfoPlugin();
   final NetworkInfo _networkInfo = NetworkInfo();
@@ -27,8 +30,8 @@ class NotificationServices {
       receiver: await UserServices().get(doc.get('receiver')),
       receiversCount: doc.get('receiversCount'),
       jsonContent: doc.get('jsonContent'),
-      createdAt: doc.get('createdAt'),
-      updatedAt: doc.get('updatedAt'),
+      createdAt: doc.get('createdAt').toDate(),
+      updatedAt: doc.get('updatedAt').toDate(),
     );
   }
 
@@ -43,8 +46,8 @@ class NotificationServices {
       receiver: await UserServices().get(doc.get('receiver')),
       receiversCount: doc.get('receiversCount'),
       jsonContent: doc.get('jsonContent'),
-      createdAt: doc.get('createdAt'),
-      updatedAt: doc.get('updatedAt'),
+      createdAt: doc.get('createdAt').toDate(),
+      updatedAt: doc.get('updatedAt').toDate(),
     );
   }
 
@@ -139,7 +142,29 @@ class NotificationServices {
         });
       }
 
-      // TODO log activity
+      await UserServices()
+          .get(_auth.currentUser!.uid)
+          .then((currentUser) async {
+        print("Get current user");
+        if (currentUser != null) {
+          UserModel? user = await UserServices().get(currentUser.id);
+
+          if (user != null) {
+            await UserActivityServices()
+                .add(
+                  user: currentUser,
+                  description:
+                      "Post Notification (Title: $title) to ${receivers.length} people.",
+                  activityType: "notification_add",
+                  networkInfo: _networkInfo,
+                  deviceInfoPlugin: _deviceInfoPlugin,
+                )
+                .then((value) => print("Activity Added"));
+            return true;
+          }
+        }
+      });
+
       // TODO try to receive to test this code
 
       return true;
@@ -149,4 +174,6 @@ class NotificationServices {
       return false;
     }
   }
+
+  // TODO editByGroupId, deleteByGroupId
 }

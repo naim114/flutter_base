@@ -58,3 +58,24 @@ bool validatePassword(TextEditingController passwordController) {
 
   return regex.hasMatch(passwordController.text);
 }
+
+extension ListExtension<E> on List<E> {
+  Map<K, List<E>> groupBy<K>(K Function(E) keyFunction) {
+    return Map.fromEntries(
+      groupByMapEntries(keyFunction),
+    );
+  }
+
+  Iterable<MapEntry<K, List<E>>> groupByMapEntries<K>(
+      K Function(E) keyFunction) sync* {
+    final groups = <K, List<E>>{};
+    for (final element in this) {
+      final key = keyFunction(element);
+      if (!groups.containsKey(key)) {
+        groups[key] = <E>[];
+      }
+      groups[key]!.add(element);
+    }
+    yield* groups.entries;
+  }
+}

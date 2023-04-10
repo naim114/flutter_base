@@ -2,34 +2,27 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_base/src/features/admin/notification/add.dart';
 import 'package:flutter_base/src/features/admin/notification/edit.dart';
+import 'package:intl/intl.dart';
 
+import '../../../model/notification_model.dart';
 import '../../../model/user_model.dart';
 import '../../../services/helpers.dart';
 
 class AdminPanelNotification extends StatefulWidget {
-  const AdminPanelNotification({super.key, required this.currentUser});
+  const AdminPanelNotification({
+    super.key,
+    required this.currentUser,
+    required this.notiList,
+  });
+
   final UserModel currentUser;
+  final List<NotificationModel> notiList;
 
   @override
   State<AdminPanelNotification> createState() => _AdminPanelNotificationState();
 }
 
 class _AdminPanelNotificationState extends State<AdminPanelNotification> {
-  List<dynamic> data = [
-    {
-      "Title": "Welcome to AppName!",
-      "To": "All",
-      "Created By": "Admin",
-      "Created At": "10 March 2020",
-    },
-    {
-      "Title": "New Features Available. Check out the new Update.",
-      "To": "4 Users",
-      "Created By": "Admin",
-      "Created At": "10 March 2020",
-    },
-  ];
-
   List<dynamic> filteredData = [];
 
   final searchController = TextEditingController();
@@ -39,7 +32,7 @@ class _AdminPanelNotificationState extends State<AdminPanelNotification> {
 
   @override
   void initState() {
-    filteredData = data;
+    filteredData = widget.notiList;
     super.initState();
   }
 
@@ -52,10 +45,10 @@ class _AdminPanelNotificationState extends State<AdminPanelNotification> {
   void _onSearchTextChanged(String text) {
     setState(() {
       filteredData = text.isEmpty
-          ? data
-          : data
-              .where((item) =>
-                  item['Title'].toLowerCase().contains(text.toLowerCase()))
+          ? widget.notiList
+          : widget.notiList
+              .where((noti) =>
+                  noti.title.toLowerCase().contains(text.toLowerCase()))
               .toList();
     });
   }
@@ -134,12 +127,12 @@ class _AdminPanelNotificationState extends State<AdminPanelNotification> {
                         _currentSortColumn = columnIndex;
                         if (_isAscending == true) {
                           _isAscending = false;
-                          data.sort((itemA, itemB) =>
-                              itemB['Title'].compareTo(itemA['Title']));
+                          widget.notiList.sort((itemA, itemB) =>
+                              itemA.title.compareTo(itemB.title));
                         } else {
                           _isAscending = true;
-                          data.sort((itemA, itemB) =>
-                              itemA['Title'].compareTo(itemB['Title']));
+                          widget.notiList.sort((itemA, itemB) =>
+                              itemB.title.compareTo(itemA.title));
                         }
                       });
                     },
@@ -151,12 +144,14 @@ class _AdminPanelNotificationState extends State<AdminPanelNotification> {
                         _currentSortColumn = columnIndex;
                         if (_isAscending == true) {
                           _isAscending = false;
-                          data.sort((itemA, itemB) => itemB['Created By']
-                              .compareTo(itemA['Created By']));
+                          widget.notiList.sort((itemA, itemB) => itemA
+                              .author!.email
+                              .compareTo(itemB.author!.email));
                         } else {
                           _isAscending = true;
-                          data.sort((itemA, itemB) => itemA['Created By']
-                              .compareTo(itemB['Created By']));
+                          widget.notiList.sort((itemA, itemB) => itemB
+                              .author!.email
+                              .compareTo(itemA.author!.email));
                         }
                       });
                     },
@@ -168,12 +163,12 @@ class _AdminPanelNotificationState extends State<AdminPanelNotification> {
                         _currentSortColumn = columnIndex;
                         if (_isAscending == true) {
                           _isAscending = false;
-                          data.sort((itemA, itemB) => itemB['Created At']
-                              .compareTo(itemA['Created At']));
+                          widget.notiList.sort((itemA, itemB) =>
+                              itemB.createdAt.compareTo(itemA.createdAt));
                         } else {
                           _isAscending = true;
-                          data.sort((itemA, itemB) => itemA['Created At']
-                              .compareTo(itemB['Created At']));
+                          widget.notiList.sort((itemA, itemB) =>
+                              itemA.createdAt.compareTo(itemB.createdAt));
                         }
                       });
                     },
@@ -186,16 +181,17 @@ class _AdminPanelNotificationState extends State<AdminPanelNotification> {
                   ),
                 ],
                 rows: List.generate(filteredData.length, (index) {
-                  final item = filteredData[index];
+                  final NotificationModel noti = filteredData[index];
                   return DataRow(
                     cells: [
                       DataCell(Text(
-                        item['Title'],
+                        noti.title,
                         overflow: TextOverflow.ellipsis,
                       )),
-                      DataCell(Text(item['Created By'])),
-                      DataCell(Text(item['Created At'])),
-                      DataCell(Text(item['To'])),
+                      DataCell(Text(noti.author!.email)),
+                      DataCell(Text(
+                          DateFormat('dd/MM/yyyy').format(noti.createdAt))),
+                      DataCell(Text("${noti.receiversCount} people")),
                       DataCell(
                         Row(
                           children: [

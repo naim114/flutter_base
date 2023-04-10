@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_base/src/features/admin/news/index.dart';
 import 'package:flutter_base/src/features/admin/notification/index.dart';
+import 'package:flutter_base/src/widgets/builder/notification_builder.dart';
 import 'package:flutter_base/src/widgets/builder/user_builder.dart';
 
 import '../../model/user_model.dart';
@@ -54,7 +55,8 @@ class AdminPanel extends StatelessWidget {
             title: "Notification",
             onTap: () => Navigator.of(context).push(
               MaterialPageRoute(
-                builder: (context) => AdminPanelNotification(
+                builder: (context) => NotificationBuilder(
+                  pushTo: 'AdminPanelNotification',
                   currentUser: currentUser,
                 ),
               ),
