@@ -9,7 +9,6 @@ Widget listTileNotification({
   required void Function(BuildContext) onDelete,
   required void Function() onTap,
   required NotificationModel noti,
-  bool unread = true,
 }) =>
     GestureDetector(
       onTap: onTap,
@@ -38,7 +37,7 @@ Widget listTileNotification({
             style: const TextStyle(fontWeight: FontWeight.bold),
           ),
           subtitle: Text(DateFormat('dd/MM/yyyy').format(noti.createdAt)),
-          trailing: (unread)
+          trailing: (noti.unread)
               ? const Icon(
                   Icons.circle,
                   size: 10,

@@ -65,15 +65,23 @@ class Notifications extends StatelessWidget {
                           NotificationModel noti = dataList[index];
                           return listTileNotification(
                             onDelete: doNothing,
-                            onTap: () => Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (mainContext) => NotificationView(
-                                  notification: noti,
-                                ),
-                              ),
-                            ),
-                            unread: false,
+                            onTap: () async {
+                              final result = await NotificationServices()
+                                  .read(notification: noti);
+
+                              print("Read: $result");
+
+                              if (context.mounted) {
+                                Navigator.push(
+                                  mainContext,
+                                  MaterialPageRoute(
+                                    builder: (context) => NotificationView(
+                                      notification: noti,
+                                    ),
+                                  ),
+                                );
+                              }
+                            },
                             noti: noti,
                           );
                         }),

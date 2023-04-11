@@ -25,6 +25,7 @@ class NotificationServices {
     return NotificationModel(
       id: doc.get('id'),
       groupId: doc.get('groupId'),
+      unread: doc.get('unread'),
       title: doc.get('title'),
       author: await UserServices().get(doc.get('author')),
       receiver: await UserServices().get(doc.get('receiver')),
@@ -42,6 +43,7 @@ class NotificationServices {
       id: doc.get('id'),
       groupId: doc.get('groupId'),
       title: doc.get('title'),
+      unread: doc.get('unread'),
       author: await UserServices().get(doc.get('author')),
       receiver: await UserServices().get(doc.get('receiver')),
       receiversCount: doc.get('receiversCount'),
@@ -196,5 +198,41 @@ class NotificationServices {
     }
   }
 
-  // TODO editByGroupId, deleteByGroupId
+  Future read({
+    required NotificationModel notification,
+  }) async {
+    try {
+      dynamic result = _collectionRef.doc(notification.id).update({
+        'unread': false,
+        'updatedAt': DateTime.now(),
+      }).then((value) => print("Notification Read"));
+
+      print(result.toString());
+
+      await UserServices()
+          .get(_auth.currentUser!.uid)
+          .then((currentUser) async {
+        print("Get current user");
+        if (currentUser != null) {
+          await UserActivityServices()
+              .add(
+                user: currentUser,
+                description: "Read Notification (Title: ${notification.title})",
+                activityType: "notification_read",
+                networkInfo: _networkInfo,
+                deviceInfoPlugin: _deviceInfoPlugin,
+              )
+              .then((value) => print("Activity Added"));
+        }
+      });
+
+      return true;
+    } catch (e) {
+      print(e.toString());
+
+      return false;
+    }
+  }
+
+  // TODO view, deleteByGroupId
 }
