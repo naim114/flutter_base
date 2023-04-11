@@ -161,9 +161,7 @@ class NotificationServices {
                 createdAt: DateTime.now(),
                 updatedAt: DateTime.now(),
               ).toJson())
-              .then((value) => print("Notification Sent to ${receiver.email}"))
-              .catchError(
-                  (error) => print("Failed to sent notification: $error"));
+              .then((value) => print("Notification Sent to ${receiver.email}"));
         });
       }
 

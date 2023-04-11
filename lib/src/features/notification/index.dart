@@ -4,6 +4,7 @@ import 'package:flutter_base/src/model/user_model.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
 import '../../model/notification_model.dart';
+import '../../services/helpers.dart';
 import '../../services/notification_services.dart';
 import '../../widgets/list_tile/list_tile_notification.dart';
 import '../../widgets/typography/page_title_icon.dart';
@@ -65,11 +66,47 @@ class Notifications extends StatelessWidget {
                         children: List.generate(dataList.length, (index) {
                           NotificationModel noti = dataList[index];
                           return listTileNotification(
-                            onDelete: (context) async {
-                              final result = await NotificationServices()
-                                  .delete(notification: noti);
+                            onDelete: (context) {
+                              showDialog<String>(
+                                context: context,
+                                builder: (BuildContext context) => AlertDialog(
+                                  title: const Text('Delete Notification?'),
+                                  content: const Text(
+                                      'Are you sure you want to delete this notification? Deleted data may can\'t be retrieved back. Select OK to confirm.'),
+                                  actions: <Widget>[
+                                    TextButton(
+                                      onPressed: () => Navigator.pop(context),
+                                      child: const Text(
+                                        'Cancel',
+                                        style: TextStyle(
+                                          color: CupertinoColors.systemGrey,
+                                        ),
+                                      ),
+                                    ),
+                                    TextButton(
+                                      onPressed: () async {
+                                        final result =
+                                            await NotificationServices()
+                                                .delete(notification: noti);
 
-                              print("Delete: $result");
+                                        print("Delete: $result");
+
+                                        if (result == true && context.mounted) {
+                                          Navigator.pop(context);
+                                          Fluttertoast.showToast(
+                                              msg: "Deleted notification");
+                                        }
+                                      },
+                                      child: const Text(
+                                        'OK',
+                                        style: TextStyle(
+                                          color: CustomColor.danger,
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              );
                             },
                             onTap: () async {
                               final result = await NotificationServices()

@@ -29,7 +29,7 @@ class NotificationModel {
 
   @override
   String toString() {
-    return 'NotificationModel(id: $id, groupId: $groupId, title: $title, author: $author, receiver: $receiver, receiversCount: $receiversCount, jsonContent: $jsonContent, createdAt: $createdAt, updatedAt: $updatedAt), unread: $unread';
+    return 'NotificationModel(id: $id, groupId: $groupId, title: $title, author: $author, receiver: $receiver, receiversCount: $receiversCount, jsonContent: $jsonContent, createdAt: $createdAt, updatedAt: $updatedAt, unread: $unread)';
   }
 
   Map<String, Object?> toJson() {

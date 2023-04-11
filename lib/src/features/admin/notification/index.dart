@@ -99,7 +99,7 @@ class _AdminPanelNotificationState extends State<AdminPanelNotification> {
             bottom: 10.0,
           ),
           child: Text(
-            'View all notification here. Click button at top right to send notification to all or specific users. Search notifications by typing to the textbox. Edit or Delete notification by clicking on the actions button.',
+            'View all notification here. Click button at top right to send notification to all or specific users. Search notifications by typing to the textbox. View or Delete notification by clicking on the actions button.',
             textAlign: TextAlign.justify,
           ),
         ),

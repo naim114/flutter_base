@@ -173,12 +173,10 @@ class UserActivityServices {
                 updatedAt: DateTime.now(),
                 deviceInfo: deviceInfo['deviceInfo'],
               ).toJson())
-              .then((value) => print("User Activity Setted"))
-              .catchError(
-                  (error) => print("Failed to set user activity: $error"));
+              .then((value) => print("User Activity Setted"));
 
           print("User Activity Added");
-        }).catchError((error) => print("Failed to add user activity: $error"));
+        });
 
         print(add.toString());
 
@@ -222,12 +220,10 @@ class UserActivityServices {
                 wifiSubmask: connectionInfo['wifiSubmask'],
                 deviceInfo: deviceInfo['deviceInfo'],
               ).toJson())
-              .then((value) => print("User Activity Setted"))
-              .catchError(
-                  (error) => print("Failed to set user activity: $error"));
+              .then((value) => print("User Activity Setted"));
 
           print("User Activity Added");
-        }).catchError((error) => print("Failed to add user activity: $error"));
+        });
 
         print(add.toString());
 
