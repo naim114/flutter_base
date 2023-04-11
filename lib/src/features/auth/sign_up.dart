@@ -33,6 +33,12 @@ class _SignUpState extends State<SignUp> {
   Widget _buttonChild = const Text('Register Now');
 
   @override
+  void initState() {
+    super.initState();
+    _submitted = false;
+  }
+
+  @override
   void dispose() {
     nameController.dispose();
     emailController.dispose();

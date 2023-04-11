@@ -28,6 +28,12 @@ class _UpdateEmailState extends State<UpdateEmail> {
   bool _submitted = false;
 
   @override
+  void initState() {
+    _submitted = false;
+    super.initState();
+  }
+
+  @override
   void dispose() {
     newEmailController.dispose();
     oldEmailController.dispose();

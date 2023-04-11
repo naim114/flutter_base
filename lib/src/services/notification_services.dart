@@ -165,8 +165,6 @@ class NotificationServices {
         }
       });
 
-      // TODO try to receive to test this code
-
       return true;
     } catch (e) {
       print(e.toString());

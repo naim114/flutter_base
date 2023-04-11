@@ -16,6 +16,7 @@ class NotificationEditor extends StatefulWidget {
     String title,
   ) onPost;
   final UserModel currentUser;
+  final String? title;
   final String appBarTitle;
 
   const NotificationEditor({
@@ -25,6 +26,7 @@ class NotificationEditor extends StatefulWidget {
     this.appBarTitle = "Add/Edit Notification",
     required this.onPost,
     required this.currentUser,
+    this.title,
   });
 
   @override
@@ -37,6 +39,13 @@ class _NotificationEditorState extends State<NotificationEditor> {
 
   bool _submitted = false;
   bool _loading = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _submitted = false;
+    titleController.text = widget.title ?? "";
+  }
 
   @override
   void dispose() {
@@ -140,10 +149,11 @@ class _NotificationEditorState extends State<NotificationEditor> {
                     text: TextSpan(
                       style: const TextStyle(fontSize: 16),
                       children: <TextSpan>[
-                        const TextSpan(
+                        TextSpan(
                           text: 'Send to: ',
                           style: TextStyle(
                             fontWeight: FontWeight.bold,
+                            color: getColorByBackground(context),
                           ),
                         ),
                         TextSpan(

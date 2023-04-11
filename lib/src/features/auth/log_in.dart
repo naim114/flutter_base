@@ -27,6 +27,12 @@ class _LogInState extends State<LogIn> {
   Widget _buttonChild = const Text('Log In');
 
   @override
+  void initState() {
+    super.initState();
+    _submitted = false;
+  }
+
+  @override
   void dispose() {
     passwordController.dispose();
     emailController.dispose();

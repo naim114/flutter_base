@@ -28,6 +28,12 @@ class _UpdatePasswordState extends State<UpdatePassword> {
   bool _submitted = false;
 
   @override
+  void initState() {
+    super.initState();
+    _submitted = false;
+  }
+
+  @override
   void dispose() {
     newPasswordController.dispose();
     confirmNewPasswordController.dispose();

@@ -9,7 +9,11 @@ class UsersPicker extends StatefulWidget {
   final Function(List<UserModel> selectedUsers, BuildContext pickerContext)
       onPost;
 
-  const UsersPicker({super.key, required this.userList, required this.onPost});
+  const UsersPicker({
+    super.key,
+    required this.userList,
+    required this.onPost,
+  });
 
   @override
   State<UsersPicker> createState() => _UsersPickerState();

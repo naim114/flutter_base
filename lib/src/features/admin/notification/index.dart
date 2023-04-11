@@ -202,6 +202,7 @@ class _AdminPanelNotificationState extends State<AdminPanelNotification> {
                                 MaterialPageRoute(
                                   builder: (context) => EditNotification(
                                     currentUser: widget.currentUser,
+                                    notification: noti,
                                   ),
                                 ),
                               ),
