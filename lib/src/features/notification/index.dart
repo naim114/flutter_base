@@ -1,5 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_base/src/model/user_model.dart';
+import 'package:provider/provider.dart';
+import '../../model/notification_model.dart';
+import '../../services/notification_services.dart';
 import '../../widgets/list_tile/list_tile_notification.dart';
 import '../../widgets/typography/page_title_icon.dart';
 import 'notification_view.dart';
@@ -11,50 +15,76 @@ class Notifications extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: ListView(
-        children: [
-          Container(
-            padding: const EdgeInsets.only(
-              top: 25,
-              left: 25,
-              right: 25,
-              bottom: 10,
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                pageTitleIcon(
-                  context: context,
-                  title: "Notification",
-                  icon: const Icon(
-                    CupertinoIcons.bell_fill,
-                    size: 24,
-                  ),
-                ),
-                const Padding(
-                  padding: EdgeInsets.symmetric(vertical: 10),
-                  child: Text(
-                    'View all your notifications. Slide notification for action.',
-                    style: TextStyle(),
-                  ),
-                ),
-              ],
-            ),
-          ),
+    final user = context.watch<UserModel?>();
 
-          // FOREACH HERE
-          listTileNotification(
-            onDelete: doNothing,
-            onTap: () => Navigator.of(mainContext).push(
-              MaterialPageRoute(
-                builder: (context) => NotificationView(),
-              ),
+    return Scaffold(
+      body: user == null
+          ? const Center(child: CircularProgressIndicator())
+          : FutureBuilder<List<NotificationModel?>>(
+              future: NotificationServices().getBy('receiver', user.id),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting ||
+                    snapshot.data == null) {
+                  return const Center(child: CircularProgressIndicator());
+                } else if (snapshot.data != null) {
+                  List<NotificationModel> dataList =
+                      snapshot.data!.whereType<NotificationModel>().toList();
+
+                  return ListView(
+                    children: [
+                      Container(
+                        padding: const EdgeInsets.only(
+                          top: 25,
+                          left: 25,
+                          right: 25,
+                          bottom: 10,
+                        ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            pageTitleIcon(
+                              context: context,
+                              title: "Notification",
+                              icon: const Icon(
+                                CupertinoIcons.bell_fill,
+                                size: 24,
+                              ),
+                            ),
+                            const Padding(
+                              padding: EdgeInsets.symmetric(vertical: 10),
+                              child: Text(
+                                'View all your notifications. Slide notification for action.',
+                                style: TextStyle(),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      Column(
+                        children: List.generate(dataList.length, (index) {
+                          NotificationModel noti = dataList[index];
+                          return listTileNotification(
+                            onDelete: doNothing,
+                            onTap: () => Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (mainContext) => NotificationView(
+                                  notification: noti,
+                                ),
+                              ),
+                            ),
+                            unread: false,
+                            noti: noti,
+                          );
+                        }),
+                      ),
+                    ],
+                  );
+                }
+
+                return const Center(child: CircularProgressIndicator());
+              },
             ),
-            unread: false,
-          ),
-        ],
-      ),
     );
   }
 }

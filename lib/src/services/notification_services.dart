@@ -82,7 +82,7 @@ class NotificationServices {
   }
 
   // get user by group id
-  Future<List<NotificationModel?>> getBy(String groupId) async {
+  Future<List<NotificationModel?>> getByGroupId(String groupId) async {
     List<NotificationModel?> dataList = List.empty(growable: true);
 
     QuerySnapshot querySnapshot = await _collectionRef.get();
@@ -97,6 +97,29 @@ class NotificationServices {
 
         if (user != null) {
           dataList.add(user);
+        }
+      }
+    }
+
+    return dataList;
+  }
+
+  // get notification by custom field
+  Future<List<NotificationModel?>> getBy(String fieldName, String value) async {
+    List<NotificationModel?> dataList = List.empty(growable: true);
+
+    QuerySnapshot querySnapshot = await _collectionRef.get();
+
+    final List<QueryDocumentSnapshot<Object?>> allDoc =
+        querySnapshot.docs.toList();
+
+    for (var doc in allDoc) {
+      if (doc.get(fieldName) == value) {
+        NotificationModel? noti =
+            await NotificationServices().fromDocumentSnapshot(doc);
+
+        if (noti != null) {
+          dataList.add(noti);
         }
       }
     }

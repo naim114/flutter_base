@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_base/src/features/admin/notification/add.dart';
-import 'package:flutter_base/src/features/admin/notification/edit.dart';
+import 'package:flutter_base/src/features/notification/notification_view.dart';
 import 'package:intl/intl.dart';
 
 import '../../../model/notification_model.dart';
@@ -195,13 +195,12 @@ class _AdminPanelNotificationState extends State<AdminPanelNotification> {
                       DataCell(
                         Row(
                           children: [
-                            // Edit
+                            // View
                             IconButton(
-                              icon: const Icon(Icons.edit),
+                              icon: const Icon(Icons.remove_red_eye),
                               onPressed: () => Navigator.of(context).push(
                                 MaterialPageRoute(
-                                  builder: (context) => EditNotification(
-                                    currentUser: widget.currentUser,
+                                  builder: (context) => NotificationView(
                                     notification: noti,
                                   ),
                                 ),

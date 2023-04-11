@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_base/src/model/notification_model.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:intl/intl.dart';
 
 import '../../services/helpers.dart';
 
 Widget listTileNotification({
   required void Function(BuildContext) onDelete,
   required void Function() onTap,
+  required NotificationModel noti,
   bool unread = true,
 }) =>
     GestureDetector(
@@ -30,11 +33,11 @@ Widget listTileNotification({
               color: CustomColor.neutral2,
             ),
           ),
-          title: const Text(
-            'Notifications title',
-            style: TextStyle(fontWeight: FontWeight.bold),
+          title: Text(
+            noti.title,
+            style: const TextStyle(fontWeight: FontWeight.bold),
           ),
-          subtitle: const Text('Mar 18 2014'),
+          subtitle: Text(DateFormat('dd/MM/yyyy').format(noti.createdAt)),
           trailing: (unread)
               ? const Icon(
                   Icons.circle,
