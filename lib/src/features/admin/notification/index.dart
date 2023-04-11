@@ -2,6 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_base/src/features/admin/notification/add.dart';
 import 'package:flutter_base/src/features/notification/notification_view.dart';
+import 'package:flutter_base/src/services/notification_services.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
 
 import '../../../model/notification_model.dart';
@@ -226,7 +228,20 @@ class _AdminPanelNotificationState extends State<AdminPanelNotification> {
                                       ),
                                     ),
                                     TextButton(
-                                      onPressed: () {},
+                                      onPressed: () async {
+                                        final result =
+                                            await NotificationServices()
+                                                .deleteBy(
+                                                    groupId: noti.groupId);
+
+                                        if (result == true && context.mounted) {
+                                          Navigator.pop(context);
+                                          Navigator.pop(context);
+                                          Fluttertoast.showToast(
+                                              msg:
+                                                  "Deleted all this type of notification");
+                                        }
+                                      },
                                       child: const Text(
                                         'OK',
                                         style: TextStyle(

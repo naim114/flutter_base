@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_base/src/model/user_model.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
 import '../../model/notification_model.dart';
 import '../../services/notification_services.dart';
@@ -64,12 +65,25 @@ class Notifications extends StatelessWidget {
                         children: List.generate(dataList.length, (index) {
                           NotificationModel noti = dataList[index];
                           return listTileNotification(
-                            onDelete: doNothing,
+                            onDelete: (context) async {
+                              final result = await NotificationServices()
+                                  .delete(notification: noti);
+
+                              print("Delete: $result");
+                            },
                             onTap: () async {
                               final result = await NotificationServices()
                                   .read(notification: noti);
 
                               print("Read: $result");
+
+                              if (result == true) {
+                                Fluttertoast.showToast(
+                                    msg: "Notification Deleted");
+                                Fluttertoast.showToast(
+                                    msg:
+                                        "Close application and reopen if no changes happen.");
+                              }
 
                               if (context.mounted) {
                                 Navigator.push(
@@ -96,5 +110,3 @@ class Notifications extends StatelessWidget {
     );
   }
 }
-
-void doNothing(BuildContext context) {}

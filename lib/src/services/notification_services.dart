@@ -234,5 +234,80 @@ class NotificationServices {
     }
   }
 
-  // TODO view, deleteByGroupId
+  Future delete({
+    required NotificationModel notification,
+  }) async {
+    try {
+      final delete = _collectionRef.doc(notification.id).delete();
+
+      print("Delete Notification: $delete");
+
+      await UserServices()
+          .get(_auth.currentUser!.uid)
+          .then((currentUser) async {
+        print("Get current user");
+        if (currentUser != null) {
+          await UserActivityServices()
+              .add(
+                user: currentUser,
+                description:
+                    "Delete Notification (Title: ${notification.title})",
+                activityType: "notification_delete",
+                networkInfo: _networkInfo,
+                deviceInfoPlugin: _deviceInfoPlugin,
+              )
+              .then((value) => print("Activity Added"));
+        }
+      });
+
+      return true;
+    } catch (e) {
+      print(e.toString());
+      Fluttertoast.showToast(msg: e.toString());
+
+      return false;
+    }
+  }
+
+  Future deleteBy({
+    required String groupId,
+  }) async {
+    try {
+      List<NotificationModel?> notiList =
+          await NotificationServices().getByGroupId(groupId);
+
+      for (var notification in notiList) {
+        if (notification != null) {
+          final delete = _collectionRef.doc(notification.id).delete();
+
+          print("Delete Notification: $delete");
+        }
+      }
+
+      await UserServices()
+          .get(_auth.currentUser!.uid)
+          .then((currentUser) async {
+        print("Get current user");
+        if (currentUser != null) {
+          await UserActivityServices()
+              .add(
+                user: currentUser,
+                description:
+                    "Delete Notification Group (Title: ${notiList.first!.title})",
+                activityType: "notification_delete_all_group",
+                networkInfo: _networkInfo,
+                deviceInfoPlugin: _deviceInfoPlugin,
+              )
+              .then((value) => print("Activity Added"));
+        }
+      });
+
+      return true;
+    } catch (e) {
+      print(e.toString());
+      Fluttertoast.showToast(msg: e.toString());
+
+      return false;
+    }
+  }
 }
