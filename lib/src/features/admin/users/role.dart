@@ -34,11 +34,11 @@ class _EditUserRoleState extends State<EditUserRole> {
           final result = await UserServices()
               .updateRole(user: widget.user, roleId: dropdownValue);
 
-          if (result == true) {
+          if (result == true && context.mounted) {
             Fluttertoast.showToast(msg: "Role updated");
+            Navigator.pop(context);
+            Navigator.pop(context);
           }
-
-          Navigator.pop(context);
         },
         context: context,
       ),
@@ -51,6 +51,8 @@ class _EditUserRoleState extends State<EditUserRole> {
             } else if (snapshot.data != null) {
               List<RoleModel> roleList =
                   snapshot.data!.whereType<RoleModel>().toList();
+
+              roleList.removeWhere((role) => role.name == 'super_admin');
 
               return Padding(
                 padding: const EdgeInsets.symmetric(

@@ -90,14 +90,17 @@ class EditUser extends StatelessWidget {
                         ),
                         TextButton(
                           onPressed: () async {
+                            print("Disabling user");
+
                             final result =
                                 await UserServices().disableUser(user: user);
 
-                            if (result == true) {
+                            if (result == true && context.mounted) {
                               print("User disabled");
                               Fluttertoast.showToast(msg: "User disabled");
+                              Navigator.pop(context);
+                              Navigator.pop(context);
                             }
-                            Navigator.pop(context);
                           },
                           child: const Text(
                             'OK',
@@ -137,14 +140,17 @@ class EditUser extends StatelessWidget {
                         ),
                         TextButton(
                           onPressed: () async {
+                            print("Enabling user");
+
                             final result =
                                 await UserServices().enableUser(user: user);
 
-                            if (result == true) {
+                            if (result == true && context.mounted) {
                               print("User enabled");
                               Fluttertoast.showToast(msg: "User enabled");
+                              Navigator.pop(context);
+                              Navigator.pop(context);
                             }
-                            Navigator.pop(context);
                           },
                           child: const Text(
                             'OK',
