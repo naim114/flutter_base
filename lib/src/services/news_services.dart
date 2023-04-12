@@ -1,15 +1,15 @@
 import 'dart:convert';
-
+import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter_base/src/model/news_model.dart';
 import 'package:flutter_base/src/services/user_activity_services.dart';
 import 'package:flutter_base/src/services/user_services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:intl/intl.dart';
 import 'package:network_info_plus/network_info_plus.dart';
-
+import 'package:path/path.dart' as path;
 import '../model/user_model.dart';
 
 class NewsService {
@@ -17,6 +17,7 @@ class NewsService {
   final CollectionReference _collectionRef =
       FirebaseFirestore.instance.collection('Notification');
   final FirebaseAuth _auth = FirebaseAuth.instance;
+  final FirebaseStorage _firebaseStorage = FirebaseStorage.instance;
 
   static final DeviceInfoPlugin _deviceInfoPlugin = DeviceInfoPlugin();
   final NetworkInfo _networkInfo = NetworkInfo();
@@ -35,6 +36,8 @@ class NewsService {
       starred: doc.get('starred'),
       createdAt: doc.get('createdAt').toDate(),
       updatedAt: doc.get('updatedAt').toDate(),
+      imgPath: doc.get('imgPath'),
+      imgURL: doc.get('imgURL'),
     );
   }
 
@@ -53,6 +56,8 @@ class NewsService {
       starred: doc.get('starred'),
       createdAt: doc.get('createdAt').toDate(),
       updatedAt: doc.get('updatedAt').toDate(),
+      imgPath: doc.get('imgPath'),
+      imgURL: doc.get('imgURL'),
     );
   }
 
@@ -112,6 +117,7 @@ class NewsService {
     required String title,
     required String jsonContent,
     required UserModel author,
+    File? imageFile,
   }) async {
     // TODO test this
     try {
@@ -119,18 +125,84 @@ class NewsService {
         'createdAt': DateTime.now(),
         'updatedAt': DateTime.now(),
         'deletedAt': null,
-      }).then((docRef) {
-        _collectionRef
-            .doc(docRef.id)
-            .set(NewsModel(
-              id: docRef.id,
-              title: title,
-              author: author,
-              jsonContent: jsonContent,
-              createdAt: DateTime.now(),
-              updatedAt: DateTime.now(),
-            ).toJson())
-            .then((value) => print("News Added"));
+      }).then((docRef) async {
+        if (imageFile != null) {
+          // UPLOAD TO FIREBASE STORAGE
+          // Get file extension
+          String extension = path.extension(imageFile.path);
+          print("Extension: $extension");
+
+          // Create the file metadata
+          final metadata = SettableMetadata(contentType: "image/jpeg");
+
+          // Create a reference to the file path in Firebase Storage
+          final storageRef = _firebaseStorage
+              .ref()
+              .child('news/thumbnail/${docRef.id}$extension');
+
+          // Upload the file to Firebase Storage
+          final uploadTask = storageRef.putFile(imageFile, metadata);
+
+          uploadTask.snapshotEvents.listen((TaskSnapshot taskSnapshot) {
+            switch (taskSnapshot.state) {
+              case TaskState.running:
+                final progress = 100.0 *
+                    (taskSnapshot.bytesTransferred / taskSnapshot.totalBytes);
+                print("Upload is $progress% complete.");
+                break;
+              case TaskState.paused:
+                print("Upload is paused.");
+                break;
+              case TaskState.canceled:
+                print("Upload was canceled");
+                break;
+              case TaskState.error:
+                // Handle unsuccessful uploads
+                print("Upload encounter error");
+                throw Exception();
+              case TaskState.success:
+                // Handle successful uploads on complete
+                print("News thumbnail uploaded");
+                break;
+            }
+          });
+
+          // Get the download URL of the uploaded file
+          final downloadUrl =
+              await uploadTask.then((TaskSnapshot taskSnapshot) async {
+            final url = await taskSnapshot.ref.getDownloadURL();
+            return url;
+          });
+
+          print("URL: $downloadUrl");
+
+          // UPDATE ON FIRESTORE
+          _collectionRef
+              .doc(docRef.id)
+              .set(NewsModel(
+                id: docRef.id,
+                title: title,
+                author: author,
+                jsonContent: jsonContent,
+                createdAt: DateTime.now(),
+                updatedAt: DateTime.now(),
+                imgPath: 'news/thumbnail/${docRef.id}$extension',
+                imgURL: downloadUrl,
+              ).toJson())
+              .then((value) => print("News Added"));
+        } else {
+          _collectionRef
+              .doc(docRef.id)
+              .set(NewsModel(
+                id: docRef.id,
+                title: title,
+                author: author,
+                jsonContent: jsonContent,
+                createdAt: DateTime.now(),
+                updatedAt: DateTime.now(),
+              ).toJson())
+              .then((value) => print("News Added"));
+        }
       });
 
       print("Add News: $add");
@@ -170,16 +242,89 @@ class NewsService {
     required String title,
     required String jsonContent,
     required UserModel author,
+    File? imageFile,
   }) async {
     // TODO test this
     try {
-      dynamic result = _collectionRef.doc(news.id).update({
-        'title': title,
-        'jsonContent': jsonContent,
-        'updatedAt': DateTime.now(),
-      }).then((value) => print("Notification Read"));
+      if (imageFile != null) {
+        // if previous thumbnail exist
+        if (news.imgPath != null && news.imgURL != null) {
+          print("Previous file exist");
 
-      print("Update News: $result");
+          // delete previous file
+          final Reference ref = _firebaseStorage.ref().child(news.imgPath!);
+          await ref.delete();
+
+          print("Previous file deleted");
+        }
+
+        // UPLOAD TO FIREBASE STORAGE
+        // Get file extension
+        String extension = path.extension(imageFile.path);
+        print("Extension: $extension");
+
+        // Create the file metadata
+        final metadata = SettableMetadata(contentType: "image/jpeg");
+
+        // Create a reference to the file path in Firebase Storage
+        final storageRef =
+            _firebaseStorage.ref().child('news/thumbnail/${news.id}$extension');
+
+        // Upload the file to Firebase Storage
+        final uploadTask = storageRef.putFile(imageFile, metadata);
+
+        uploadTask.snapshotEvents.listen((TaskSnapshot taskSnapshot) {
+          switch (taskSnapshot.state) {
+            case TaskState.running:
+              final progress = 100.0 *
+                  (taskSnapshot.bytesTransferred / taskSnapshot.totalBytes);
+              print("Upload is $progress% complete.");
+              break;
+            case TaskState.paused:
+              print("Upload is paused.");
+              break;
+            case TaskState.canceled:
+              print("Upload was canceled");
+              break;
+            case TaskState.error:
+              // Handle unsuccessful uploads
+              print("Upload encounter error");
+              throw Exception();
+            case TaskState.success:
+              // Handle successful uploads on complete
+              print("News thumbnail uploaded");
+              break;
+          }
+        });
+
+        // Get the download URL of the uploaded file
+        final downloadUrl =
+            await uploadTask.then((TaskSnapshot taskSnapshot) async {
+          final url = await taskSnapshot.ref.getDownloadURL();
+          return url;
+        });
+
+        print("URL: $downloadUrl");
+
+        // UPDATE ON FIRESTORE
+        dynamic result = _collectionRef.doc(news.id).update({
+          'title': title,
+          'jsonContent': jsonContent,
+          'updatedAt': DateTime.now(),
+          'imgPath': 'news/thumbnail/${news.id}$extension',
+          'imgURL': downloadUrl,
+        }).then((value) => print("Notification Read"));
+
+        print("Update News: $result");
+      } else {
+        dynamic result = _collectionRef.doc(news.id).update({
+          'title': title,
+          'jsonContent': jsonContent,
+          'updatedAt': DateTime.now(),
+        }).then((value) => print("Notification Read"));
+
+        print("Update News: $result");
+      }
 
       await UserServices()
           .get(_auth.currentUser!.uid)
@@ -212,11 +357,22 @@ class NewsService {
   }
 
   Future delete({
-    required NewsModel notification,
+    required NewsModel news,
   }) async {
     // TODO test this
     try {
-      final delete = _collectionRef.doc(notification.id).delete();
+      // if previous thumbnail exist
+      if (news.imgPath != null && news.imgURL != null) {
+        print("Previous file exist");
+
+        // delete previous file
+        final Reference ref = _firebaseStorage.ref().child(news.imgPath!);
+        await ref.delete();
+
+        print("Previous file deleted");
+      }
+
+      final delete = _collectionRef.doc(news.id).delete();
 
       print("Delete Notification: $delete");
 
@@ -228,7 +384,7 @@ class NewsService {
           await UserActivityServices()
               .add(
                 user: currentUser,
-                description: "Delete News (Title: ${notification.title})",
+                description: "Delete News (Title: ${news.title})",
                 activityType: "news_delete",
                 networkInfo: _networkInfo,
                 deviceInfoPlugin: _deviceInfoPlugin,

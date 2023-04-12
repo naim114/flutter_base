@@ -8,6 +8,8 @@ class NewsModel {
   final UserModel? updatedBy;
   final String jsonContent;
   final bool starred;
+  final String? imgPath;
+  final String? imgURL;
 
   // date
   final DateTime createdAt;
@@ -23,11 +25,13 @@ class NewsModel {
     this.starred = false,
     required this.createdAt,
     required this.updatedAt,
+    this.imgPath,
+    this.imgURL,
   });
 
   @override
   String toString() {
-    return 'NewsModel(id: $id, title: $title, likeCount: $likeCount, author: $author, updatedBy: $updatedBy, jsonContent: $jsonContent, starred: $starred, createdAt: $createdAt, updatedAt: $updatedAt)';
+    return 'NewsModel(id: $id, title: $title, likeCount: $likeCount, author: $author, updatedBy: $updatedBy, jsonContent: $jsonContent, starred: $starred, createdAt: $createdAt, updatedAt: $updatedAt, imgPath: $imgPath, imgURL: $imgURL)';
   }
 
   Map<String, Object?> toJson() {
@@ -41,6 +45,8 @@ class NewsModel {
       'starred': starred,
       'createdAt': createdAt,
       'updatedAt': updatedAt,
+      'imgPath': imgPath,
+      'imgURL': imgURL,
     };
   }
 }

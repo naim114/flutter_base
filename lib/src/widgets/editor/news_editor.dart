@@ -90,11 +90,13 @@ Widget newsEditor({
           ),
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 10.0),
-            child: QuillToolbar.basic(controller: controller),
+            child: QuillToolbar.basic(
+              controller: controller,
+            ),
           ),
           Padding(
             padding: const EdgeInsets.symmetric(
-              horizontal: 15,
+              horizontal: 2,
               vertical: 5,
             ),
             child: QuillEditor.basic(
