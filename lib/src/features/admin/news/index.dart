@@ -14,7 +14,9 @@ class AdminPanelNews extends StatefulWidget {
     super.key,
     required this.currentUser,
     required this.newsList,
+    required this.notifyRefresh,
   });
+  final Function(bool refresh) notifyRefresh;
   final UserModel currentUser;
   final List<NewsModel> newsList;
 
@@ -75,13 +77,16 @@ class _AdminPanelNewsState extends State<AdminPanelNews> {
         ),
         actions: [
           IconButton(
-            onPressed: () => Navigator.of(context).push(
-              MaterialPageRoute(
-                builder: (context) => AddNews(
-                  currentUser: widget.currentUser,
+            onPressed: () {
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (context) => AddNews(
+                    currentUser: widget.currentUser,
+                  ),
                 ),
-              ),
-            ),
+              );
+              widget.notifyRefresh(true);
+            },
             icon: Icon(
               Icons.playlist_add_rounded,
               color: getColorByBackground(context),
@@ -277,7 +282,9 @@ class _AdminPanelNewsState extends State<AdminPanelNews> {
                                       ),
                                     ),
                                     TextButton(
-                                      onPressed: () {},
+                                      onPressed: () {
+                                        widget.notifyRefresh(true);
+                                      },
                                       child: const Text('OK'),
                                     ),
                                   ],
@@ -287,12 +294,15 @@ class _AdminPanelNewsState extends State<AdminPanelNews> {
                             // View
                             IconButton(
                               icon: const Icon(Icons.remove_red_eye),
-                              onPressed: () => Navigator.of(context).push(
-                                MaterialPageRoute(
-                                  builder: (context) => NewsView(
-                                      mainContext: context, news: news),
-                                ),
-                              ),
+                              onPressed: () {
+                                Navigator.of(context).push(
+                                  MaterialPageRoute(
+                                    builder: (context) => NewsView(
+                                        mainContext: context, news: news),
+                                  ),
+                                );
+                                widget.notifyRefresh(true);
+                              },
                             ),
                             // Edit
                             IconButton(
