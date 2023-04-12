@@ -3,12 +3,14 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_base/src/model/news_model.dart';
+import 'package:flutter_base/src/services/news_services.dart';
 import 'package:flutter_quill/flutter_quill.dart' hide Text;
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
 import 'package:shimmer/shimmer.dart';
 import '../../services/helpers.dart';
 
-class NewsView extends StatelessWidget {
+class NewsView extends StatefulWidget {
   final BuildContext mainContext;
   final NewsModel news;
 
@@ -19,9 +21,16 @@ class NewsView extends StatelessWidget {
   });
 
   @override
+  State<NewsView> createState() => _NewsViewState();
+}
+
+class _NewsViewState extends State<NewsView> {
+  bool liked = false;
+
+  @override
   Widget build(BuildContext context) {
     final controller = QuillController(
-      document: Document.fromJson(jsonDecode(news.jsonContent)),
+      document: Document.fromJson(jsonDecode(widget.news.jsonContent)),
       selection: const TextSelection.collapsed(offset: 0),
     );
 
@@ -44,8 +53,18 @@ class NewsView extends StatelessWidget {
         ),
         actions: [
           IconButton(
-            onPressed: () {},
-            icon: const Icon(CupertinoIcons.heart),
+            onPressed: () async {
+              dynamic result = await NewsService().like(news: widget.news);
+              print("result: $result");
+
+              if (result == true) {
+                Fluttertoast.showToast(msg: "News liked");
+                setState(() => liked = true);
+              }
+            },
+            icon: liked
+                ? const Icon(CupertinoIcons.heart_fill)
+                : const Icon(CupertinoIcons.heart),
           )
         ],
       ),
@@ -58,7 +77,7 @@ class NewsView extends StatelessWidget {
               bottom: 15,
             ),
             child: Text(
-              news.title,
+              widget.news.title,
               style: TextStyle(
                 color: getColorByBackground(context),
                 fontSize: 24,
@@ -68,14 +87,14 @@ class NewsView extends StatelessWidget {
               overflow: TextOverflow.ellipsis,
             ),
           ),
-          news.imgURL == null
+          widget.news.imgURL == null
               ? Image.asset(
                   'assets/images/noimage.png',
                   fit: BoxFit.cover,
                   height: MediaQuery.of(context).size.height * 0.4,
                 )
               : CachedNetworkImage(
-                  imageUrl: news.imgURL!,
+                  imageUrl: widget.news.imgURL!,
                   fit: BoxFit.cover,
                   height: MediaQuery.of(context).size.height * 0.4,
                   placeholder: (context, url) => Shimmer.fromColors(
@@ -104,7 +123,7 @@ class NewsView extends StatelessWidget {
               children: [
                 Flexible(
                   child: Text(
-                    news.author!.name ?? "No Name",
+                    widget.news.author!.name ?? "No Name",
                     style: const TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 18,
@@ -126,7 +145,7 @@ class NewsView extends StatelessWidget {
                         ),
                         TextSpan(
                           text:
-                              " ${DateFormat('dd/MM/yyyy').format(news.createdAt)}",
+                              " ${DateFormat('dd/MM/yyyy').format(widget.news.createdAt)}",
                           style: TextStyle(
                             color: getColorByBackground(context),
                           ),
@@ -142,7 +161,7 @@ class NewsView extends StatelessWidget {
                           ),
                         ),
                         TextSpan(
-                          text: " ${news.likeCount}",
+                          text: " ${widget.news.likeCount}",
                           style: TextStyle(
                             color: getColorByBackground(context),
                           ),

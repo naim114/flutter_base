@@ -119,7 +119,6 @@ class NewsService {
     required UserModel author,
     File? imageFile,
   }) async {
-    // TODO test this
     try {
       dynamic add = await _collectionRef.add({
         'createdAt': DateTime.now(),
@@ -318,7 +317,7 @@ class NewsService {
           'updatedAt': DateTime.now(),
           'imgPath': 'news/thumbnail/${news.id}$extension',
           'imgURL': downloadUrl,
-        }).then((value) => print("Notification Read"));
+        }).then((value) => print("News Edited"));
 
         print("Update News: $result");
       } else {
@@ -326,7 +325,7 @@ class NewsService {
           'title': title,
           'jsonContent': jsonContent,
           'updatedAt': DateTime.now(),
-        }).then((value) => print("Notification Read"));
+        }).then((value) => print("News Edited"));
 
         print("Update News: $result");
       }
@@ -391,6 +390,40 @@ class NewsService {
                 user: currentUser,
                 description: "Delete News (Title: ${news.title})",
                 activityType: "news_delete",
+                networkInfo: _networkInfo,
+                deviceInfoPlugin: _deviceInfoPlugin,
+              )
+              .then((value) => print("Activity Added"));
+        }
+      });
+
+      return true;
+    } catch (e) {
+      print(e.toString());
+      Fluttertoast.showToast(msg: e.toString());
+
+      return false;
+    }
+  }
+
+  Future like({required NewsModel news}) async {
+    try {
+      dynamic result = _collectionRef.doc(news.id).update({
+        'likeCount': news.likeCount + 1,
+      }).then((value) => print("News Liked"));
+
+      print("Like News: $result");
+
+      await UserServices()
+          .get(_auth.currentUser!.uid)
+          .then((currentUser) async {
+        print("Get current user");
+        if (currentUser != null) {
+          await UserActivityServices()
+              .add(
+                user: currentUser,
+                description: "Liked News (Title: ${news.title})",
+                activityType: "news_like",
                 networkInfo: _networkInfo,
                 deviceInfoPlugin: _deviceInfoPlugin,
               )
