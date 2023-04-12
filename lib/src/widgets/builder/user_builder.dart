@@ -22,36 +22,68 @@ class UsersBuilder extends StatefulWidget {
 }
 
 class _UsersBuilderState extends State<UsersBuilder> {
+  final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey =
+      GlobalKey<RefreshIndicatorState>();
+
+  List<UserModel?> dataList = List.empty(growable: true);
+
+  Future<void> _refreshData() async {
+    try {
+      // Call the asynchronous operation to fetch data
+      final List<UserModel?> fetchedData = await UserServices().getAll();
+
+      // Update the state with the fetched data and call setState to rebuild the UI
+      setState(() {
+        dataList = fetchedData;
+      });
+
+      // Trigger a refresh of the RefreshIndicator widget
+      _refreshIndicatorKey.currentState?.show();
+    } catch (e) {
+      print("Get All:  ${e.toString()}");
+    }
+
+    setState(() {});
+  }
+
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<List<UserModel?>>(
-      future: UserServices().getAll(),
-      builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting ||
-            snapshot.data == null) {
+    return RefreshIndicator(
+      key: _refreshIndicatorKey,
+      onRefresh: _refreshData,
+      child: FutureBuilder<List<UserModel?>>(
+        future: UserServices().getAll(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting ||
+              snapshot.data == null) {
+            return const Scaffold(
+                body: Center(child: CircularProgressIndicator()));
+          } else if (snapshot.data != null) {
+            List<UserModel> userList =
+                snapshot.data!.whereType<UserModel>().toList();
+
+            if (widget.pushTo == 'AdminPanelUsers') {
+              return AdminPanelUsers(
+                userList: userList,
+                currentUser: widget.currentUser,
+                notifyRefresh: (refresh) {
+                  _refreshData();
+                },
+              );
+            } else if (widget.pushTo == 'UsersPicker') {
+              return UsersPicker(
+                userList: userList,
+                onPost: (selectedUserList, pickerContext) {
+                  widget.onPost!(selectedUserList, pickerContext);
+                },
+              );
+            }
+          }
+
           return const Scaffold(
               body: Center(child: CircularProgressIndicator()));
-        } else if (snapshot.data != null) {
-          List<UserModel> userList =
-              snapshot.data!.whereType<UserModel>().toList();
-
-          if (widget.pushTo == 'AdminPanelUsers') {
-            return AdminPanelUsers(
-              userList: userList,
-              currentUser: widget.currentUser,
-            );
-          } else if (widget.pushTo == 'UsersPicker') {
-            return UsersPicker(
-              userList: userList,
-              onPost: (selectedUserList, pickerContext) {
-                widget.onPost!(selectedUserList, pickerContext);
-              },
-            );
-          }
-        }
-
-        return const Scaffold(body: Center(child: CircularProgressIndicator()));
-      },
+        },
+      ),
     );
   }
 }

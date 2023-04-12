@@ -11,9 +11,14 @@ import '../../../services/helpers.dart';
 
 class AdminPanelUsers extends StatefulWidget {
   final List<UserModel> userList;
+  final Function(bool refresh) notifyRefresh;
   final UserModel currentUser;
-  const AdminPanelUsers(
-      {super.key, required this.userList, required this.currentUser});
+  const AdminPanelUsers({
+    super.key,
+    required this.userList,
+    required this.currentUser,
+    required this.notifyRefresh,
+  });
 
   @override
   State<AdminPanelUsers> createState() => _AdminPanelUsersState();
@@ -250,14 +255,17 @@ class _AdminPanelUsersState extends State<AdminPanelUsers> {
                               // Edit
                               IconButton(
                                 icon: const Icon(Icons.edit),
-                                onPressed: () => Navigator.of(context).push(
-                                  MaterialPageRoute(
-                                    builder: (context) => EditUser(
-                                      user: user,
-                                      currentUser: widget.currentUser,
+                                onPressed: () {
+                                  Navigator.of(context).push(
+                                    MaterialPageRoute(
+                                      builder: (context) => EditUser(
+                                        user: user,
+                                        currentUser: widget.currentUser,
+                                      ),
                                     ),
-                                  ),
-                                ),
+                                  );
+                                  widget.notifyRefresh(true);
+                                },
                               ),
                               user.disableAt == null
                                   // Disable
@@ -289,13 +297,15 @@ class _AdminPanelUsersState extends State<AdminPanelUsers> {
                                                         .disableUser(
                                                             user: user);
 
-                                                if (result == true) {
+                                                if (result == true &&
+                                                    context.mounted) {
                                                   print("User disabled");
                                                   Fluttertoast.showToast(
                                                       msg: "User disabled");
+                                                  Navigator.pop(context);
                                                 }
 
-                                                Navigator.pop(context);
+                                                widget.notifyRefresh(true);
                                               },
                                               child: const Text(
                                                 'OK',
@@ -336,13 +346,15 @@ class _AdminPanelUsersState extends State<AdminPanelUsers> {
                                                     await UserServices()
                                                         .enableUser(user: user);
 
-                                                if (result == true) {
+                                                if (result == true &&
+                                                    context.mounted) {
                                                   print("User enabled");
                                                   Fluttertoast.showToast(
                                                       msg: "User enabled");
+                                                  Navigator.pop(context);
                                                 }
 
-                                                Navigator.pop(context);
+                                                widget.notifyRefresh(true);
                                               },
                                               child: const Text(
                                                 'OK',

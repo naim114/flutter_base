@@ -283,6 +283,7 @@ class _AdminPanelNewsState extends State<AdminPanelNews> {
                                     ),
                                     TextButton(
                                       onPressed: () {
+                                        // TODO star news
                                         widget.notifyRefresh(true);
                                       },
                                       child: const Text('OK'),

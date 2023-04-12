@@ -10,7 +10,11 @@ import '../../../model/user_model.dart';
 import '../../../services/user_services.dart';
 
 class EditUser extends StatelessWidget {
-  const EditUser({super.key, required this.user, required this.currentUser});
+  const EditUser({
+    super.key,
+    required this.user,
+    required this.currentUser,
+  });
   final UserModel user;
   final UserModel currentUser;
 

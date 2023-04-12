@@ -40,7 +40,7 @@ class _NotificationBuilderState extends State<NotificationBuilder> {
       // Trigger a refresh of the RefreshIndicator widget
       _refreshIndicatorKey.currentState?.show();
     } catch (e) {
-      print("Get All News:  ${e.toString()}");
+      print("Get All:  ${e.toString()}");
     }
 
     setState(() {});
