@@ -68,7 +68,9 @@ class AdminPanel extends StatelessWidget {
             title: "News",
             onTap: () => Navigator.of(context).push(
               MaterialPageRoute(
-                builder: (context) => const AdminPanelNews(),
+                builder: (context) => AdminPanelNews(
+                  currentUser: currentUser,
+                ),
               ),
             ),
           ),

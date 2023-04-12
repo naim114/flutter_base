@@ -3,10 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_base/src/features/admin/news/add.dart';
 import 'package:flutter_base/src/features/admin/news/edit.dart';
 
+import '../../../model/user_model.dart';
 import '../../../services/helpers.dart';
 
 class AdminPanelNews extends StatefulWidget {
-  const AdminPanelNews({super.key});
+  const AdminPanelNews({super.key, required this.currentUser});
+  final UserModel currentUser;
 
   @override
   State<AdminPanelNews> createState() => _AdminPanelNewsState();
@@ -82,15 +84,18 @@ class _AdminPanelNewsState extends State<AdminPanelNews> {
         ),
         actions: [
           IconButton(
-              onPressed: () => Navigator.of(context).push(
-                    MaterialPageRoute(
-                      builder: (context) => AddNews(),
-                    ),
-                  ),
-              icon: Icon(
-                Icons.playlist_add_rounded,
-                color: getColorByBackground(context),
-              ))
+            onPressed: () => Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (context) => AddNews(
+                  currentUser: widget.currentUser,
+                ),
+              ),
+            ),
+            icon: Icon(
+              Icons.playlist_add_rounded,
+              color: getColorByBackground(context),
+            ),
+          )
         ],
       ),
       body: ListView(children: [
@@ -249,7 +254,9 @@ class _AdminPanelNewsState extends State<AdminPanelNews> {
                               icon: const Icon(Icons.edit),
                               onPressed: () => Navigator.of(context).push(
                                 MaterialPageRoute(
-                                  builder: (context) => EditNews(),
+                                  builder: (context) => EditNews(
+                                    currentUser: widget.currentUser,
+                                  ),
                                 ),
                               ),
                             ),

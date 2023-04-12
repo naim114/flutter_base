@@ -104,7 +104,7 @@ class _ProfileState extends State<Profile> {
                               builder: (context) => ImageUploader(
                                 appBarTitle: "Upload New Avatar",
                                 onCancel: () => Navigator.of(context).pop(),
-                                onConfirm: (imageFile) async {
+                                onConfirm: (imageFile, uploaderContext) async {
                                   print("Image file: ${imageFile.toString()}");
 
                                   Navigator.pop(context);

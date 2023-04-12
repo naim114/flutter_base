@@ -9,7 +9,7 @@ import '../appbar/appbar_confirm_cancel.dart';
 // ignore: must_be_immutable
 class ImageUploader extends StatefulWidget {
   final void Function() onCancel;
-  final void Function(File imageFile) onConfirm;
+  final void Function(File imageFile, BuildContext pickerContext) onConfirm;
   final String appBarTitle;
   final double width;
   final double height;
@@ -48,7 +48,7 @@ class ImageFileEditorState extends State<ImageUploader> {
         onCancel: widget.onCancel,
         onConfirm: () {
           if (widget.imageFile != null) {
-            widget.onConfirm(widget.imageFile!);
+            widget.onConfirm(widget.imageFile!, context);
             Fluttertoast.showToast(msg: "Image uploaded");
             Navigator.pop(context);
           } else {

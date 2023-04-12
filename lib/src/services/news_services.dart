@@ -15,7 +15,7 @@ import '../model/user_model.dart';
 class NewsService {
   final FirebaseFirestore _db = FirebaseFirestore.instance;
   final CollectionReference _collectionRef =
-      FirebaseFirestore.instance.collection('Notification');
+      FirebaseFirestore.instance.collection('News');
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseStorage _firebaseStorage = FirebaseStorage.instance;
 
@@ -124,9 +124,11 @@ class NewsService {
       dynamic add = await _collectionRef.add({
         'createdAt': DateTime.now(),
         'updatedAt': DateTime.now(),
-        'deletedAt': null,
       }).then((docRef) async {
+        print('docRef: $docRef');
         if (imageFile != null) {
+          print("Thumbnail included");
+
           // UPLOAD TO FIREBASE STORAGE
           // Get file extension
           String extension = path.extension(imageFile.path);
@@ -191,6 +193,8 @@ class NewsService {
               ).toJson())
               .then((value) => print("News Added"));
         } else {
+          print("Thumbnail not included");
+
           _collectionRef
               .doc(docRef.id)
               .set(NewsModel(
@@ -201,7 +205,8 @@ class NewsService {
                 createdAt: DateTime.now(),
                 updatedAt: DateTime.now(),
               ).toJson())
-              .then((value) => print("News Added"));
+              .then((value) => print("News Added"))
+              .onError((error, stackTrace) => print("ERROR: $error"));
         }
       });
 
@@ -224,7 +229,6 @@ class NewsService {
                   deviceInfoPlugin: _deviceInfoPlugin,
                 )
                 .then((value) => print("Activity Added"));
-            return true;
           }
         }
       });
@@ -241,7 +245,7 @@ class NewsService {
     required NewsModel news,
     required String title,
     required String jsonContent,
-    required UserModel author,
+    required UserModel editor,
     File? imageFile,
   }) async {
     // TODO test this
@@ -310,6 +314,7 @@ class NewsService {
         dynamic result = _collectionRef.doc(news.id).update({
           'title': title,
           'jsonContent': jsonContent,
+          'updatedBy': editor,
           'updatedAt': DateTime.now(),
           'imgPath': 'news/thumbnail/${news.id}$extension',
           'imgURL': downloadUrl,
