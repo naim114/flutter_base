@@ -439,4 +439,38 @@ class NewsService {
       return false;
     }
   }
+
+  Future star({required NewsModel news, required bool star}) async {
+    try {
+      dynamic result = _collectionRef.doc(news.id).update({
+        'starred': star,
+      }).then((value) => print("News Liked"));
+
+      print("Like News: $result");
+
+      await UserServices()
+          .get(_auth.currentUser!.uid)
+          .then((currentUser) async {
+        print("Get current user");
+        if (currentUser != null) {
+          await UserActivityServices()
+              .add(
+                user: currentUser,
+                description: "Liked News (Title: ${news.title})",
+                activityType: "news_like",
+                networkInfo: _networkInfo,
+                deviceInfoPlugin: _deviceInfoPlugin,
+              )
+              .then((value) => print("Activity Added"));
+        }
+      });
+
+      return true;
+    } catch (e) {
+      print(e.toString());
+      Fluttertoast.showToast(msg: e.toString());
+
+      return false;
+    }
+  }
 }
