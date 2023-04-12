@@ -15,10 +15,12 @@ class AdminPanelNotification extends StatefulWidget {
     super.key,
     required this.currentUser,
     required this.notiList,
+    required this.notifyRefresh,
   });
 
   final UserModel currentUser;
   final List<NotificationModel> notiList;
+  final Function(bool refresh) notifyRefresh;
 
   @override
   State<AdminPanelNotification> createState() => _AdminPanelNotificationState();
@@ -77,13 +79,16 @@ class _AdminPanelNotificationState extends State<AdminPanelNotification> {
         ),
         actions: [
           IconButton(
-            onPressed: () => Navigator.of(context).push(
-              MaterialPageRoute(
-                builder: (context) => AddNotification(
-                  currentUser: widget.currentUser,
+            onPressed: () {
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (context) => AddNotification(
+                    currentUser: widget.currentUser,
+                  ),
                 ),
-              ),
-            ),
+              );
+              widget.notifyRefresh(true);
+            },
             icon: Icon(
               Icons.notification_add,
               color: getColorByBackground(context),
@@ -236,11 +241,12 @@ class _AdminPanelNotificationState extends State<AdminPanelNotification> {
 
                                         if (result == true && context.mounted) {
                                           Navigator.pop(context);
-                                          Navigator.pop(context);
                                           Fluttertoast.showToast(
                                               msg:
                                                   "Deleted all this type of notification");
                                         }
+
+                                        widget.notifyRefresh(true);
                                       },
                                       child: const Text(
                                         'OK',

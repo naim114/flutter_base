@@ -64,7 +64,6 @@ class _NewsBuilderState extends State<NewsBuilder> {
                 currentUser: widget.currentUser,
                 newsList: dataList,
                 notifyRefresh: (refresh) {
-                  print("REFRESH: $refresh");
                   _refreshData();
                 },
               );
