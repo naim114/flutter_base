@@ -157,10 +157,11 @@ class _NewsState extends State<News> with TickerProviderStateMixin {
                       title: item["Title"],
                       likeCount: item["Likes"],
                       date: item["Created At"],
-                      onTap: () => Navigator.of(widget.mainContext).push(
-                          MaterialPageRoute(
-                              builder: (context) =>
-                                  NewsView(mainContext: widget.mainContext))),
+                      onTap: () {},
+                      // onTap: () => Navigator.of(widget.mainContext).push(
+                      //     MaterialPageRoute(
+                      //         builder: (context) =>
+                      //             NewsView(mainContext: widget.mainContext))),
                     ),
                   ),
                 ),

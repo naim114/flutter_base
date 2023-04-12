@@ -2,36 +2,27 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_base/src/features/admin/news/add.dart';
 import 'package:flutter_base/src/features/admin/news/edit.dart';
+import 'package:flutter_base/src/features/news/news_view.dart';
+import 'package:flutter_base/src/model/news_model.dart';
+import 'package:intl/intl.dart';
 
 import '../../../model/user_model.dart';
 import '../../../services/helpers.dart';
 
 class AdminPanelNews extends StatefulWidget {
-  const AdminPanelNews({super.key, required this.currentUser});
+  const AdminPanelNews({
+    super.key,
+    required this.currentUser,
+    required this.newsList,
+  });
   final UserModel currentUser;
+  final List<NewsModel> newsList;
 
   @override
   State<AdminPanelNews> createState() => _AdminPanelNewsState();
 }
 
 class _AdminPanelNewsState extends State<AdminPanelNews> {
-  List<dynamic> data = [
-    {
-      "Title": "Welcome to AppName!",
-      "Created By": "Admin",
-      "Created At": "10 March 2020",
-      "Likes": "10",
-      "Starred": true,
-    },
-    {
-      "Title": "New Features Available. Check out the new Update.",
-      "Created By": "Admin",
-      "Created At": "10 March 2020",
-      "Likes": "3",
-      "Starred": false,
-    },
-  ];
-
   List<dynamic> filteredData = [];
 
   final searchController = TextEditingController();
@@ -41,7 +32,7 @@ class _AdminPanelNewsState extends State<AdminPanelNews> {
 
   @override
   void initState() {
-    filteredData = data;
+    filteredData = widget.newsList;
     super.initState();
   }
 
@@ -54,10 +45,10 @@ class _AdminPanelNewsState extends State<AdminPanelNews> {
   void _onSearchTextChanged(String text) {
     setState(() {
       filteredData = text.isEmpty
-          ? data
-          : data
-              .where((item) =>
-                  item['Title'].toLowerCase().contains(text.toLowerCase()))
+          ? widget.newsList
+          : widget.newsList
+              .where((news) =>
+                  news.title.toLowerCase().contains(text.toLowerCase()))
               .toList();
     });
   }
@@ -136,12 +127,12 @@ class _AdminPanelNewsState extends State<AdminPanelNews> {
                         _currentSortColumn = columnIndex;
                         if (_isAscending == true) {
                           _isAscending = false;
-                          data.sort((itemA, itemB) =>
-                              itemB['Title'].compareTo(itemA['Title']));
+                          widget.newsList.sort((itemA, itemB) =>
+                              itemB.title.compareTo(itemA.title));
                         } else {
                           _isAscending = true;
-                          data.sort((itemA, itemB) =>
-                              itemA['Title'].compareTo(itemB['Title']));
+                          widget.newsList.sort((itemA, itemB) =>
+                              itemA.title.compareTo(itemB.title));
                         }
                       });
                     },
@@ -153,12 +144,14 @@ class _AdminPanelNewsState extends State<AdminPanelNews> {
                         _currentSortColumn = columnIndex;
                         if (_isAscending == true) {
                           _isAscending = false;
-                          data.sort((itemA, itemB) => itemB['Created By']
-                              .compareTo(itemA['Created By']));
+                          widget.newsList.sort((itemA, itemB) => itemB
+                              .author!.name!
+                              .compareTo(itemA.author!.name!));
                         } else {
                           _isAscending = true;
-                          data.sort((itemA, itemB) => itemA['Created By']
-                              .compareTo(itemB['Created By']));
+                          widget.newsList.sort((itemA, itemB) => itemA
+                              .author!.name!
+                              .compareTo(itemB.author!.name!));
                         }
                       });
                     },
@@ -170,12 +163,48 @@ class _AdminPanelNewsState extends State<AdminPanelNews> {
                         _currentSortColumn = columnIndex;
                         if (_isAscending == true) {
                           _isAscending = false;
-                          data.sort((itemA, itemB) => itemB['Created At']
-                              .compareTo(itemA['Created At']));
+                          widget.newsList.sort((itemA, itemB) =>
+                              itemB.createdAt.compareTo(itemA.createdAt));
                         } else {
                           _isAscending = true;
-                          data.sort((itemA, itemB) => itemA['Created At']
-                              .compareTo(itemB['Created At']));
+                          widget.newsList.sort((itemA, itemB) =>
+                              itemA.createdAt.compareTo(itemB.createdAt));
+                        }
+                      });
+                    },
+                  ),
+                  DataColumn(
+                    label: const Text('Edited By'),
+                    onSort: (columnIndex, _) {
+                      setState(() {
+                        _currentSortColumn = columnIndex;
+                        if (_isAscending == true) {
+                          _isAscending = false;
+                          widget.newsList.sort((itemA, itemB) => itemB
+                              .updatedBy!.name!
+                              .compareTo(itemA.updatedBy!.name!));
+                        } else {
+                          _isAscending = true;
+                          widget.newsList.sort((itemA, itemB) => itemA
+                              .updatedBy!.name!
+                              .compareTo(itemB.updatedBy!.name!));
+                        }
+                      });
+                    },
+                  ),
+                  DataColumn(
+                    label: const Text('Edited At'),
+                    onSort: (columnIndex, _) {
+                      setState(() {
+                        _currentSortColumn = columnIndex;
+                        if (_isAscending == true) {
+                          _isAscending = false;
+                          widget.newsList.sort((itemA, itemB) =>
+                              itemB.updatedAt.compareTo(itemA.updatedAt));
+                        } else {
+                          _isAscending = true;
+                          widget.newsList.sort((itemA, itemB) =>
+                              itemA.updatedAt.compareTo(itemB.updatedAt));
                         }
                       });
                     },
@@ -187,12 +216,12 @@ class _AdminPanelNewsState extends State<AdminPanelNews> {
                         _currentSortColumn = columnIndex;
                         if (_isAscending == true) {
                           _isAscending = false;
-                          data.sort((itemA, itemB) =>
-                              itemB['Likes'].compareTo(itemA['Likes']));
+                          widget.newsList.sort((itemA, itemB) =>
+                              itemB.likeCount.compareTo(itemA.likeCount));
                         } else {
                           _isAscending = true;
-                          data.sort((itemA, itemB) =>
-                              itemA['Likes'].compareTo(itemB['Likes']));
+                          widget.newsList.sort((itemA, itemB) =>
+                              itemA.likeCount.compareTo(itemB.likeCount));
                         }
                       });
                     },
@@ -202,32 +231,38 @@ class _AdminPanelNewsState extends State<AdminPanelNews> {
                   ),
                 ],
                 rows: List.generate(filteredData.length, (index) {
-                  final item = filteredData[index];
+                  final NewsModel news = filteredData[index];
                   return DataRow(
                     cells: [
                       DataCell(Text(
-                        item['Title'],
+                        news.title,
                         overflow: TextOverflow.ellipsis,
                       )),
-                      DataCell(Text(item['Created By'])),
-                      DataCell(Text(item['Created At'])),
-                      DataCell(Text(item['Likes'])),
+                      DataCell(Text(news.author!.name ?? "None")),
+                      DataCell(Text(DateFormat('dd/MM/yyyy hh:mm a')
+                          .format(news.createdAt))),
+                      DataCell(Text(news.updatedBy == null
+                          ? "None"
+                          : news.updatedBy!.name!)),
+                      DataCell(Text(DateFormat('dd/MM/yyyy hh:mm a')
+                          .format(news.updatedAt))),
+                      DataCell(Text(news.likeCount.toString())),
                       DataCell(
                         Row(
                           children: [
                             // Starred
                             IconButton(
-                              icon: Icon(item['Starred']
+                              icon: Icon(news.starred
                                   ? Icons.star
                                   : Icons.star_outline),
                               onPressed: () => showDialog<String>(
                                 context: context,
                                 builder: (BuildContext context) => AlertDialog(
-                                  title: Text(item['Starred']
+                                  title: Text(news.starred
                                       ? 'Unstar News?'
                                       : 'Star News?'),
                                   content: Text(
-                                    item['Starred']
+                                    news.starred
                                         ? 'Are you sure you want to unstar this news? This news will not feature in news carousel anymore. Select OK to confirm.'
                                         : 'Are you sure you want to star this news? This news will feature in news carousel anymore. Select OK to confirm.',
                                   ),
@@ -246,6 +281,16 @@ class _AdminPanelNewsState extends State<AdminPanelNews> {
                                       child: const Text('OK'),
                                     ),
                                   ],
+                                ),
+                              ),
+                            ),
+                            // View
+                            IconButton(
+                              icon: const Icon(Icons.remove_red_eye),
+                              onPressed: () => Navigator.of(context).push(
+                                MaterialPageRoute(
+                                  builder: (context) => NewsView(
+                                      mainContext: context, news: news),
                                 ),
                               ),
                             ),

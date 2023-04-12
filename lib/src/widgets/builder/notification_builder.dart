@@ -23,7 +23,8 @@ class NotificationBuilder extends StatelessWidget {
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting ||
             snapshot.data == null) {
-          return const Center(child: CircularProgressIndicator());
+          return const Scaffold(
+              body: Center(child: CircularProgressIndicator()));
         } else if (snapshot.data != null) {
           List<NotificationModel> dataList =
               snapshot.data!.whereType<NotificationModel>().toList();
@@ -42,7 +43,7 @@ class NotificationBuilder extends StatelessWidget {
           }
         }
 
-        return const Center(child: CircularProgressIndicator());
+        return const Scaffold(body: Center(child: CircularProgressIndicator()));
       },
     );
   }

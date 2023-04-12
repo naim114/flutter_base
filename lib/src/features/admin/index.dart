@@ -7,6 +7,7 @@ import 'package:flutter_base/src/widgets/builder/user_builder.dart';
 
 import '../../model/user_model.dart';
 import '../../services/helpers.dart';
+import '../../widgets/builder/news_builder.dart';
 import '../../widgets/list_tile/list_tile_icon.dart';
 
 class AdminPanel extends StatelessWidget {
@@ -68,8 +69,9 @@ class AdminPanel extends StatelessWidget {
             title: "News",
             onTap: () => Navigator.of(context).push(
               MaterialPageRoute(
-                builder: (context) => AdminPanelNews(
+                builder: (context) => NewsBuilder(
                   currentUser: currentUser,
+                  pushTo: 'AdminPanelNews',
                 ),
               ),
             ),

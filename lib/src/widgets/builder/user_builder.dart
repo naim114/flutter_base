@@ -29,7 +29,8 @@ class _UsersBuilderState extends State<UsersBuilder> {
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting ||
             snapshot.data == null) {
-          return const Center(child: CircularProgressIndicator());
+          return const Scaffold(
+              body: Center(child: CircularProgressIndicator()));
         } else if (snapshot.data != null) {
           List<UserModel> userList =
               snapshot.data!.whereType<UserModel>().toList();
@@ -49,7 +50,7 @@ class _UsersBuilderState extends State<UsersBuilder> {
           }
         }
 
-        return const Center(child: CircularProgressIndicator());
+        return const Scaffold(body: Center(child: CircularProgressIndicator()));
       },
     );
   }

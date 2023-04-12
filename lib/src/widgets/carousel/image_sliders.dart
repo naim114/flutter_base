@@ -12,8 +12,9 @@ List<Widget> imageSliders({
         .map((item) => ClipRRect(
             borderRadius: const BorderRadius.all(Radius.circular(5.0)),
             child: GestureDetector(
-              onTap: () => Navigator.of(mainContext).push(MaterialPageRoute(
-                  builder: (context) => NewsView(mainContext: mainContext))),
+              onTap: () {},
+              // onTap: () => Navigator.of(mainContext).push(MaterialPageRoute(
+              //     builder: (context) => NewsView(mainContext: mainContext))),
               child: Stack(
                 children: <Widget>[
                   CachedNetworkImage(

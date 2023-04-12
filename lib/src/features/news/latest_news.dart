@@ -22,8 +22,9 @@ Widget latestNews({
                 'Small U.S. banks see record drop in deposits after SVB collapse.',
             date: DateTime.now(),
             likeCount: 20,
-            onTap: () => Navigator.of(mainContext).push(MaterialPageRoute(
-                builder: (context) => NewsView(mainContext: mainContext))),
+            onTap: () {},
+            // onTap: () => Navigator.of(mainContext).push(MaterialPageRoute(
+            //     builder: (context) => NewsView(mainContext: mainContext))),
           ),
         ),
         Padding(
@@ -39,8 +40,9 @@ Widget latestNews({
                 'Small U.S. banks see record drop in deposits after SVB collapse.',
             date: DateTime.now(),
             likeCount: 20,
-            onTap: () => Navigator.of(mainContext).push(MaterialPageRoute(
-                builder: (context) => NewsView(mainContext: mainContext))),
+            onTap: () {},
+            // onTap: () => Navigator.of(mainContext).push(MaterialPageRoute(
+            //     builder: (context) => NewsView(mainContext: mainContext))),
           ),
         ),
         Padding(
@@ -56,8 +58,9 @@ Widget latestNews({
                 'Small U.S. banks see record drop in deposits after SVB collapse.',
             date: DateTime.now(),
             likeCount: 20,
-            onTap: () => Navigator.of(mainContext).push(MaterialPageRoute(
-                builder: (context) => NewsView(mainContext: mainContext))),
+            onTap: () {},
+            // onTap: () => Navigator.of(mainContext).push(MaterialPageRoute(
+            //     builder: (context) => NewsView(mainContext: mainContext))),
           ),
         ),
       ],
