@@ -76,8 +76,6 @@ class _ProfileState extends State<Profile> {
 
           if (result == true && context.mounted) {
             Fluttertoast.showToast(msg: "Details sucessfully updated.");
-            Fluttertoast.showToast(
-                msg: "Close application and reopen if no changes happen.");
             Navigator.of(context).pop();
           }
         },
@@ -107,6 +105,16 @@ class _ProfileState extends State<Profile> {
                                 onConfirm: (imageFile, uploaderContext) async {
                                   print("Image file: ${imageFile.toString()}");
 
+                                  Fluttertoast.showToast(
+                                      msg:
+                                          "Uploading new avatar. Please wait.");
+
+                                  Future.delayed(const Duration(seconds: 2),
+                                      () {
+                                    // Code to be executed after 2 seconds
+                                  });
+
+                                  Navigator.pop(context);
                                   Navigator.pop(context);
 
                                   final result =
@@ -119,10 +127,8 @@ class _ProfileState extends State<Profile> {
 
                                   if (result == true) {
                                     Fluttertoast.showToast(
-                                        msg: "Avatar Updated!");
-                                    Fluttertoast.showToast(
                                         msg:
-                                            "Close application and reopen if no changes happen.");
+                                            "Avatar Updated. Please refresh to see changes.");
                                   }
                                 },
                               ),
@@ -159,6 +165,7 @@ class _ProfileState extends State<Profile> {
                                   onPressed: () async {
                                     Navigator.pop(context);
                                     Navigator.pop(context);
+                                    Navigator.pop(context);
 
                                     final result =
                                         await UserServices().removeAvatar(
@@ -170,10 +177,8 @@ class _ProfileState extends State<Profile> {
 
                                     if (result == true) {
                                       Fluttertoast.showToast(
-                                          msg: "Avatar Removed");
-                                      Fluttertoast.showToast(
                                           msg:
-                                              "Close application and reopen if no changes happen.");
+                                              "Avatar Removed. Please refresh to see changes.");
                                     }
                                   },
                                   child: const Text(

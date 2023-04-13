@@ -70,7 +70,8 @@ class _UpdatePasswordState extends State<UpdatePassword> {
               );
 
               if (result == true && context.mounted) {
-                Fluttertoast.showToast(msg: "Password Updated!");
+                Fluttertoast.showToast(
+                    msg: "Password Updated. Please refresh to see changes.");
                 Navigator.pop(context);
               }
             }
@@ -85,7 +86,8 @@ class _UpdatePasswordState extends State<UpdatePassword> {
               );
 
               if (result == true && context.mounted) {
-                Fluttertoast.showToast(msg: "Password Updated!");
+                Fluttertoast.showToast(
+                    msg: "Password Updated. Please refresh to see changes.");
                 Navigator.pop(context);
               }
             }

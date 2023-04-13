@@ -4,6 +4,8 @@ import 'package:flutter_base/src/features/account/index.dart';
 import 'package:flutter_base/src/features/notification/index.dart';
 import 'package:flutter_base/src/services/helpers.dart';
 import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
+import 'package:provider/provider.dart';
+import '../../model/user_model.dart';
 import '../news/index.dart';
 
 class FrontFrame extends StatefulWidget {
@@ -20,15 +22,6 @@ class _FrontFrameState extends State<FrontFrame> {
   void initState() {
     super.initState();
     _controller = PersistentTabController();
-  }
-
-  // Bottom Bar
-  List<Widget> _buildScreens(context) {
-    return [
-      News(mainContext: context),
-      Notifications(mainContext: context),
-      Account(mainContext: context),
-    ];
   }
 
   // Screen
@@ -60,10 +53,16 @@ class _FrontFrameState extends State<FrontFrame> {
 
   @override
   Widget build(BuildContext context) {
+    final user = context.watch<UserModel?>();
+
     return PersistentTabView(
       context,
       controller: _controller,
-      screens: _buildScreens(context),
+      screens: [
+        News(mainContext: context),
+        Notifications(mainContext: context),
+        Account(mainContext: context, user: user),
+      ],
       items: _navBarsItems(),
       confineInSafeArea: true,
       backgroundColor:

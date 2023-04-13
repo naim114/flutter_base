@@ -63,10 +63,9 @@ class _UpdateEmailState extends State<UpdateEmail> {
               );
 
               if (result == true && context.mounted) {
-                Fluttertoast.showToast(msg: "Email Updated!");
-                Navigator.pop(context);
                 Fluttertoast.showToast(
-                    msg: "Close application and reopen if no changes happen.");
+                    msg: "Email Updated. Please refresh to see changes.");
+                Navigator.pop(context);
               }
             }
           } else {
@@ -79,10 +78,9 @@ class _UpdateEmailState extends State<UpdateEmail> {
               );
 
               if (result == true && context.mounted) {
-                Fluttertoast.showToast(msg: "Email Updated!");
-                Navigator.pop(context);
                 Fluttertoast.showToast(
-                    msg: "Close application and reopen if no changes happen.");
+                    msg: "Email Updated. Please refresh to see changes.");
+                Navigator.pop(context);
               }
             }
           }
