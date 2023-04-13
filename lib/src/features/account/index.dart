@@ -190,18 +190,23 @@ class _AccountState extends State<Account> {
                                         ),
                                       ),
                                     ),
-                                    listTileIcon(
-                                      context: context,
-                                      icon: Icons.app_settings_alt,
-                                      title: "App Settings",
-                                      onTap: () =>
-                                          Navigator.of(widget.mainContext).push(
-                                        MaterialPageRoute(
-                                          builder: (context) =>
-                                              const AppSettings(),
-                                        ),
-                                      ),
-                                    ),
+                                    // SUPER ADMIN ONLY
+                                    user.role != null &&
+                                            user.role!.name == "super_admin"
+                                        ? listTileIcon(
+                                            context: context,
+                                            icon: Icons.app_settings_alt,
+                                            title: "App Settings",
+                                            onTap: () =>
+                                                Navigator.of(widget.mainContext)
+                                                    .push(
+                                              MaterialPageRoute(
+                                                builder: (context) =>
+                                                    const AppSettings(),
+                                              ),
+                                            ),
+                                          )
+                                        : const SizedBox(),
                                   ],
                                 ),
                           ListTile(
