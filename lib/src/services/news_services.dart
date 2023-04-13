@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:device_info_plus/device_info_plus.dart';
@@ -10,7 +9,9 @@ import 'package:flutter_base/src/services/user_services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:network_info_plus/network_info_plus.dart';
 import 'package:path/path.dart' as path;
+import 'package:path_provider/path_provider.dart';
 import '../model/user_model.dart';
+import 'package:http/http.dart' as http;
 
 class NewsService {
   final FirebaseFirestore _db = FirebaseFirestore.instance;
@@ -313,7 +314,7 @@ class NewsService {
         dynamic result = _collectionRef.doc(news.id).update({
           'title': title,
           'jsonContent': jsonContent,
-          'updatedBy': editor,
+          'updatedBy': editor.id,
           'updatedAt': DateTime.now(),
           'imgPath': 'news/thumbnail/${news.id}$extension',
           'imgURL': downloadUrl,
@@ -324,6 +325,7 @@ class NewsService {
         dynamic result = _collectionRef.doc(news.id).update({
           'title': title,
           'jsonContent': jsonContent,
+          'updatedBy': editor.id,
           'updatedAt': DateTime.now(),
         }).then((value) => print("News Edited"));
 
@@ -472,5 +474,18 @@ class NewsService {
 
       return false;
     }
+  }
+
+  Future<File> downloadThumbnail(NewsModel news) async {
+    final response = await http.get(Uri.parse(news.imgURL!));
+    final bytes = response.bodyBytes;
+    final fileName = Uri.parse(news.imgURL!).pathSegments.last;
+    final tempDir = await getTemporaryDirectory();
+    final directory = await Directory('${tempDir.path}/news/thumbnail')
+        .create(recursive: true);
+    final file = File('${tempDir.path}/$fileName');
+    await file.writeAsBytes(bytes);
+
+    return file;
   }
 }

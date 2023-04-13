@@ -332,13 +332,17 @@ class _AdminPanelNewsState extends State<AdminPanelNews> {
                             // Edit
                             IconButton(
                               icon: const Icon(Icons.edit),
-                              onPressed: () => Navigator.of(context).push(
-                                MaterialPageRoute(
-                                  builder: (context) => EditNews(
-                                    currentUser: widget.currentUser,
+                              onPressed: () {
+                                Navigator.of(context).push(
+                                  MaterialPageRoute(
+                                    builder: (context) => EditNews(
+                                      currentUser: widget.currentUser,
+                                      news: news,
+                                    ),
                                   ),
-                                ),
-                              ),
+                                );
+                                widget.notifyRefresh(true);
+                              },
                             ),
                             // Delete
                             IconButton(

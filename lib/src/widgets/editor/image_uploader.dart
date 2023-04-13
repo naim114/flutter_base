@@ -49,7 +49,7 @@ class ImageFileEditorState extends State<ImageUploader> {
         onConfirm: () {
           if (widget.imageFile != null) {
             widget.onConfirm(widget.imageFile!, context);
-            Fluttertoast.showToast(msg: "Image uploaded");
+            // Fluttertoast.showToast(msg: "Image uploaded");
             Navigator.pop(context);
           } else {
             Fluttertoast.showToast(msg: "Please upload an image first");

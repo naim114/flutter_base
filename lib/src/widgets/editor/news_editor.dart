@@ -12,6 +12,7 @@ class NewsEditor extends StatefulWidget {
   final BuildContext context;
   final String appBarTitle;
   final File? thumbnailFile;
+  final String? title;
   final Function(
     QuillController quillController,
     File? thumbnailFile,
@@ -25,6 +26,7 @@ class NewsEditor extends StatefulWidget {
     this.appBarTitle = "Add/Edit News",
     this.thumbnailFile,
     required this.onPost,
+    this.title,
   });
 
   @override
@@ -41,7 +43,9 @@ class _NewsEditorState extends State<NewsEditor> {
   @override
   void initState() {
     super.initState();
+    _submitted = false;
     _thumbnailFile = widget.thumbnailFile;
+    titleController.text = widget.title ?? "";
   }
 
   @override
@@ -129,6 +133,7 @@ class _NewsEditorState extends State<NewsEditor> {
                     MaterialPageRoute(
                       builder: (context) => ImageUploader(
                         appBarTitle: "Upload Thumbnail",
+                        imageFile: _thumbnailFile,
                         width: 350,
                         height: 196.88,
                         onCancel: () => Navigator.of(context).pop(),
