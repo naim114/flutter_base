@@ -248,7 +248,6 @@ class NewsService {
     required UserModel editor,
     File? imageFile,
   }) async {
-    // TODO test this
     try {
       if (imageFile != null) {
         // if previous thumbnail exist
@@ -365,7 +364,6 @@ class NewsService {
   Future delete({
     required NewsModel news,
   }) async {
-    // TODO test this
     try {
       // if previous thumbnail exist
       if (news.imgPath != null && news.imgURL != null) {
@@ -380,7 +378,7 @@ class NewsService {
 
       final delete = _collectionRef.doc(news.id).delete();
 
-      print("Delete Notification: $delete");
+      print("Delete News: $delete");
 
       await UserServices()
           .get(_auth.currentUser!.uid)

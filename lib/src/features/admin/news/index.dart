@@ -364,7 +364,16 @@ class _AdminPanelNewsState extends State<AdminPanelNews> {
                                       ),
                                     ),
                                     TextButton(
-                                      onPressed: () {},
+                                      onPressed: () async {
+                                        final result = await NewsService()
+                                            .delete(news: news);
+                                        if (result == true && context.mounted) {
+                                          Fluttertoast.showToast(
+                                              msg: "${news.title} deleted");
+                                          Navigator.pop(context);
+                                          widget.notifyRefresh(true);
+                                        }
+                                      },
                                       child: const Text(
                                         'OK',
                                         style: TextStyle(
