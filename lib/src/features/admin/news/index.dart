@@ -4,7 +4,11 @@ import 'package:flutter_base/src/features/admin/news/add.dart';
 import 'package:flutter_base/src/features/admin/news/edit.dart';
 import 'package:flutter_base/src/features/news/news_view.dart';
 import 'package:flutter_base/src/model/news_model.dart';
+import 'package:flutter_base/src/services/news_services.dart';
+import 'package:flutter_base/src/services/notification_services.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
+import 'package:search_page/search_page.dart';
 
 import '../../../model/user_model.dart';
 import '../../../services/helpers.dart';
@@ -282,9 +286,29 @@ class _AdminPanelNewsState extends State<AdminPanelNews> {
                                       ),
                                     ),
                                     TextButton(
-                                      onPressed: () {
-                                        // TODO star news
-                                        widget.notifyRefresh(true);
+                                      onPressed: () async {
+                                        if (news.starred) {
+                                          final unstar = await NewsService()
+                                              .star(news: news, star: false);
+
+                                          print("Unstar: $unstar");
+
+                                          Fluttertoast.showToast(
+                                              msg: "${news.title} unstarred");
+                                        } else {
+                                          final star = await NewsService()
+                                              .star(news: news, star: true);
+
+                                          print("Star: $star");
+
+                                          Fluttertoast.showToast(
+                                              msg: "${news.title} starred");
+                                        }
+
+                                        if (context.mounted) {
+                                          Navigator.pop(context);
+                                          widget.notifyRefresh(true);
+                                        }
                                       },
                                       child: const Text('OK'),
                                     ),
