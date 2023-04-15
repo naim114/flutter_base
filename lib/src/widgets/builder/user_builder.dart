@@ -47,18 +47,12 @@ class _UsersBuilderState extends State<UsersBuilder> {
   }
 
   @override
-  void initState() {
-    super.initState();
-    _refreshData();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return RefreshIndicator(
       key: _refreshIndicatorKey,
       onRefresh: _refreshData,
       child: FutureBuilder<List<UserModel?>>(
-        future: Future.value(dataList),
+        future: UserServices().getAll(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting ||
               snapshot.data == null) {

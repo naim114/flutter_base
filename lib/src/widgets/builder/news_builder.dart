@@ -44,18 +44,12 @@ class _NewsBuilderState extends State<NewsBuilder> {
   }
 
   @override
-  void initState() {
-    super.initState();
-    _refreshData();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return RefreshIndicator(
       key: _refreshIndicatorKey,
       onRefresh: _refreshData,
       child: FutureBuilder<List<NewsModel?>>(
-        future: Future.value(newsList),
+        future: NewsService().getAll(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting ||
               snapshot.data == null) {

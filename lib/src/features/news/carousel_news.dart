@@ -29,7 +29,7 @@ class _CarouselNewsState extends State<CarouselNews> {
           padding: const EdgeInsets.only(top: 23.0, bottom: 5),
           child: CarouselSlider(
             items: imageSliders(
-              imgList: widget.newsList,
+              newsList: widget.newsList,
               mainContext: widget.mainContext,
             ),
             carouselController: controller,

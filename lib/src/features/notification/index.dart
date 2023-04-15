@@ -46,12 +46,6 @@ class _NotificationsState extends State<Notifications> {
   }
 
   @override
-  void initState() {
-    super.initState();
-    _refreshData();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return widget.user == null
         ? const Scaffold(body: Center(child: CircularProgressIndicator()))
@@ -60,7 +54,8 @@ class _NotificationsState extends State<Notifications> {
             onRefresh: _refreshData,
             child: Scaffold(
               body: FutureBuilder<List<NotificationModel?>>(
-                future: Future.value(notiList),
+                future:
+                    NotificationServices().getBy('receiver', widget.user!.id),
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting ||
                       snapshot.data == null) {
@@ -157,7 +152,6 @@ class _NotificationsState extends State<Notifications> {
                                 if (result == true) {
                                   Fluttertoast.showToast(
                                       msg: "Notification Deleted");
-                                  _refreshData();
                                 }
 
                                 if (context.mounted) {

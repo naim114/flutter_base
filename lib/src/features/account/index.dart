@@ -9,7 +9,6 @@ import 'package:flutter_base/src/features/admin/settings/index.dart';
 import 'package:flutter_base/src/services/helpers.dart';
 import 'package:flutter_base/src/services/user_services.dart';
 import 'package:flutter_base/src/widgets/typography/page_title_icon.dart';
-import 'package:provider/provider.dart';
 
 import '../../model/user_model.dart';
 import '../../services/auth_services.dart';
@@ -57,12 +56,6 @@ class _AccountState extends State<Account> {
   }
 
   @override
-  void initState() {
-    super.initState();
-    _refreshData();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return widget.user == null
         ? const Scaffold(body: Center(child: CircularProgressIndicator()))
@@ -70,7 +63,7 @@ class _AccountState extends State<Account> {
             key: _refreshIndicatorKey,
             onRefresh: _refreshData,
             child: FutureBuilder<UserModel?>(
-              future: Future.value(userState),
+              future: UserServices().get(widget.user!.id),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting ||
                     snapshot.data == null) {
@@ -96,7 +89,6 @@ class _AccountState extends State<Account> {
                           listTileProfile(
                             context: context,
                             onEdit: () {
-                              _refreshData();
                               Navigator.of(widget.mainContext).push(
                                 MaterialPageRoute(
                                   builder: (context) => Profile(user: user),

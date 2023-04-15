@@ -5,17 +5,21 @@ import 'package:flutter_base/src/model/news_model.dart';
 import 'package:intl/intl.dart';
 import 'package:shimmer/shimmer.dart';
 
+import '../../features/news/news_view.dart';
+
 List<Widget> imageSliders({
-  required List<NewsModel?> imgList,
+  required List<NewsModel?> newsList,
   required BuildContext mainContext,
 }) =>
-    imgList
+    newsList
         .map((news) => ClipRRect(
             borderRadius: const BorderRadius.all(Radius.circular(5.0)),
             child: GestureDetector(
-              onTap: () {},
-              // onTap: () => Navigator.of(mainContext).push(MaterialPageRoute(
-              //     builder: (context) => NewsView(mainContext: mainContext))),
+              onTap: () => Navigator.of(mainContext).push(MaterialPageRoute(
+                  builder: (context) => NewsView(
+                        mainContext: mainContext,
+                        news: news,
+                      ))),
               child: Stack(
                 children: <Widget>[
                   news!.imgURL == null

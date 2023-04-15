@@ -69,7 +69,7 @@ class _NewsState extends State<News> with TickerProviderStateMixin {
       body: RefreshIndicator(
         key: _refreshIndicatorKey,
         onRefresh: _refreshData,
-        child: FutureBuilder<List<List<NewsModel?>>>(
+        child: FutureBuilder(
             future: Future.wait([
               NewsService().getAll(),
               NewsService().getAllBy(
