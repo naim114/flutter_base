@@ -39,7 +39,7 @@ class _NotificationsState extends State<Notifications> {
       // Trigger a refresh of the RefreshIndicator widget
       _refreshIndicatorKey.currentState?.show();
     } catch (e) {
-      print("Get User:  ${e.toString()}");
+      print("Error Get Notification:  ${e.toString()}");
     }
 
     setState(() {});
