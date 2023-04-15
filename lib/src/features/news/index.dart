@@ -29,7 +29,7 @@ class _NewsState extends State<News> with TickerProviderStateMixin {
             ),
             NewsService().getAllBy(
               fieldName: 'likeCount',
-              desc: false,
+              desc: true,
               limit: 5,
             ),
             NewsService().getAllBy(
@@ -85,7 +85,10 @@ class _NewsState extends State<News> with TickerProviderStateMixin {
                     newsList: allNews,
                   ),
                   // Carousel News (Starred News)
-                  CarouselNews(mainContext: widget.mainContext),
+                  CarouselNews(
+                    mainContext: widget.mainContext,
+                    newsList: starredNewsList,
+                  ),
                   // Popular News Cards
                   const Padding(
                     padding: EdgeInsets.symmetric(horizontal: 25, vertical: 10),
@@ -116,7 +119,7 @@ class _NewsState extends State<News> with TickerProviderStateMixin {
                   latestNews(
                     context: context,
                     mainContext: widget.mainContext,
-                    newsList: popularNewsList,
+                    newsList: latestNewsList,
                   ),
                   const SizedBox(height: 40),
                 ],
