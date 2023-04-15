@@ -24,7 +24,7 @@ class _NewsState extends State<News> with TickerProviderStateMixin {
             NewsService().getAll(),
             NewsService().getAllBy(
               fieldName: 'starred',
-              desc: false,
+              desc: true,
               limit: 5,
             ),
             NewsService().getAllBy(
