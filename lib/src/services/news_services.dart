@@ -114,6 +114,29 @@ class NewsService {
     return dataList;
   }
 
+  // get all
+  Future<List<NewsModel?>> getAllBy(
+      {required String fieldName, int? limit, bool desc = true}) async {
+    // Get docs from collection reference
+    Query query = limit == null
+        ? _collectionRef.orderBy(fieldName, descending: desc)
+        : _collectionRef.orderBy(fieldName, descending: desc).limit(limit);
+
+    QuerySnapshot querySnapshot = await query.get();
+
+    if (querySnapshot.docs.isNotEmpty) {
+      List<DocumentSnapshot> docList = querySnapshot.docs;
+
+      List<Future<NewsModel?>> futures = docList
+          .map((doc) => NewsService().fromDocumentSnapshot(doc))
+          .toList();
+
+      return await Future.wait(futures);
+    } else {
+      return List.empty();
+    }
+  }
+
   Future add({
     required String title,
     required String jsonContent,

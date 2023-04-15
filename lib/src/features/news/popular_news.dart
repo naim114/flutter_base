@@ -1,67 +1,35 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_base/src/features/news/news_view.dart';
 
+import '../../model/news_model.dart';
 import '../../widgets/card/news_card.dart';
+import 'news_view.dart';
 
 Widget popularNews({
   required BuildContext context,
   required BuildContext mainContext,
+  required List<NewsModel?> newsList,
 }) =>
     Column(
-      children: [
-        Padding(
+      children: List.generate(newsList.length, (index) {
+        NewsModel news = newsList[index]!;
+
+        return Padding(
           padding: const EdgeInsets.symmetric(
             horizontal: 20,
             vertical: 3,
           ),
           child: newsCard(
             context: context,
-            imageURL:
-                'https://images.unsplash.com/photo-1519125323398-675f0ddb6308?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=94a1e718d89ca60a6337a6008341ca50&auto=format&fit=crop&w=1950&q=80',
-            title:
-                'Small U.S. banks see record drop in deposits after SVB collapse.',
-            date: DateTime.now(),
-            likeCount: 20,
-            onTap: () {},
-            // onTap: () => Navigator.of(mainContext).push(MaterialPageRoute(
-            //     builder: (context) => NewsView(mainContext: mainContext))),
+            imageURL: news.imgURL,
+            title: news.title,
+            date: news.createdAt,
+            likeCount: news.likeCount,
+            onTap: () => Navigator.of(mainContext).push(MaterialPageRoute(
+                builder: (context) => NewsView(
+                      mainContext: mainContext,
+                      news: news,
+                    ))),
           ),
-        ),
-        Padding(
-          padding: const EdgeInsets.symmetric(
-            horizontal: 20,
-            vertical: 3,
-          ),
-          child: newsCard(
-            context: context,
-            imageURL:
-                'https://images.unsplash.com/photo-1519125323398-675f0ddb6308?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=94a1e718d89ca60a6337a6008341ca50&auto=format&fit=crop&w=1950&q=80',
-            title:
-                'Small U.S. banks see record drop in deposits after SVB collapse.',
-            date: DateTime.now(),
-            likeCount: 20,
-            onTap: () {},
-            // onTap: () => Navigator.of(mainContext).push(MaterialPageRoute(
-            //     builder: (context) => NewsView(mainContext: mainContext))),
-          ),
-        ),
-        Padding(
-          padding: const EdgeInsets.symmetric(
-            horizontal: 20,
-            vertical: 3,
-          ),
-          child: newsCard(
-            context: context,
-            imageURL:
-                'https://images.unsplash.com/photo-1519125323398-675f0ddb6308?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=94a1e718d89ca60a6337a6008341ca50&auto=format&fit=crop&w=1950&q=80',
-            title:
-                'Small U.S. banks see record drop in deposits after SVB collapse.',
-            date: DateTime.now(),
-            likeCount: 20,
-            onTap: () {},
-            // onTap: () => Navigator.of(mainContext).push(MaterialPageRoute(
-            //     builder: (context) => NewsView(mainContext: mainContext))),
-          ),
-        ),
-      ],
+        );
+      }),
     );

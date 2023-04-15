@@ -8,7 +8,7 @@ import '../../services/helpers.dart';
 
 Widget newsCard({
   required BuildContext context,
-  required String imageURL,
+  required String? imageURL,
   required String title,
   required int likeCount,
   required DateTime date,
@@ -26,27 +26,34 @@ Widget newsCard({
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              CachedNetworkImage(
-                imageUrl: imageURL,
-                fit: BoxFit.cover,
-                width: 80,
-                height: 80,
-                placeholder: (context, url) => Shimmer.fromColors(
-                  baseColor: CupertinoColors.systemGrey,
-                  highlightColor: CupertinoColors.systemGrey2,
-                  child: Container(
-                    color: Colors.grey,
-                    width: 80,
-                    height: 80,
-                  ),
-                ),
-                errorWidget: (context, url, error) => Image.asset(
-                  'assets/images/noimage.png',
-                  fit: BoxFit.cover,
-                  width: 80,
-                  height: 80,
-                ),
-              ),
+              imageURL == null
+                  ? Image.asset(
+                      'assets/images/noimage.png',
+                      fit: BoxFit.cover,
+                      width: 80,
+                      height: 80,
+                    )
+                  : CachedNetworkImage(
+                      imageUrl: imageURL,
+                      fit: BoxFit.cover,
+                      width: 80,
+                      height: 80,
+                      placeholder: (context, url) => Shimmer.fromColors(
+                        baseColor: CupertinoColors.systemGrey,
+                        highlightColor: CupertinoColors.systemGrey2,
+                        child: Container(
+                          color: Colors.grey,
+                          width: 80,
+                          height: 80,
+                        ),
+                      ),
+                      errorWidget: (context, url, error) => Image.asset(
+                        'assets/images/noimage.png',
+                        fit: BoxFit.cover,
+                        width: 80,
+                        height: 80,
+                      ),
+                    ),
               Container(
                 padding: const EdgeInsets.only(left: 15.0),
                 width: 250,
