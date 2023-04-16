@@ -24,11 +24,14 @@ Widget latestNews({
             title: news.title,
             date: news.createdAt,
             likeCount: news.likeCount,
-            onTap: () => Navigator.of(mainContext).push(MaterialPageRoute(
+            onTap: () => Navigator.of(mainContext).push(
+              MaterialPageRoute(
                 builder: (context) => NewsView(
-                      mainContext: mainContext,
-                      news: news,
-                    ))),
+                  mainContext: mainContext,
+                  news: news,
+                ),
+              ),
+            ),
           ),
         );
       }),
