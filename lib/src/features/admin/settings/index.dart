@@ -206,36 +206,6 @@ class AppSettings extends StatelessWidget {
             onTap: () {},
           ),
           ListTile(
-            title: const Text("Semantic 1 color"),
-            trailing: SizedBox(
-              width: 20.0,
-              height: 20.0,
-              child: Container(
-                decoration: BoxDecoration(
-                    border: Border.all(color: CupertinoColors.systemGrey)),
-                child: const DecoratedBox(
-                  decoration: BoxDecoration(color: CustomColor.semantic1),
-                ),
-              ),
-            ),
-            onTap: () {},
-          ),
-          ListTile(
-            title: const Text("Semantic 2 color"),
-            trailing: SizedBox(
-              width: 20.0,
-              height: 20.0,
-              child: Container(
-                decoration: BoxDecoration(
-                    border: Border.all(color: CupertinoColors.systemGrey)),
-                child: const DecoratedBox(
-                  decoration: BoxDecoration(color: CustomColor.semantic2),
-                ),
-              ),
-            ),
-            onTap: () {},
-          ),
-          ListTile(
             title: const Text("Danger color"),
             trailing: SizedBox(
               width: 20.0,

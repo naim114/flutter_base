@@ -191,9 +191,12 @@ class _AdminPanelNotificationState extends State<AdminPanelNotification> {
                   final NotificationModel noti = filteredData[index];
                   return DataRow(
                     cells: [
-                      DataCell(Text(
-                        noti.title,
-                        overflow: TextOverflow.ellipsis,
+                      DataCell(SizedBox(
+                        width: 350,
+                        child: Text(
+                          noti.title,
+                          overflow: TextOverflow.ellipsis,
+                        ),
                       )),
                       DataCell(Text(noti.author!.email)),
                       DataCell(Text(

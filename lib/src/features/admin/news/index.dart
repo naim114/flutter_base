@@ -243,11 +243,18 @@ class _AdminPanelNewsState extends State<AdminPanelNews> {
                   final NewsModel news = filteredData[index];
                   return DataRow(
                     cells: [
-                      DataCell(Text(
-                        news.title,
-                        overflow: TextOverflow.ellipsis,
+                      DataCell(SizedBox(
+                        width: 350,
+                        child: Text(
+                          news.title,
+                          overflow: TextOverflow.ellipsis,
+                          maxLines: 2,
+                          softWrap: true,
+                        ),
                       )),
-                      DataCell(Text(news.author!.name ?? "None")),
+                      DataCell(Text(
+                        news.author!.name ?? "None",
+                      )),
                       DataCell(Text(DateFormat('dd/MM/yyyy hh:mm a')
                           .format(news.createdAt))),
                       DataCell(Text(news.updatedBy == null

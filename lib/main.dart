@@ -47,7 +47,7 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-    return StreamProvider<UserModel?>.value(
+    return StreamProvider.value(
       initialData: null,
       lazy: true,
       value: AuthService().onAuthStateChanged,

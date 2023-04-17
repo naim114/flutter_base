@@ -49,6 +49,7 @@ class _NewsViewState extends State<NewsView> {
           "News",
           style: TextStyle(
             color: getColorByBackground(context),
+            fontWeight: FontWeight.bold,
           ),
         ),
         actions: [
