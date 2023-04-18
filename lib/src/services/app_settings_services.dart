@@ -15,12 +15,8 @@ class AppSettingsServices {
   final NetworkInfo _networkInfo = NetworkInfo();
 
   Stream<AppSettingsModel> getAppSettingsStream() {
-    final DocumentReference<Map<String, dynamic>> documentRef =
-        collectionRef.doc('application');
-
-    return documentRef.snapshots().map((snapshot) {
-      final data = snapshot.data();
-      return AppSettingsModel.fromMap(data!);
+    return collectionRef.doc('application').snapshots().map((snapshot) {
+      return AppSettingsModel.fromMap(snapshot.data()!);
     });
   }
 }

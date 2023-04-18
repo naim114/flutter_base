@@ -64,7 +64,10 @@ class _NewsViewState extends State<NewsView> {
               }
             },
             icon: liked
-                ? const Icon(CupertinoIcons.heart_fill)
+                ? const Icon(
+                    CupertinoIcons.heart_fill,
+                    color: CustomColor.danger,
+                  )
                 : const Icon(CupertinoIcons.heart),
           )
         ],
