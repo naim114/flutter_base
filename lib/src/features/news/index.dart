@@ -74,7 +74,7 @@ class _NewsState extends State<News> with TickerProviderStateMixin {
     final appSettings = Provider.of<AppSettingsModel?>(context);
 
     return appSettings == null
-        ? const Scaffold(body: Center(child: CircularProgressIndicator()))
+        ? const Scaffold(body: Center(child: Text("loading..")))
         : RefreshIndicator(
             key: _refreshIndicatorKey,
             onRefresh: _refreshData,
@@ -99,7 +99,8 @@ class _NewsState extends State<News> with TickerProviderStateMixin {
               ]),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
-                  return const Center(child: CircularProgressIndicator());
+                  return const Scaffold(
+                      body: Center(child: CircularProgressIndicator()));
                 } else if (snapshot.hasError) {
                   return Center(child: Text('Error: ${snapshot.error}'));
                 } else {
