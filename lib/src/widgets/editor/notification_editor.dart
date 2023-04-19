@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_base/src/widgets/builder/user_builder.dart';
+import 'package:news_app/src/widgets/builder/user_builder.dart';
 import 'package:flutter_quill/flutter_quill.dart' hide Text;
 import 'package:fluttertoast/fluttertoast.dart';
 

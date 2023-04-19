@@ -1,4 +1,4 @@
-# flutter_base
+# news_app
 
 A base Flutter project.
 

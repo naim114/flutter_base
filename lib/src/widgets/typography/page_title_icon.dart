@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_base/src/services/helpers.dart';
+import 'package:news_app/src/services/helpers.dart';
 
 Widget pageTitleIcon({
   required BuildContext context,

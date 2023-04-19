@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:device_info_plus/device_info_plus.dart';
-import 'package:flutter_base/src/model/user_activity_model.dart';
-import 'package:flutter_base/src/services/user_services.dart';
+import 'package:news_app/src/model/user_activity_model.dart';
+import 'package:news_app/src/services/user_services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'dart:async';
 import 'dart:developer' as developer;

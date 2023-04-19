@@ -1,11 +1,11 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_base/src/features/auth/sign_up.dart';
-import 'package:flutter_base/src/services/helpers.dart';
-import 'package:flutter_base/src/widgets/appbar/custom_appbar.dart';
-import 'package:flutter_base/src/widgets/button/custom_button.dart';
-import 'package:flutter_base/src/widgets/typography/custom_textfield.dart';
+import 'package:news_app/src/features/auth/sign_up.dart';
+import 'package:news_app/src/services/helpers.dart';
+import 'package:news_app/src/widgets/appbar/custom_appbar.dart';
+import 'package:news_app/src/widgets/button/custom_button.dart';
+import 'package:news_app/src/widgets/typography/custom_textfield.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
 import '../../model/app_settings_model.dart';

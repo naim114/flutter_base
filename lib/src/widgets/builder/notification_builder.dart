@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_base/src/model/notification_model.dart';
-import 'package:flutter_base/src/services/helpers.dart';
-import 'package:flutter_base/src/services/notification_services.dart';
+import 'package:news_app/src/model/notification_model.dart';
+import 'package:news_app/src/services/helpers.dart';
+import 'package:news_app/src/services/notification_services.dart';
 
 import '../../features/admin/notification/index.dart';
 import '../../model/user_model.dart';

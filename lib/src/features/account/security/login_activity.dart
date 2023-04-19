@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_base/src/model/user_model.dart';
-import 'package:flutter_base/src/services/user_activity_services.dart';
+import 'package:news_app/src/model/user_model.dart';
+import 'package:news_app/src/services/user_activity_services.dart';
 
 import '../../../model/user_activity_model.dart';
 import '../../../services/helpers.dart';

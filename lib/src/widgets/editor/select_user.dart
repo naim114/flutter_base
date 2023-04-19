@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_base/src/widgets/appbar/appbar_confirm_cancel.dart';
+import 'package:news_app/src/widgets/appbar/appbar_confirm_cancel.dart';
 import 'package:intl/intl.dart';
 
 import '../../model/user_model.dart';

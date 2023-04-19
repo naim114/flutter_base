@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_base/src/model/user_model.dart';
-import 'package:flutter_base/src/services/user_services.dart';
-import 'package:flutter_base/src/widgets/appbar/appbar_confirm_cancel.dart';
+import 'package:news_app/src/model/user_model.dart';
+import 'package:news_app/src/services/user_services.dart';
+import 'package:news_app/src/widgets/appbar/appbar_confirm_cancel.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
 import '../../../services/helpers.dart';

@@ -2,13 +2,13 @@ import 'dart:async';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_base/src/model/user_model.dart';
-import 'package:flutter_base/src/services/auth_services.dart';
-import 'package:flutter_base/src/services/helpers.dart';
-import 'package:flutter_base/src/widgets/appbar/custom_appbar.dart';
-import 'package:flutter_base/src/widgets/button/custom_button.dart';
-import 'package:flutter_base/src/widgets/typography/custom_textfield.dart';
-import 'package:flutter_base/wrapper.dart';
+import 'package:news_app/src/model/user_model.dart';
+import 'package:news_app/src/services/auth_services.dart';
+import 'package:news_app/src/services/helpers.dart';
+import 'package:news_app/src/widgets/appbar/custom_appbar.dart';
+import 'package:news_app/src/widgets/button/custom_button.dart';
+import 'package:news_app/src/widgets/typography/custom_textfield.dart';
+import 'package:news_app/wrapper.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
 

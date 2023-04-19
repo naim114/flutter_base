@@ -1,5 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter_base/src/model/role_model.dart';
+import 'package:news_app/src/model/role_model.dart';
 
 class RoleServices {
   final FirebaseFirestore _db = FirebaseFirestore.instance;

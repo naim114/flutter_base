@@ -1,8 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_base/src/features/account/index.dart';
-import 'package:flutter_base/src/features/notification/index.dart';
-import 'package:flutter_base/src/services/helpers.dart';
+import 'package:news_app/src/features/account/index.dart';
+import 'package:news_app/src/features/notification/index.dart';
+import 'package:news_app/src/services/helpers.dart';
 import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 import 'package:provider/provider.dart';
 import '../../model/user_model.dart';

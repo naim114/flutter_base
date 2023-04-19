@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_base/src/model/news_model.dart';
-import 'package:flutter_base/src/services/news_services.dart';
+import 'package:news_app/src/model/news_model.dart';
+import 'package:news_app/src/services/news_services.dart';
 
 import '../../features/admin/news/index.dart';
 import '../../model/user_model.dart';

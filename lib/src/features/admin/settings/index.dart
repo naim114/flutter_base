@@ -2,10 +2,10 @@ import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_base/src/model/app_settings_model.dart';
-import 'package:flutter_base/src/services/app_settings_services.dart';
-import 'package:flutter_base/src/widgets/editor/single_input_editor.dart';
-import 'package:flutter_base/src/widgets/editor/image_uploader.dart';
+import 'package:news_app/src/model/app_settings_model.dart';
+import 'package:news_app/src/services/app_settings_services.dart';
+import 'package:news_app/src/widgets/editor/single_input_editor.dart';
+import 'package:news_app/src/widgets/editor/image_uploader.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
 import '../../../services/helpers.dart';

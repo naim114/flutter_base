@@ -1,9 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_base/src/features/admin/news/index.dart';
-import 'package:flutter_base/src/features/admin/notification/index.dart';
-import 'package:flutter_base/src/widgets/builder/notification_builder.dart';
-import 'package:flutter_base/src/widgets/builder/user_builder.dart';
+import 'package:news_app/src/features/admin/news/index.dart';
+import 'package:news_app/src/features/admin/notification/index.dart';
+import 'package:news_app/src/widgets/builder/notification_builder.dart';
+import 'package:news_app/src/widgets/builder/user_builder.dart';
 
 import '../../model/user_model.dart';
 import '../../services/helpers.dart';

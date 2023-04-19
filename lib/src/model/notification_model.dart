@@ -1,4 +1,4 @@
-import 'package:flutter_base/src/model/user_model.dart';
+import 'package:news_app/src/model/user_model.dart';
 
 class NotificationModel {
   final String id;

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_base/src/model/role_model.dart';
-import 'package:flutter_base/src/model/user_model.dart';
-import 'package:flutter_base/src/services/role_services.dart';
-import 'package:flutter_base/src/services/user_services.dart';
+import 'package:news_app/src/model/role_model.dart';
+import 'package:news_app/src/model/user_model.dart';
+import 'package:news_app/src/services/role_services.dart';
+import 'package:news_app/src/services/user_services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
 import '../../../widgets/appbar/appbar_confirm_cancel.dart';

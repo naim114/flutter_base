@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_base/src/services/helpers.dart';
+import 'package:news_app/src/services/helpers.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import '../../../model/user_model.dart';
 import '../../../services/user_services.dart';

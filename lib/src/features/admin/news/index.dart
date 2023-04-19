@@ -1,11 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_base/src/features/admin/news/add.dart';
-import 'package:flutter_base/src/features/admin/news/edit.dart';
-import 'package:flutter_base/src/features/news/news_view.dart';
-import 'package:flutter_base/src/model/news_model.dart';
-import 'package:flutter_base/src/services/news_services.dart';
-import 'package:flutter_base/src/services/notification_services.dart';
+import 'package:news_app/src/features/admin/news/add.dart';
+import 'package:news_app/src/features/admin/news/edit.dart';
+import 'package:news_app/src/features/news/news_view.dart';
+import 'package:news_app/src/model/news_model.dart';
+import 'package:news_app/src/services/news_services.dart';
+import 'package:news_app/src/services/notification_services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
 import 'package:search_page/search_page.dart';

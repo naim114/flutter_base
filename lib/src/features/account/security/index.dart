@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_base/src/features/account/security/login_activity.dart';
-import 'package:flutter_base/src/features/account/security/update_email.dart';
-import 'package:flutter_base/src/features/account/security/update_password.dart';
-import 'package:flutter_base/src/model/user_model.dart';
+import 'package:news_app/src/features/account/security/login_activity.dart';
+import 'package:news_app/src/features/account/security/update_email.dart';
+import 'package:news_app/src/features/account/security/update_password.dart';
+import 'package:news_app/src/model/user_model.dart';
 
 import '../../../services/helpers.dart';
 import '../../../widgets/list_tile/list_tile_icon.dart';

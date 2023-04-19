@@ -1,10 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_base/src/features/account/profile/index.dart';
-import 'package:flutter_base/src/features/account/security/login_activity.dart';
-import 'package:flutter_base/src/features/admin/users/role.dart';
-import 'package:flutter_base/src/features/admin/users/user_activity.dart';
-import 'package:flutter_base/src/services/helpers.dart';
+import 'package:news_app/src/features/account/profile/index.dart';
+import 'package:news_app/src/features/account/security/login_activity.dart';
+import 'package:news_app/src/features/admin/users/role.dart';
+import 'package:news_app/src/features/admin/users/user_activity.dart';
+import 'package:news_app/src/services/helpers.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import '../../../model/user_model.dart';
 import '../../../services/user_services.dart';

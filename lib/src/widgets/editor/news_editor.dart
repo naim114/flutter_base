@@ -2,7 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_base/src/widgets/editor/image_uploader.dart';
+import 'package:news_app/src/widgets/editor/image_uploader.dart';
 import 'package:flutter_quill/flutter_quill.dart' hide Text;
 import 'package:fluttertoast/fluttertoast.dart';
 import '../../services/helpers.dart';

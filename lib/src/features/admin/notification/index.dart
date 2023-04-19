@@ -1,8 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_base/src/features/admin/notification/add.dart';
-import 'package:flutter_base/src/features/notification/notification_view.dart';
-import 'package:flutter_base/src/services/notification_services.dart';
+import 'package:news_app/src/features/admin/notification/add.dart';
+import 'package:news_app/src/features/notification/notification_view.dart';
+import 'package:news_app/src/services/notification_services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
 

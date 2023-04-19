@@ -4,6 +4,7 @@ Low
 
 Mid
 - https://pub.dev/packages/flutter_oss_licenses
+- record liked news
 
 High
 - change repo and package name to newsapp

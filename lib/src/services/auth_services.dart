@@ -4,10 +4,10 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:crypto/crypto.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter_base/src/model/user_model.dart';
-import 'package:flutter_base/src/services/role_services.dart';
-import 'package:flutter_base/src/services/user_activity_services.dart';
-import 'package:flutter_base/src/services/user_services.dart';
+import 'package:news_app/src/model/user_model.dart';
+import 'package:news_app/src/services/role_services.dart';
+import 'package:news_app/src/services/user_activity_services.dart';
+import 'package:news_app/src/services/user_services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:network_info_plus/network_info_plus.dart';
 

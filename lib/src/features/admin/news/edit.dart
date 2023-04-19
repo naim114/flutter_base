@@ -2,8 +2,8 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_base/src/model/news_model.dart';
-import 'package:flutter_base/src/services/news_services.dart';
+import 'package:news_app/src/model/news_model.dart';
+import 'package:news_app/src/services/news_services.dart';
 import 'package:flutter_quill/flutter_quill.dart' hide Text;
 import 'package:fluttertoast/fluttertoast.dart';
 import '../../../model/user_model.dart';

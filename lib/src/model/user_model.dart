@@ -1,6 +1,6 @@
 import 'package:country/country.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_base/src/model/role_model.dart';
+import 'package:news_app/src/model/role_model.dart';
 
 class UserModel {
   final String id;

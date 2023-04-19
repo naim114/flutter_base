@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_base/src/model/user_model.dart';
+import 'package:news_app/src/model/user_model.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import '../../model/notification_model.dart';
 import '../../services/helpers.dart';

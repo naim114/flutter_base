@@ -1,12 +1,12 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_base/src/model/app_settings_model.dart';
-import 'package:flutter_base/src/model/user_model.dart';
-import 'package:flutter_base/src/services/app_settings_services.dart';
-import 'package:flutter_base/src/services/auth_services.dart';
-import 'package:flutter_base/src/services/helpers.dart';
-import 'package:flutter_base/wrapper.dart';
+import 'package:news_app/src/model/app_settings_model.dart';
+import 'package:news_app/src/model/user_model.dart';
+import 'package:news_app/src/services/app_settings_services.dart';
+import 'package:news_app/src/services/auth_services.dart';
+import 'package:news_app/src/services/helpers.dart';
+import 'package:news_app/wrapper.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:provider/provider.dart';
