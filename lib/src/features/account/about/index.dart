@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import '../../../model/app_settings_model.dart';
+import '../../../services/app_settings_services.dart';
 import '../../../services/helpers.dart';
 import '../../../widgets/list_tile/list_tile_icon.dart';
 
@@ -25,47 +27,60 @@ class AppAbout extends StatelessWidget {
           ),
         ),
       ),
-      body: ListView(
-        children: [
-          listTileIcon(
-            context: context,
-            icon: Icons.open_in_new_outlined,
-            title: "Copyright",
-            onTap: () => goToURL(
-              context: context,
-              url: Uri.parse('https://github.com/naim114'),
-            ),
-          ),
-          listTileIcon(
-            context: context,
-            icon: Icons.open_in_new_outlined,
-            title: "Privacy Policy",
-            onTap: () => goToURL(
-              context: context,
-              url: Uri.parse('https://github.com/naim114'),
-            ),
-          ),
-          listTileIcon(
-            context: context,
-            icon: Icons.open_in_new_outlined,
-            title: "Terms & Conditions",
-            onTap: () => goToURL(
-              context: context,
-              url: Uri.parse('https://github.com/naim114'),
-            ),
-          ),
-          listTileIcon(
-            context: context,
-            icon: Icons.open_in_new_outlined,
-            title: "Open Source Libraries",
-            // TODO https://pub.dev/packages/flutter_oss_licenses
-            onTap: () => Navigator.of(context).push(
-              MaterialPageRoute(
-                builder: (context) => const Placeholder(),
-              ),
-            ),
-          ),
-        ],
+      body: StreamBuilder<AppSettingsModel?>(
+        stream: AppSettingsServices().getAppSettingsStream(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting ||
+              !snapshot.hasData) {
+            return const Center(child: CircularProgressIndicator());
+          } else {
+            AppSettingsModel? appSettings = snapshot.data;
+            return appSettings == null
+                ? const Center(child: CircularProgressIndicator())
+                : ListView(
+                    children: [
+                      listTileIcon(
+                        context: context,
+                        icon: Icons.open_in_new_outlined,
+                        title: "Copyright",
+                        onTap: () => goToURL(
+                          context: context,
+                          url: Uri.parse(appSettings.urlCopyright),
+                        ),
+                      ),
+                      listTileIcon(
+                        context: context,
+                        icon: Icons.open_in_new_outlined,
+                        title: "Privacy Policy",
+                        onTap: () => goToURL(
+                          context: context,
+                          url: Uri.parse(appSettings.urlPrivacyPolicy),
+                        ),
+                      ),
+                      listTileIcon(
+                        context: context,
+                        icon: Icons.open_in_new_outlined,
+                        title: "Terms & Conditions",
+                        onTap: () => goToURL(
+                          context: context,
+                          url: Uri.parse(appSettings.urlTermCondition),
+                        ),
+                      ),
+                      listTileIcon(
+                        context: context,
+                        icon: Icons.open_in_new_outlined,
+                        title: "Open Source Libraries",
+                        // TODO https://pub.dev/packages/flutter_oss_licenses
+                        onTap: () => Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (context) => const Placeholder(),
+                          ),
+                        ),
+                      ),
+                    ],
+                  );
+          }
+        },
       ),
     );
   }
