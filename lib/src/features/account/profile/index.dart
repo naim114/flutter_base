@@ -109,11 +109,6 @@ class _ProfileState extends State<Profile> {
                                       msg:
                                           "Uploading new avatar. Please wait.");
 
-                                  Future.delayed(const Duration(seconds: 2),
-                                      () {
-                                    // Code to be executed after 2 seconds
-                                  });
-
                                   Navigator.pop(context);
                                   Navigator.pop(context);
 

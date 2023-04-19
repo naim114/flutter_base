@@ -76,8 +76,8 @@ class _LogInState extends State<LogIn> {
                                 imageUrl: appSettings.logoMainURL,
                                 fit: BoxFit.contain,
                                 height: 100,
-                                placeholder: (context, url) =>
-                                    const CircularProgressIndicator(),
+                                placeholder: (context, url) => const Center(
+                                    child: CircularProgressIndicator()),
                                 errorWidget: (context, url, error) =>
                                     Image.asset(
                                   'assets/images/default_logo_main.png',

@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_base/src/widgets/appbar/appbar_confirm_cancel.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
-class SingleInputEditor extends StatelessWidget {
+class SingleInputEditor extends StatefulWidget {
   final String appBarTitle;
   final String textFieldLabel;
   final void Function() onCancel;
-  final void Function() onConfirm;
+  final void Function(String value) onConfirm;
   final String description;
 
   const SingleInputEditor({
@@ -18,24 +19,48 @@ class SingleInputEditor extends StatelessWidget {
   });
 
   @override
+  State<SingleInputEditor> createState() => _SingleInputEditorState();
+}
+
+class _SingleInputEditorState extends State<SingleInputEditor> {
+  final TextEditingController inputController = TextEditingController();
+  bool _submitted = false;
+
+  @override
+  void dispose() {
+    inputController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: appBarConfirmCancel(
         context: context,
-        onCancel: onCancel,
-        onConfirm: onConfirm,
-        title: appBarTitle,
+        onCancel: widget.onCancel,
+        onConfirm: () {
+          setState(() => _submitted = true);
+          if (inputController.text.isNotEmpty) {
+            widget.onConfirm(inputController.text);
+            Navigator.pop(context);
+          }
+        },
+        title: widget.appBarTitle,
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(vertical: 15.0, horizontal: 30.0),
         child: ListView(
           children: [
-            Text(description),
+            Text(widget.description),
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 8.0),
               child: TextField(
+                controller: inputController,
                 decoration: InputDecoration(
-                  labelText: textFieldLabel,
+                  labelText: widget.textFieldLabel,
+                  errorText: _submitted == true && inputController.text.isEmpty
+                      ? "Field can't be empty"
+                      : null,
                 ),
               ),
             ),

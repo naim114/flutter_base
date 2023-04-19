@@ -7,6 +7,7 @@ import 'package:flutter_base/src/services/app_settings_services.dart';
 import 'package:flutter_base/src/widgets/editor/single_input_editor.dart';
 import 'package:flutter_base/src/widgets/editor/image_uploader.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 import '../../../services/helpers.dart';
 
@@ -81,7 +82,18 @@ class AppSettings extends StatelessWidget {
                               appBarTitle: 'Edit Application Name',
                               textFieldLabel: 'Application Name',
                               onCancel: () => Navigator.pop(context),
-                              onConfirm: () {},
+                              onConfirm: (value) async {
+                                final result = await AppSettingsServices()
+                                    .update(
+                                        fieldName: 'applicationName',
+                                        value: value);
+
+                                if (result == true) {
+                                  Fluttertoast.showToast(
+                                      msg:
+                                          "Application name updated to $value");
+                                }
+                              },
                             ),
                           ),
                         ),
@@ -95,7 +107,17 @@ class AppSettings extends StatelessWidget {
                               appBarTitle: 'Edit Copyright URL',
                               textFieldLabel: 'Copyright URL',
                               onCancel: () => Navigator.pop(context),
-                              onConfirm: () {},
+                              onConfirm: (value) async {
+                                final result = await AppSettingsServices()
+                                    .update(
+                                        fieldName: 'urlCopyright',
+                                        value: value);
+
+                                if (result == true) {
+                                  Fluttertoast.showToast(
+                                      msg: "Copyright URL updated to $value");
+                                }
+                              },
                             ),
                           ),
                         ),
@@ -109,7 +131,18 @@ class AppSettings extends StatelessWidget {
                               appBarTitle: 'Edit Privacy Policy URL',
                               textFieldLabel: 'Privacy Policy URL',
                               onCancel: () => Navigator.pop(context),
-                              onConfirm: () {},
+                              onConfirm: (value) async {
+                                final result = await AppSettingsServices()
+                                    .update(
+                                        fieldName: 'urlPrivacyPolicy',
+                                        value: value);
+
+                                if (result == true) {
+                                  Fluttertoast.showToast(
+                                      msg:
+                                          "Privacy Policy URL updated to $value");
+                                }
+                              },
                             ),
                           ),
                         ),
@@ -123,7 +156,18 @@ class AppSettings extends StatelessWidget {
                               appBarTitle: 'Edit Terms & Condition URL',
                               textFieldLabel: 'Terms & Condition URL',
                               onCancel: () => Navigator.pop(context),
-                              onConfirm: () {},
+                              onConfirm: (value) async {
+                                final result = await AppSettingsServices()
+                                    .update(
+                                        fieldName: 'urlTermCondition',
+                                        value: value);
+
+                                if (result == true) {
+                                  Fluttertoast.showToast(
+                                      msg:
+                                          "Terms & Condition URL updated to $value");
+                                }
+                              },
                             ),
                           ),
                         ),
@@ -148,7 +192,22 @@ class AppSettings extends StatelessWidget {
                                   height: 300,
                                   width: 300,
                                   onCancel: () => Navigator.pop(context),
-                                  onConfirm: (imageFile, uploaderContext) {},
+                                  onConfirm:
+                                      (imageFile, uploaderContext) async {
+                                    final result = await AppSettingsServices()
+                                        .updateLogoMain(
+                                            imageFile: imageFile,
+                                            appSettings: appSettings);
+
+                                    if (context.mounted) {
+                                      Navigator.pop(uploaderContext);
+                                    }
+
+                                    if (result == true) {
+                                      Fluttertoast.showToast(
+                                          msg: "Main Logo Updated!");
+                                    }
+                                  },
                                 ),
                               ),
                             );
@@ -175,7 +234,22 @@ class AppSettings extends StatelessWidget {
                                   height: 300,
                                   width: 300,
                                   onCancel: () => Navigator.pop(context),
-                                  onConfirm: (imageFile, uploaderContext) {},
+                                  onConfirm:
+                                      (imageFile, uploaderContext) async {
+                                    final result = await AppSettingsServices()
+                                        .updateLogoFavicon(
+                                            imageFile: imageFile,
+                                            appSettings: appSettings);
+
+                                    if (context.mounted) {
+                                      Navigator.pop(uploaderContext);
+                                    }
+
+                                    if (result == true) {
+                                      Fluttertoast.showToast(
+                                          msg: "Icon Logo Updated!");
+                                    }
+                                  },
                                 ),
                               ),
                             );
