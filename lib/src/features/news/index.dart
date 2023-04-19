@@ -129,11 +129,14 @@ class _NewsState extends State<News> with TickerProviderStateMixin {
                               imageUrl: appSettings.logoFaviconURL,
                               fit: BoxFit.contain,
                               height: 30,
-                              placeholder: (context, url) => const Center(
-                                  child: CircularProgressIndicator()),
+                              placeholder: (context, url) => Image.asset(
+                                'assets/images/default_logo_favicon.png',
+                                fit: BoxFit.contain,
+                                height: 30,
+                              ),
                               errorWidget: (context, url, error) => Image.asset(
-                                'assets/images/default_logo_main.png',
-                                fit: BoxFit.cover,
+                                'assets/images/default_logo_favicon.png',
+                                fit: BoxFit.contain,
                                 height: 30,
                               ),
                             ),

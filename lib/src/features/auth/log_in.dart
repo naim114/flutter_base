@@ -81,7 +81,7 @@ class _LogInState extends State<LogIn> {
                                 errorWidget: (context, url, error) =>
                                     Image.asset(
                                   'assets/images/default_logo_main.png',
-                                  fit: BoxFit.cover,
+                                  fit: BoxFit.contain,
                                   height: 100,
                                 ),
                               ),

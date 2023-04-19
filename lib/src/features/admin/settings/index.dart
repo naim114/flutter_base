@@ -1,5 +1,9 @@
+import 'dart:io';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_base/src/model/app_settings_model.dart';
+import 'package:flutter_base/src/services/app_settings_services.dart';
 import 'package:flutter_base/src/widgets/editor/single_input_editor.dart';
 import 'package:flutter_base/src/widgets/editor/image_uploader.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
@@ -56,186 +60,132 @@ class AppSettings extends StatelessWidget {
           ),
         ),
       ),
-      body: ListView(
-        children: [
-          ListTile(
-            title: const Text("Application name"),
-            trailing: const Text("Application name"),
-            onTap: () => Navigator.of(context).push(
-              MaterialPageRoute(
-                builder: (context) => SingleInputEditor(
-                  appBarTitle: 'Edit Application Name',
-                  textFieldLabel: 'Application Name',
-                  onCancel: () => Navigator.pop(context),
-                  onConfirm: () {},
-                ),
-              ),
-            ),
-          ),
-          ListTile(
-            title: const Text("Copyright URL"),
-            trailing: const Text("https://github.com/naim114"),
-            onTap: () => Navigator.of(context).push(
-              MaterialPageRoute(
-                builder: (context) => SingleInputEditor(
-                  appBarTitle: 'Edit Copyright URL',
-                  textFieldLabel: 'Copyright URL',
-                  onCancel: () => Navigator.pop(context),
-                  onConfirm: () {},
-                ),
-              ),
-            ),
-          ),
-          ListTile(
-            title: const Text("Privacy Policy URL"),
-            trailing: const Text("https://github.com/naim114"),
-            onTap: () => Navigator.of(context).push(
-              MaterialPageRoute(
-                builder: (context) => SingleInputEditor(
-                  appBarTitle: 'Edit Privacy Policy URL',
-                  textFieldLabel: 'Privacy Policy URL',
-                  onCancel: () => Navigator.pop(context),
-                  onConfirm: () {},
-                ),
-              ),
-            ),
-          ),
-          ListTile(
-            title: const Text("Terms & Condition URL"),
-            trailing: const Text("https://github.com/naim114"),
-            onTap: () => Navigator.of(context).push(
-              MaterialPageRoute(
-                builder: (context) => SingleInputEditor(
-                  appBarTitle: 'Edit Terms & Condition URL',
-                  textFieldLabel: 'Terms & Condition URL',
-                  onCancel: () => Navigator.pop(context),
-                  onConfirm: () {},
-                ),
-              ),
-            ),
-          ),
-          ListTile(
-            title: const Text("Logo"),
-            trailing: const Text(
-              "Tap to change logo",
-              style: TextStyle(fontStyle: FontStyle.italic),
-            ),
-            onTap: () => Navigator.of(context).push(
-              MaterialPageRoute(
-                builder: (context) => ImageUploader(
-                  appBarTitle: "Upload Logo",
-                  onCancel: () => Navigator.pop(context),
-                  onConfirm: (imageFile, uploaderContext) {},
-                ),
-              ),
-            ),
-          ),
-          ListTile(
-            title: const Text("Primary color"),
-            trailing: SizedBox(
-              width: 20.0,
-              height: 20.0,
-              child: Container(
-                decoration: BoxDecoration(
-                    border: Border.all(color: CupertinoColors.systemGrey)),
-                child: const DecoratedBox(
-                  decoration: BoxDecoration(color: CustomColor.primary),
-                ),
-              ),
-            ),
-            onTap: () => colorPicker(initialColor: CustomColor.primary),
-          ),
-          ListTile(
-            title: const Text("Secondary color"),
-            trailing: SizedBox(
-              width: 20.0,
-              height: 20.0,
-              child: Container(
-                decoration: BoxDecoration(
-                    border: Border.all(color: CupertinoColors.systemGrey)),
-                child: const DecoratedBox(
-                  decoration: BoxDecoration(color: CustomColor.secondary),
-                ),
-              ),
-            ),
-            onTap: () {},
-          ),
-          ListTile(
-            title: const Text("Neutral 1 color"),
-            trailing: SizedBox(
-              width: 20.0,
-              height: 20.0,
-              child: Container(
-                decoration: BoxDecoration(
-                    border: Border.all(color: CupertinoColors.systemGrey)),
-                child: const DecoratedBox(
-                  decoration: BoxDecoration(color: CustomColor.neutral1),
-                ),
-              ),
-            ),
-            onTap: () {},
-          ),
-          ListTile(
-            title: const Text("Neutral 2 color"),
-            trailing: SizedBox(
-              width: 20.0,
-              height: 20.0,
-              child: Container(
-                decoration: BoxDecoration(
-                    border: Border.all(color: CupertinoColors.systemGrey)),
-                child: const DecoratedBox(
-                  decoration: BoxDecoration(color: CustomColor.neutral2),
-                ),
-              ),
-            ),
-            onTap: () {},
-          ),
-          ListTile(
-            title: const Text("Neutral 3 color"),
-            trailing: SizedBox(
-              width: 20.0,
-              height: 20.0,
-              child: Container(
-                decoration: BoxDecoration(
-                    border: Border.all(color: CupertinoColors.systemGrey)),
-                child: const DecoratedBox(
-                  decoration: BoxDecoration(color: CustomColor.neutral3),
-                ),
-              ),
-            ),
-            onTap: () {},
-          ),
-          ListTile(
-            title: const Text("Danger color"),
-            trailing: SizedBox(
-              width: 20.0,
-              height: 20.0,
-              child: Container(
-                decoration: BoxDecoration(
-                    border: Border.all(color: CupertinoColors.systemGrey)),
-                child: const DecoratedBox(
-                  decoration: BoxDecoration(color: CustomColor.danger),
-                ),
-              ),
-            ),
-            onTap: () {},
-          ),
-          ListTile(
-            title: const Text("Success color"),
-            trailing: SizedBox(
-              width: 20.0,
-              height: 20.0,
-              child: Container(
-                decoration: BoxDecoration(
-                    border: Border.all(color: CupertinoColors.systemGrey)),
-                child: const DecoratedBox(
-                  decoration: BoxDecoration(color: CustomColor.success),
-                ),
-              ),
-            ),
-            onTap: () {},
-          ),
-        ],
+      body: StreamBuilder<AppSettingsModel?>(
+        stream: AppSettingsServices().getAppSettingsStream(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting ||
+              !snapshot.hasData) {
+            return const Center(child: CircularProgressIndicator());
+          } else {
+            AppSettingsModel? appSettings = snapshot.data;
+            return appSettings == null
+                ? const Center(child: CircularProgressIndicator())
+                : ListView(
+                    children: [
+                      ListTile(
+                        title: const Text("Application name"),
+                        trailing: Text(appSettings.applicationName),
+                        onTap: () => Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (context) => SingleInputEditor(
+                              appBarTitle: 'Edit Application Name',
+                              textFieldLabel: 'Application Name',
+                              onCancel: () => Navigator.pop(context),
+                              onConfirm: () {},
+                            ),
+                          ),
+                        ),
+                      ),
+                      ListTile(
+                        title: const Text("Copyright URL"),
+                        trailing: Text(appSettings.urlCopyright),
+                        onTap: () => Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (context) => SingleInputEditor(
+                              appBarTitle: 'Edit Copyright URL',
+                              textFieldLabel: 'Copyright URL',
+                              onCancel: () => Navigator.pop(context),
+                              onConfirm: () {},
+                            ),
+                          ),
+                        ),
+                      ),
+                      ListTile(
+                        title: const Text("Privacy Policy URL"),
+                        trailing: Text(appSettings.urlPrivacyPolicy),
+                        onTap: () => Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (context) => SingleInputEditor(
+                              appBarTitle: 'Edit Privacy Policy URL',
+                              textFieldLabel: 'Privacy Policy URL',
+                              onCancel: () => Navigator.pop(context),
+                              onConfirm: () {},
+                            ),
+                          ),
+                        ),
+                      ),
+                      ListTile(
+                        title: const Text("Terms & Condition URL"),
+                        trailing: Text(appSettings.urlTermCondition),
+                        onTap: () => Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (context) => SingleInputEditor(
+                              appBarTitle: 'Edit Terms & Condition URL',
+                              textFieldLabel: 'Terms & Condition URL',
+                              onCancel: () => Navigator.pop(context),
+                              onConfirm: () {},
+                            ),
+                          ),
+                        ),
+                      ),
+                      ListTile(
+                        title: const Text("Logo Main"),
+                        trailing: const Text(
+                          "Tap to change logo",
+                          style: TextStyle(fontStyle: FontStyle.italic),
+                        ),
+                        onTap: () async {
+                          File imgFile =
+                              await downloadImage(appSettings.logoMainURL);
+
+                          if (context.mounted) {
+                            Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder: (context) => ImageUploader(
+                                  appBarTitle: "Upload Logo Main",
+                                  fit: null,
+                                  imageFile: imgFile,
+                                  height: 300,
+                                  width: 300,
+                                  onCancel: () => Navigator.pop(context),
+                                  onConfirm: (imageFile, uploaderContext) {},
+                                ),
+                              ),
+                            );
+                          }
+                        },
+                      ),
+                      ListTile(
+                        title: const Text("Logo Favicon"),
+                        trailing: const Text(
+                          "Tap to change logo favicon",
+                          style: TextStyle(fontStyle: FontStyle.italic),
+                        ),
+                        onTap: () async {
+                          File imgFile =
+                              await downloadImage(appSettings.logoFaviconURL);
+
+                          if (context.mounted) {
+                            Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder: (context) => ImageUploader(
+                                  appBarTitle: "Upload Logo Favicon",
+                                  fit: null,
+                                  imageFile: imgFile,
+                                  height: 300,
+                                  width: 300,
+                                  onCancel: () => Navigator.pop(context),
+                                  onConfirm: (imageFile, uploaderContext) {},
+                                ),
+                              ),
+                            );
+                          }
+                        },
+                      ),
+                    ],
+                  );
+          }
+        },
       ),
     );
   }

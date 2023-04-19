@@ -1,6 +1,12 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_base/src/model/app_settings_model.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:theme_mode_handler/theme_picker_dialog.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:http/http.dart' as http;
+import 'package:path/path.dart' as path;
 
 class CustomColor {
   static const primary = Color(0xFF643FDB);
@@ -76,4 +82,18 @@ extension ListExtension<E> on List<E> {
     }
     yield* groups.entries;
   }
+}
+
+Future<File> downloadImage(String imgURL) async {
+  final response = await http.get(Uri.parse(imgURL));
+  final bytes = response.bodyBytes;
+  final fileName = Uri.parse(imgURL).pathSegments.last;
+  final tempDir = await getTemporaryDirectory();
+  final directory =
+      await Directory('${tempDir.path}/temp').create(recursive: true);
+
+  final file = File('${tempDir.path}/$fileName');
+  await file.writeAsBytes(bytes);
+
+  return file;
 }

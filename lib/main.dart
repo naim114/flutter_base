@@ -13,7 +13,6 @@ import 'package:flutter_base/wrapper.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:provider/provider.dart';
-import 'package:shimmer/shimmer.dart';
 import 'package:theme_mode_handler/theme_mode_handler.dart';
 import 'src/theme/theme_mode_manager.dart';
 import 'package:firebase_core/firebase_core.dart';

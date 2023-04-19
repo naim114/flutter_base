@@ -15,6 +15,7 @@ class ImageUploader extends StatefulWidget {
   final double height;
   final String desc;
   File? imageFile;
+  BoxFit? fit;
 
   ImageUploader({
     super.key,
@@ -26,6 +27,7 @@ class ImageUploader extends StatefulWidget {
     this.desc =
         'Tap image to upload new image. Tap top right to confirm changes. ',
     this.imageFile,
+    this.fit = BoxFit.cover,
   });
 
   @override
@@ -87,7 +89,7 @@ class ImageFileEditorState extends State<ImageUploader> {
                       widget.imageFile!,
                       width: widget.width,
                       height: widget.height,
-                      fit: BoxFit.cover,
+                      fit: widget.fit,
                     )
                   : Container(
                       width: widget.width,

@@ -504,6 +504,10 @@ class NewsService {
     final tempDir = await getTemporaryDirectory();
     final directory = await Directory('${tempDir.path}/news/thumbnail')
         .create(recursive: true);
+
+    print("tempDir.path: ${tempDir.path}");
+    print("fileName: $fileName");
+
     final file = File('${tempDir.path}/$fileName');
     await file.writeAsBytes(bytes);
 
