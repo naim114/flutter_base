@@ -1,5 +1,4 @@
 Low
-- after login memory leak (?)
 - change date time to malaysian time
 - add reauthenthicate method for change email & password
 

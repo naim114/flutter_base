@@ -35,9 +35,9 @@ class _LogInState extends State<LogIn> {
 
   @override
   void dispose() {
+    super.dispose();
     passwordController.dispose();
     emailController.dispose();
-    super.dispose();
   }
 
   @override
@@ -148,11 +148,10 @@ class _LogInState extends State<LogIn> {
                                     Fluttertoast.showToast(
                                         msg:
                                             "Could not sign in with credentials");
+                                    setState(() =>
+                                        _buttonChild = const Text("Log In"));
                                   }
                                 }
-
-                                setState(
-                                    () => _buttonChild = const Text("Log In"));
                               },
                             ),
                           ],

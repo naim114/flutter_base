@@ -1,9 +1,6 @@
 import 'dart:async';
 
-import 'package:cached_network_image/cached_network_image.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_base/src/features/admin/settings/index.dart';
 import 'package:flutter_base/src/model/app_settings_model.dart';
 import 'package:flutter_base/src/model/user_model.dart';
 import 'package:flutter_base/src/services/app_settings_services.dart';
