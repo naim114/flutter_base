@@ -74,7 +74,7 @@ class _NewsState extends State<News> with TickerProviderStateMixin {
     final appSettings = Provider.of<AppSettingsModel?>(context);
 
     return appSettings == null
-        ? const Scaffold(body: Center(child: Text("loading..")))
+        ? const Scaffold(body: Center(child: CircularProgressIndicator()))
         : RefreshIndicator(
             key: _refreshIndicatorKey,
             onRefresh: _refreshData,
@@ -126,21 +126,11 @@ class _NewsState extends State<News> with TickerProviderStateMixin {
                               ),
                             ],
                             title: CachedNetworkImage(
-                              imageUrl: appSettings.logoMainURL,
+                              imageUrl: appSettings.logoFaviconURL,
                               fit: BoxFit.contain,
                               height: 30,
-                              placeholder: (context, url) => Shimmer.fromColors(
-                                baseColor: CupertinoColors.systemGrey,
-                                highlightColor: CupertinoColors.systemGrey2,
-                                child: Container(
-                                  height: 30,
-                                  width: 30,
-                                  decoration: const BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    color: Colors.grey,
-                                  ),
-                                ),
-                              ),
+                              placeholder: (context, url) => const Center(
+                                  child: CircularProgressIndicator()),
                               errorWidget: (context, url, error) => Image.asset(
                                 'assets/images/default_logo_main.png',
                                 fit: BoxFit.cover,

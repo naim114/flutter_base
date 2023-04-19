@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_base/src/features/auth/log_in.dart';
 import 'package:flutter_base/src/features/main/index.dart';
+import 'package:flutter_base/src/model/app_settings_model.dart';
 import 'package:flutter_base/src/model/user_model.dart';
 import 'package:flutter_base/src/services/helpers.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
