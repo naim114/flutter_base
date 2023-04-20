@@ -8,6 +8,7 @@ import 'package:news_app/src/features/admin/index.dart';
 import 'package:news_app/src/features/admin/settings/index.dart';
 import 'package:news_app/src/services/helpers.dart';
 import 'package:news_app/src/services/user_services.dart';
+import 'package:news_app/src/widgets/builder/user_builder.dart';
 import 'package:news_app/src/widgets/typography/page_title_icon.dart';
 
 import '../../model/user_model.dart';
@@ -163,8 +164,10 @@ class _AccountState extends State<Account> {
                                       onTap: () =>
                                           Navigator.of(widget.mainContext).push(
                                         MaterialPageRoute(
-                                          builder: (context) =>
-                                              const Dashboard(),
+                                          builder: (context) => UsersBuilder(
+                                            currentUser: user,
+                                            pushTo: 'Dashboard',
+                                          ),
                                         ),
                                       ),
                                     ),

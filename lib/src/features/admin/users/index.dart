@@ -51,6 +51,7 @@ class _AdminPanelUsersState extends State<AdminPanelUsers> {
           : widget.userList
               .where((user) =>
                   user.email.toLowerCase().contains(text.toLowerCase()) ||
+                  user.name!.toLowerCase().contains(text.toLowerCase()) ||
                   user.role!.name.toLowerCase().contains(text.toLowerCase()))
               .toList();
     });
@@ -142,6 +143,23 @@ class _AdminPanelUsersState extends State<AdminPanelUsers> {
                             _isAscending = true;
                             widget.userList.sort((userA, userB) =>
                                 userB.email.compareTo(userA.email));
+                          }
+                        });
+                      },
+                    ),
+                    DataColumn(
+                      label: const Text('Name'),
+                      onSort: (columnIndex, _) {
+                        setState(() {
+                          _currentSortColumn = columnIndex;
+                          if (_isAscending == true) {
+                            _isAscending = false;
+                            widget.userList.sort((userA, userB) =>
+                                userA.name!.compareTo(userB.name!));
+                          } else {
+                            _isAscending = true;
+                            widget.userList.sort((userA, userB) =>
+                                userB.name!.compareTo(userA.name!));
                           }
                         });
                       },
@@ -247,6 +265,9 @@ class _AdminPanelUsersState extends State<AdminPanelUsers> {
                         ),
                         DataCell(Text(user.role!.displayName)),
                         DataCell(Text(user.email)),
+                        DataCell(Text(user.name == null || user.name == ""
+                            ? "None"
+                            : user.name!)),
                         DataCell(Text(
                             user.disableAt == null ? "Active" : "Disabled")),
                         DataCell(

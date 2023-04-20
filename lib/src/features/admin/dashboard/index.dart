@@ -3,11 +3,19 @@ import 'package:flutter/material.dart';
 import 'package:news_app/src/features/admin/dashboard/user_growth_overall.dart';
 import 'package:news_app/src/features/admin/dashboard/user_growth_year.dart';
 
+import '../../../model/user_model.dart';
 import '../../../services/helpers.dart';
 import './user_count_report.dart';
 
 class Dashboard extends StatelessWidget {
-  const Dashboard({super.key});
+  final List<UserModel?> userList;
+  final Function(bool refresh) notifyRefresh;
+
+  const Dashboard({
+    super.key,
+    required this.userList,
+    required this.notifyRefresh,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -35,10 +43,22 @@ class Dashboard extends StatelessWidget {
         child: ListView(
           children: [
             userCountReport(
-              totalUsers: 1000,
-              totalUsersBanned: 13,
-              totalUsersThisMonth: 53,
-              totalUsersThisWeek: 84,
+              totalUsers: userList.length,
+              totalUsersBanned: userList
+                  .where((user) => user != null && user.disableAt != null)
+                  .length,
+              totalUsersThisMonth: userList
+                  .where((user) =>
+                      user != null &&
+                      '${user.createdAt.year}-${user.createdAt.month.toString().padLeft(2, '0')}' ==
+                          '${DateTime.now().year}-${DateTime.now().month.toString().padLeft(2, '0')}')
+                  .length,
+              totalUsersThisWeek: userList
+                  .where((user) =>
+                      user != null &&
+                      user.createdAt.isAfter(
+                          DateTime.now().subtract(const Duration(days: 7))))
+                  .length,
             ),
             const Padding(
               padding: EdgeInsets.symmetric(vertical: 20, horizontal: 20),
@@ -51,18 +71,18 @@ class Dashboard extends StatelessWidget {
               ),
             ),
             userGrowthYear(
-              janData: 3,
-              febData: 1,
-              marData: 10,
-              aprData: 5,
-              mayData: 6,
-              junData: 2,
-              julData: 8,
-              augData: 35,
-              sepData: 15,
-              octData: 14,
-              novData: 7,
-              disData: 10,
+              janData: getUserByMonth(1),
+              febData: getUserByMonth(2),
+              marData: getUserByMonth(3),
+              aprData: getUserByMonth(4),
+              mayData: getUserByMonth(5),
+              junData: getUserByMonth(6),
+              julData: getUserByMonth(7),
+              augData: getUserByMonth(8),
+              sepData: getUserByMonth(9),
+              octData: getUserByMonth(10),
+              novData: getUserByMonth(11),
+              disData: getUserByMonth(12),
             ),
             const Padding(
               padding: EdgeInsets.symmetric(vertical: 20, horizontal: 20),
@@ -75,16 +95,35 @@ class Dashboard extends StatelessWidget {
               ),
             ),
             userGrowthOverall(
-              spots: const [
-                FlSpot(2020, 14),
-                FlSpot(2021, 100),
-                FlSpot(2022, 5),
-                FlSpot(2023, 19),
-              ],
+              spots: getUsersCountByYear()
+                  .entries
+                  .map((entry) => FlSpot(entry.key, entry.value.toDouble()))
+                  .toList(),
             ),
           ],
         ),
       ),
     );
+  }
+
+  double getUserByMonth(double month) {
+    return userList
+        .where((user) =>
+            user != null &&
+            user.createdAt.year == DateTime.now().year &&
+            user.createdAt.month == month)
+        .length
+        .toDouble();
+  }
+
+  Map<double, int> getUsersCountByYear() {
+    Map<double, int> countByYear = {};
+    for (UserModel? user in userList) {
+      if (user != null) {
+        double year = user.createdAt.year.toDouble();
+        countByYear[year] = (countByYear[year] ?? 0) + 1;
+      }
+    }
+    return countByYear;
   }
 }

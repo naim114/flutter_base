@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:news_app/src/features/admin/dashboard/index.dart';
 import 'package:news_app/src/features/admin/users/index.dart';
 import 'package:news_app/src/services/user_services.dart';
 
@@ -75,6 +76,13 @@ class _UsersBuilderState extends State<UsersBuilder> {
                 userList: userList,
                 onPost: (selectedUserList, pickerContext) {
                   widget.onPost!(selectedUserList, pickerContext);
+                },
+              );
+            } else if (widget.pushTo == 'Dashboard') {
+              return Dashboard(
+                userList: userList,
+                notifyRefresh: (refresh) {
+                  _refreshData();
                 },
               );
             }

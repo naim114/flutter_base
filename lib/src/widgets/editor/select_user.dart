@@ -198,7 +198,9 @@ class _UsersPickerState extends State<UsersPicker> {
                       }),
                       cells: [
                         DataCell(Text(user.email)),
-                        DataCell(Text(user.name ?? "None")),
+                        DataCell(Text(user.name == null || user.name == ""
+                            ? "None"
+                            : user.name!)),
                         DataCell(Text(user.role!.displayName)),
                         DataCell(Text(
                             DateFormat('dd/MM/yyyy').format(user.createdAt))),

@@ -253,8 +253,9 @@ class _AdminPanelNewsState extends State<AdminPanelNews> {
                         ),
                       )),
                       DataCell(Text(
-                        news.author!.name ?? "None",
-                      )),
+                          news.author!.name == null || news.author!.name == ""
+                              ? "None"
+                              : news.author!.name!)),
                       DataCell(Text(DateFormat('dd/MM/yyyy hh:mm a')
                           .format(news.createdAt))),
                       DataCell(Text(news.updatedBy == null
