@@ -128,7 +128,7 @@ class _NotificationsState extends State<Notifications> {
                                               context.mounted) {
                                             Navigator.pop(context);
                                             Fluttertoast.showToast(
-                                                msg: "Deleted notification");
+                                                msg: "Notification Deleted");
                                             _refreshData();
                                           }
                                         },
@@ -148,11 +148,6 @@ class _NotificationsState extends State<Notifications> {
                                     .read(notification: noti);
 
                                 print("Read: $result");
-
-                                if (result == true) {
-                                  Fluttertoast.showToast(
-                                      msg: "Notification Deleted");
-                                }
 
                                 if (context.mounted) {
                                   Navigator.push(

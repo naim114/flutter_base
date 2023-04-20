@@ -21,7 +21,8 @@ class UserActivityServices {
   // get all
   Future<List<UserActivityModel?>> getAll() async {
     // Get docs from collection reference
-    QuerySnapshot querySnapshot = await _collectionRef.get();
+    QuerySnapshot querySnapshot =
+        await _collectionRef.orderBy('createdAt', descending: true).get();
 
     if (querySnapshot.docs.isNotEmpty) {
       List<DocumentSnapshot> docList = querySnapshot.docs;
@@ -52,7 +53,8 @@ class UserActivityServices {
   Future<List<UserActivityModel?>> getBy(String fieldName, String value) async {
     List<UserActivityModel?> dataList = List.empty(growable: true);
 
-    QuerySnapshot querySnapshot = await _collectionRef.get();
+    QuerySnapshot querySnapshot =
+        await _collectionRef.orderBy('createdAt', descending: true).get();
 
     final List<QueryDocumentSnapshot<Object?>> allDoc =
         querySnapshot.docs.toList();
@@ -76,7 +78,8 @@ class UserActivityServices {
       String fieldName, String value, UserModel user) async {
     List<UserActivityModel?> dataList = List.empty(growable: true);
 
-    QuerySnapshot querySnapshot = await _collectionRef.get();
+    QuerySnapshot querySnapshot =
+        await _collectionRef.orderBy('createdAt', descending: true).get();
 
     final List<QueryDocumentSnapshot<Object?>> allDoc =
         querySnapshot.docs.toList();

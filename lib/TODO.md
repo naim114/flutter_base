@@ -3,7 +3,7 @@ Low
 - add reauthenthicate method for change email & password
 
 Mid
-- https://pub.dev/packages/flutter_oss_licenses
 - record liked news
+- add tags/category
 
 High
