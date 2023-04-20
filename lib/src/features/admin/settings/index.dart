@@ -145,90 +145,102 @@ class AppSettings extends StatelessWidget {
                           ),
                         ),
                       ),
-                      ListTile(
-                        title: const Text("Logo Main"),
-                        trailing: const Text(
-                          "Tap to change logo",
-                          style: TextStyle(fontStyle: FontStyle.italic),
-                        ),
-                        onTap: () async {
-                          File imgFile =
-                              await downloadImage(appSettings.logoMainURL);
+                      FutureBuilder<File?>(
+                          future: downloadFile(appSettings.logoMainURL),
+                          builder: (context, snapshot) {
+                            return snapshot.data == null
+                                ? const Center(
+                                    child: CircularProgressIndicator())
+                                : ListTile(
+                                    title: const Text("Logo Main"),
+                                    trailing: const Text(
+                                      "Tap to change logo",
+                                      style: TextStyle(
+                                          fontStyle: FontStyle.italic),
+                                    ),
+                                    onTap: () {
+                                      Navigator.of(context).push(
+                                        MaterialPageRoute(
+                                          builder: (context) => ImageUploader(
+                                            appBarTitle: "Upload Logo Main",
+                                            fit: null,
+                                            imageFile: snapshot.data,
+                                            height: 300,
+                                            width: 300,
+                                            onCancel: () =>
+                                                Navigator.pop(context),
+                                            onConfirm: (imageFile,
+                                                uploaderContext) async {
+                                              final result =
+                                                  await AppSettingsServices()
+                                                      .updateLogoMain(
+                                                          imageFile: imageFile,
+                                                          appSettings:
+                                                              appSettings);
 
-                          if (context.mounted) {
-                            Navigator.of(context).push(
-                              MaterialPageRoute(
-                                builder: (context) => ImageUploader(
-                                  appBarTitle: "Upload Logo Main",
-                                  fit: null,
-                                  imageFile: imgFile,
-                                  height: 300,
-                                  width: 300,
-                                  onCancel: () => Navigator.pop(context),
-                                  onConfirm:
-                                      (imageFile, uploaderContext) async {
-                                    final result = await AppSettingsServices()
-                                        .updateLogoMain(
-                                            imageFile: imageFile,
-                                            appSettings: appSettings);
+                                              if (context.mounted) {
+                                                Navigator.pop(uploaderContext);
+                                              }
 
-                                    if (context.mounted) {
-                                      Navigator.pop(uploaderContext);
-                                    }
+                                              if (result == true) {
+                                                Fluttertoast.showToast(
+                                                    msg: "Main Logo Updated!");
+                                              }
+                                            },
+                                          ),
+                                        ),
+                                      );
+                                    },
+                                  );
+                          }),
+                      FutureBuilder<File?>(
+                          future: downloadFile(appSettings.logoFaviconURL),
+                          builder: (context, snapshot) {
+                            return snapshot.data == null
+                                ? const Center(
+                                    child: CircularProgressIndicator())
+                                : ListTile(
+                                    title: const Text("Logo Favicon"),
+                                    trailing: const Text(
+                                      "Tap to change logo favicon",
+                                      style: TextStyle(
+                                          fontStyle: FontStyle.italic),
+                                    ),
+                                    onTap: () {
+                                      Navigator.of(context).push(
+                                        MaterialPageRoute(
+                                          builder: (context) => ImageUploader(
+                                            appBarTitle: "Upload Logo Favicon",
+                                            fit: null,
+                                            imageFile: snapshot.data,
+                                            height: 300,
+                                            width: 300,
+                                            onCancel: () =>
+                                                Navigator.pop(context),
+                                            onConfirm: (imageFile,
+                                                uploaderContext) async {
+                                              final result =
+                                                  await AppSettingsServices()
+                                                      .updateLogoFavicon(
+                                                          imageFile: imageFile,
+                                                          appSettings:
+                                                              appSettings);
 
-                                    if (result == true) {
-                                      Fluttertoast.showToast(
-                                          msg: "Main Logo Updated!");
-                                    }
-                                  },
-                                ),
-                              ),
-                            );
-                          }
-                        },
-                      ),
-                      ListTile(
-                        title: const Text("Logo Favicon"),
-                        trailing: const Text(
-                          "Tap to change logo favicon",
-                          style: TextStyle(fontStyle: FontStyle.italic),
-                        ),
-                        onTap: () async {
-                          File imgFile =
-                              await downloadImage(appSettings.logoFaviconURL);
+                                              if (context.mounted) {
+                                                Navigator.pop(uploaderContext);
+                                              }
 
-                          if (context.mounted) {
-                            Navigator.of(context).push(
-                              MaterialPageRoute(
-                                builder: (context) => ImageUploader(
-                                  appBarTitle: "Upload Logo Favicon",
-                                  fit: null,
-                                  imageFile: imgFile,
-                                  height: 300,
-                                  width: 300,
-                                  onCancel: () => Navigator.pop(context),
-                                  onConfirm:
-                                      (imageFile, uploaderContext) async {
-                                    final result = await AppSettingsServices()
-                                        .updateLogoFavicon(
-                                            imageFile: imageFile,
-                                            appSettings: appSettings);
-
-                                    if (context.mounted) {
-                                      Navigator.pop(uploaderContext);
-                                    }
-
-                                    if (result == true) {
-                                      Fluttertoast.showToast(
-                                          msg: "Icon Logo Updated!");
-                                    }
-                                  },
-                                ),
-                              ),
-                            );
-                          }
-                        },
-                      ),
+                                              if (result == true) {
+                                                Fluttertoast.showToast(
+                                                    msg: "Icon Logo Updated!");
+                                              }
+                                            },
+                                          ),
+                                        ),
+                                      );
+                                    },
+                                  );
+                          }),
                     ],
                   );
           }

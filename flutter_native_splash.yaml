@@ -1,6 +1,5 @@
 flutter_native_splash:
-  image: assets/images/default_logo_favicon.png
+  image: assets/images/default_logo_main.png
   color: "#FFFFFF"
-  fill: true
   android: true
   ios: true

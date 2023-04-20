@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:news_app/src/features/account/about/libraries.dart';
 import '../../../model/app_settings_model.dart';
 import '../../../services/app_settings_services.dart';
 import '../../../services/helpers.dart';
@@ -69,11 +70,10 @@ class AppAbout extends StatelessWidget {
                       listTileIcon(
                         context: context,
                         icon: Icons.open_in_new_outlined,
-                        title: "Open Source Libraries",
-                        // TODO https://pub.dev/packages/flutter_oss_licenses
+                        title: "Libraries",
                         onTap: () => Navigator.of(context).push(
                           MaterialPageRoute(
-                            builder: (context) => const Placeholder(),
+                            builder: (context) => const Libraries(),
                           ),
                         ),
                       ),

@@ -84,16 +84,14 @@ extension ListExtension<E> on List<E> {
   }
 }
 
-Future<File> downloadImage(String imgURL) async {
-  final response = await http.get(Uri.parse(imgURL));
-  final bytes = response.bodyBytes;
-  final fileName = Uri.parse(imgURL).pathSegments.last;
-  final tempDir = await getTemporaryDirectory();
-  final directory =
-      await Directory('${tempDir.path}/temp').create(recursive: true);
-
-  final file = File('${tempDir.path}/$fileName');
-  await file.writeAsBytes(bytes);
-
-  return file;
+Future<File?> downloadFile(String url) async {
+  final response = await http.get(Uri.parse(url));
+  if (response.statusCode == 200) {
+    final tempDir = await getTemporaryDirectory();
+    final filePath = '${tempDir.path}/${DateTime.now().millisecondsSinceEpoch}';
+    final file = File(filePath);
+    await file.writeAsBytes(response.bodyBytes);
+    return file;
+  }
+  return null;
 }
