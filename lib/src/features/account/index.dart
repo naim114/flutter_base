@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:news_app/src/features/account/about/index.dart';
 import 'package:news_app/src/features/account/profile/index.dart';
 import 'package:news_app/src/features/account/security/index.dart';
-import 'package:news_app/src/features/admin/dashboard/index.dart';
 import 'package:news_app/src/features/admin/index.dart';
 import 'package:news_app/src/features/admin/settings/index.dart';
 import 'package:news_app/src/services/helpers.dart';

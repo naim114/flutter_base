@@ -5,10 +5,8 @@ import 'package:news_app/src/features/admin/news/edit.dart';
 import 'package:news_app/src/features/news/news_view.dart';
 import 'package:news_app/src/model/news_model.dart';
 import 'package:news_app/src/services/news_services.dart';
-import 'package:news_app/src/services/notification_services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
-import 'package:search_page/search_page.dart';
 
 import '../../../model/user_model.dart';
 import '../../../services/helpers.dart';

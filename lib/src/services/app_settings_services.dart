@@ -12,7 +12,6 @@ import 'package:network_info_plus/network_info_plus.dart';
 import 'package:path/path.dart' as path;
 
 class AppSettingsServices {
-  final FirebaseFirestore _db = FirebaseFirestore.instance;
   final CollectionReference<Map<String, dynamic>> _collectionRef =
       FirebaseFirestore.instance.collection('Settings');
   final FirebaseAuth _auth = FirebaseAuth.instance;

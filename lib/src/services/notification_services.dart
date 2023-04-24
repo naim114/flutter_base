@@ -11,7 +11,6 @@ import 'package:network_info_plus/network_info_plus.dart';
 import '../model/user_model.dart';
 
 class NotificationServices {
-  final FirebaseFirestore _db = FirebaseFirestore.instance;
   final CollectionReference _collectionRef =
       FirebaseFirestore.instance.collection('Notification');
   final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -143,7 +142,7 @@ class NotificationServices {
       print("Group Id: $groupId");
 
       for (UserModel receiver in receivers) {
-        dynamic add = await _collectionRef.add({
+        await _collectionRef.add({
           'createdAt': DateTime.now(),
           'updatedAt': DateTime.now(),
           'deletedAt': null,

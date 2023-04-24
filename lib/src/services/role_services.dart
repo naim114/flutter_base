@@ -2,7 +2,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:news_app/src/model/role_model.dart';
 
 class RoleServices {
-  final FirebaseFirestore _db = FirebaseFirestore.instance;
   final CollectionReference _collectionRef =
       FirebaseFirestore.instance.collection('Role');
 

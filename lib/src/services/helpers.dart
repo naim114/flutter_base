@@ -1,12 +1,10 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:news_app/src/model/app_settings_model.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:theme_mode_handler/theme_picker_dialog.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:http/http.dart' as http;
-import 'package:path/path.dart' as path;
 
 class CustomColor {
   static const primary = Color(0xFF643FDB);

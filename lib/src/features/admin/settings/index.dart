@@ -1,6 +1,5 @@
 import 'dart:io';
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:news_app/src/model/app_settings_model.dart';
 import 'package:news_app/src/services/app_settings_services.dart';

@@ -14,7 +14,6 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:network_info_plus/network_info_plus.dart';
 
 class UserServices {
-  final FirebaseFirestore _db = FirebaseFirestore.instance;
   final CollectionReference _collectionRef =
       FirebaseFirestore.instance.collection('User');
   final FirebaseAuth _auth = FirebaseAuth.instance;

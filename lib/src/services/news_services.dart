@@ -15,7 +15,6 @@ import '../model/user_model.dart';
 import 'package:http/http.dart' as http;
 
 class NewsService {
-  final FirebaseFirestore _db = FirebaseFirestore.instance;
   final CollectionReference _collectionRef =
       FirebaseFirestore.instance.collection('News');
   final FirebaseAuth _auth = FirebaseAuth.instance;

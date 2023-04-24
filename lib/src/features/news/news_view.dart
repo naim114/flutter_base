@@ -74,7 +74,6 @@ class _NewsViewState extends State<NewsView> {
                     if (result == true) {
                       Fluttertoast.showToast(msg: "News unliked");
                       setState(() => liked = false);
-                      setState(() {});
                     }
                   },
                   icon: const Icon(
@@ -91,7 +90,6 @@ class _NewsViewState extends State<NewsView> {
                     if (result == true) {
                       Fluttertoast.showToast(msg: "News liked");
                       setState(() => liked = true);
-                      setState(() {});
                     }
                   },
                   icon: const Icon(CupertinoIcons.heart),

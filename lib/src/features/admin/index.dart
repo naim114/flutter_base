@@ -1,7 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:news_app/src/features/admin/news/index.dart';
-import 'package:news_app/src/features/admin/notification/index.dart';
 import 'package:news_app/src/widgets/builder/notification_builder.dart';
 import 'package:news_app/src/widgets/builder/user_builder.dart';
 
