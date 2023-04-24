@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:device_info_plus/device_info_plus.dart';
@@ -25,10 +26,14 @@ class NewsService {
 
   // convert DocumentSnapshot to model object
   Future<NewsModel?> fromDocumentSnapshot(DocumentSnapshot<Object?> doc) async {
+    print("a: ${doc.get('likedBy')}");
+
     return NewsModel(
       id: doc.get('id'),
       title: doc.get('title'),
-      likeCount: doc.get('likeCount'),
+      likedBy:
+          doc.get('likedBy') == null ? null : jsonDecode(doc.get('likedBy')),
+      tag: doc.get('tag') == null ? null : jsonDecode(doc.get('tag')),
       author: await UserServices().get(doc.get('author')),
       updatedBy: doc.get('updatedBy') == null
           ? doc.get('updatedBy')
@@ -48,7 +53,9 @@ class NewsService {
     return NewsModel(
       id: doc.get('id'),
       title: doc.get('title'),
-      likeCount: doc.get('likeCount'),
+      likedBy:
+          doc.get('likedBy') == null ? null : jsonDecode(doc.get('likedBy')),
+      tag: doc.get('tag') == null ? null : jsonDecode(doc.get('tag')),
       author: await UserServices().get(doc.get('author')),
       updatedBy: doc.get('updatedBy') == null
           ? doc.get('updatedBy')
@@ -209,6 +216,7 @@ class NewsService {
                 title: title,
                 author: author,
                 jsonContent: jsonContent,
+                likedBy: [],
                 createdAt: DateTime.now(),
                 updatedAt: DateTime.now(),
                 imgPath: 'news/thumbnail/${docRef.id}$extension',
@@ -429,10 +437,17 @@ class NewsService {
     }
   }
 
-  Future like({required NewsModel news}) async {
+  Future like({
+    required NewsModel news,
+    required UserModel user,
+  }) async {
     try {
+      final List<dynamic> likedBy = news.likedBy ?? List.empty(growable: true);
+
+      likedBy.add(user.id);
+
       dynamic result = _collectionRef.doc(news.id).update({
-        'likeCount': news.likeCount + 1,
+        'likedBy': jsonEncode(likedBy),
       }).then((value) => print("News Liked"));
 
       print("Like News: $result");
@@ -461,6 +476,97 @@ class NewsService {
 
       return false;
     }
+  }
+  // Future like({required NewsModel news}) async {
+  //   try {
+  //     dynamic result = _collectionRef.doc(news.id).update({
+  //       'likeCount': news.likeCount + 1,
+  //     }).then((value) => print("News Liked"));
+
+  //     print("Like News: $result");
+
+  //     await UserServices()
+  //         .get(_auth.currentUser!.uid)
+  //         .then((currentUser) async {
+  //       print("Get current user");
+  //       if (currentUser != null) {
+  //         await UserActivityServices()
+  //             .add(
+  //               user: currentUser,
+  //               description: "Liked News (Title: ${news.title})",
+  //               activityType: "news_like",
+  //               networkInfo: _networkInfo,
+  //               deviceInfoPlugin: _deviceInfoPlugin,
+  //             )
+  //             .then((value) => print("Activity Added"));
+  //       }
+  //     });
+
+  //     return true;
+  //   } catch (e) {
+  //     print(e.toString());
+  //     Fluttertoast.showToast(msg: e.toString());
+
+  //     return false;
+  //   }
+  // }
+
+  Future unlike({
+    required NewsModel news,
+    required UserModel user,
+  }) async {
+    try {
+      final List<dynamic> likedBy = news.likedBy ?? List.empty(growable: true);
+
+      if (likedBy.contains(user.id)) {
+        likedBy.remove(user.id);
+
+        dynamic result = _collectionRef.doc(news.id).update({
+          'likedBy': jsonEncode(likedBy),
+        }).then((value) => print("News Liked"));
+
+        print("Like News: $result");
+      }
+
+      await UserServices()
+          .get(_auth.currentUser!.uid)
+          .then((currentUser) async {
+        print("Get current user");
+        if (currentUser != null) {
+          await UserActivityServices()
+              .add(
+                user: currentUser,
+                description: "Liked News (Title: ${news.title})",
+                activityType: "news_like",
+                networkInfo: _networkInfo,
+                deviceInfoPlugin: _deviceInfoPlugin,
+              )
+              .then((value) => print("Activity Added"));
+        }
+      });
+
+      return true;
+    } catch (e) {
+      print(e.toString());
+      Fluttertoast.showToast(msg: e.toString());
+
+      return false;
+    }
+  }
+
+  bool isLike({
+    required NewsModel news,
+    required UserModel user,
+  }) {
+    if (news.likedBy != null) {
+      for (String id in news.likedBy!) {
+        if (id == user.id) {
+          return true;
+        }
+      }
+    }
+
+    return false;
   }
 
   Future star({required NewsModel news, required bool star}) async {

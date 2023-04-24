@@ -2,6 +2,7 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 
 import '../../model/news_model.dart';
+import '../../model/user_model.dart';
 import '../../widgets/carousel/image_sliders.dart';
 
 class CarouselNews extends StatefulWidget {
@@ -9,9 +10,11 @@ class CarouselNews extends StatefulWidget {
     super.key,
     required this.mainContext,
     required this.newsList,
+    required this.user,
   });
   final BuildContext mainContext;
   final List<NewsModel?> newsList;
+  final UserModel user;
 
   @override
   State<CarouselNews> createState() => _CarouselNewsState();
@@ -31,6 +34,7 @@ class _CarouselNewsState extends State<CarouselNews> {
             items: imageSliders(
               newsList: widget.newsList,
               mainContext: widget.mainContext,
+              user: widget.user,
             ),
             carouselController: controller,
             options: CarouselOptions(

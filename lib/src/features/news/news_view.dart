@@ -8,16 +8,19 @@ import 'package:flutter_quill/flutter_quill.dart' hide Text;
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
 import 'package:shimmer/shimmer.dart';
+import '../../model/user_model.dart';
 import '../../services/helpers.dart';
 
 class NewsView extends StatefulWidget {
   final BuildContext mainContext;
   final NewsModel news;
+  final UserModel user;
 
   const NewsView({
     super.key,
     required this.mainContext,
     required this.news,
+    required this.user,
   });
 
   @override
@@ -28,12 +31,20 @@ class _NewsViewState extends State<NewsView> {
   bool liked = false;
 
   @override
+  void initState() {
+    super.initState();
+    liked = NewsService().isLike(news: widget.news, user: widget.user);
+  }
+
+  @override
   Widget build(BuildContext context) {
     final controller = QuillController(
       document: Document.fromJson(jsonDecode(widget.news.jsonContent)),
       selection: const TextSelection.collapsed(offset: 0),
     );
+    liked = NewsService().isLike(news: widget.news, user: widget.user);
 
+    print("a: x: $liked");
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
@@ -53,23 +64,38 @@ class _NewsViewState extends State<NewsView> {
           ),
         ),
         actions: [
-          IconButton(
-            onPressed: () async {
-              dynamic result = await NewsService().like(news: widget.news);
-              print("result: $result");
+          liked
+              ? IconButton(
+                  onPressed: () async {
+                    dynamic result = await NewsService()
+                        .unlike(news: widget.news, user: widget.user);
+                    print("result: $result");
 
-              if (result == true) {
-                Fluttertoast.showToast(msg: "News liked");
-                setState(() => liked = true);
-              }
-            },
-            icon: liked
-                ? const Icon(
+                    if (result == true) {
+                      Fluttertoast.showToast(msg: "News unliked");
+                      setState(() => liked = false);
+                      setState(() {});
+                    }
+                  },
+                  icon: const Icon(
                     CupertinoIcons.heart_fill,
                     color: CustomColor.danger,
-                  )
-                : const Icon(CupertinoIcons.heart),
-          )
+                  ),
+                )
+              : IconButton(
+                  onPressed: () async {
+                    dynamic result = await NewsService()
+                        .like(news: widget.news, user: widget.user);
+                    print("result: $result");
+
+                    if (result == true) {
+                      Fluttertoast.showToast(msg: "News liked");
+                      setState(() => liked = true);
+                      setState(() {});
+                    }
+                  },
+                  icon: const Icon(CupertinoIcons.heart),
+                ),
         ],
       ),
       body: ListView(
@@ -165,7 +191,8 @@ class _NewsViewState extends State<NewsView> {
                           ),
                         ),
                         TextSpan(
-                          text: " ${widget.news.likeCount}",
+                          text:
+                              " ${widget.news.likedBy == null ? 0 : widget.news.likedBy!.length}",
                           style: TextStyle(
                             color: getColorByBackground(context),
                           ),

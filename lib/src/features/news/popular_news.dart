@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../model/news_model.dart';
+import '../../model/user_model.dart';
 import '../../widgets/card/news_card.dart';
 import 'news_view.dart';
 
@@ -8,6 +9,7 @@ Widget popularNews({
   required BuildContext context,
   required BuildContext mainContext,
   required List<NewsModel?> newsList,
+  required UserModel user,
 }) =>
     Column(
       children: List.generate(newsList.length, (index) {
@@ -23,12 +25,16 @@ Widget popularNews({
             imageURL: news.imgURL,
             title: news.title,
             date: news.createdAt,
-            likeCount: news.likeCount,
-            onTap: () => Navigator.of(mainContext).push(MaterialPageRoute(
+            likeCount: news.likedBy == null ? 0 : news.likedBy!.length,
+            onTap: () => Navigator.of(mainContext).push(
+              MaterialPageRoute(
                 builder: (context) => NewsView(
-                      mainContext: mainContext,
-                      news: news,
-                    ))),
+                  mainContext: mainContext,
+                  news: news,
+                  user: user,
+                ),
+              ),
+            ),
           ),
         );
       }),

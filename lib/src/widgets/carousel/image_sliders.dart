@@ -6,20 +6,26 @@ import 'package:intl/intl.dart';
 import 'package:shimmer/shimmer.dart';
 
 import '../../features/news/news_view.dart';
+import '../../model/user_model.dart';
 
 List<Widget> imageSliders({
   required List<NewsModel?> newsList,
+  required UserModel user,
   required BuildContext mainContext,
 }) =>
     newsList
         .map((news) => ClipRRect(
             borderRadius: const BorderRadius.all(Radius.circular(5.0)),
             child: GestureDetector(
-              onTap: () => Navigator.of(mainContext).push(MaterialPageRoute(
+              onTap: () => Navigator.of(mainContext).push(
+                MaterialPageRoute(
                   builder: (context) => NewsView(
-                        mainContext: mainContext,
-                        news: news,
-                      ))),
+                    mainContext: mainContext,
+                    news: news,
+                    user: user,
+                  ),
+                ),
+              ),
               child: Stack(
                 children: <Widget>[
                   news!.imgURL == null

@@ -4,6 +4,7 @@ import 'package:news_app/src/features/news/news_view.dart';
 import 'package:news_app/src/model/news_model.dart';
 import 'package:intl/intl.dart';
 import 'package:search_page/search_page.dart';
+import '../../model/user_model.dart';
 import '../../services/helpers.dart';
 import '../../widgets/card/news_card.dart';
 
@@ -13,10 +14,12 @@ class SearchNews extends StatelessWidget {
     required this.mainContext,
     required this.newsList,
     required this.child,
+    required this.user,
   });
   final BuildContext mainContext;
   final List<NewsModel?> newsList;
   final Widget child;
+  final UserModel user;
 
   @override
   Widget build(BuildContext context) {
@@ -81,13 +84,14 @@ class SearchNews extends StatelessWidget {
                 context: context,
                 imageURL: news!.imgURL,
                 title: news.title,
-                likeCount: news.likeCount,
                 date: news.createdAt,
+                likeCount: news.likedBy == null ? 0 : news.likedBy!.length,
                 onTap: () => Navigator.of(mainContext).push(
                   MaterialPageRoute(
                     builder: (context) => NewsView(
                       mainContext: mainContext,
                       news: news,
+                      user: user,
                     ),
                   ),
                 ),

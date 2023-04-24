@@ -59,7 +59,7 @@ class _FrontFrameState extends State<FrontFrame> {
       context,
       controller: _controller,
       screens: [
-        News(mainContext: context),
+        News(mainContext: context, user: user),
         Notifications(mainContext: context, user: user),
         Account(mainContext: context, user: user),
       ],

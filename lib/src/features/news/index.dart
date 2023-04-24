@@ -1,21 +1,23 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:news_app/src/features/admin/settings/index.dart';
 import 'package:news_app/src/features/news/carousel_news.dart';
 import 'package:news_app/src/features/news/latest_news.dart';
 import 'package:news_app/src/features/news/popular_news.dart';
 import 'package:news_app/src/features/news/search_news.dart';
 import 'package:news_app/src/services/news_services.dart';
 import 'package:provider/provider.dart';
-import 'package:shimmer/shimmer.dart';
 import '../../model/app_settings_model.dart';
 import '../../model/news_model.dart';
-import '../../widgets/typography/page_title_icon.dart';
+import '../../model/user_model.dart';
 
 class News extends StatefulWidget {
-  const News({super.key, required this.mainContext});
+  const News({
+    super.key,
+    required this.mainContext,
+    required this.user,
+  });
   final BuildContext mainContext;
+  final UserModel? user;
 
   @override
   State<News> createState() => _NewsState();
@@ -73,7 +75,7 @@ class _NewsState extends State<News> with TickerProviderStateMixin {
   Widget build(BuildContext context) {
     final appSettings = Provider.of<AppSettingsModel?>(context);
 
-    return appSettings == null
+    return appSettings == null && widget.user == null
         ? const Scaffold(body: Center(child: CircularProgressIndicator()))
         : RefreshIndicator(
             key: _refreshIndicatorKey,
@@ -109,81 +111,79 @@ class _NewsState extends State<News> with TickerProviderStateMixin {
                   final List<NewsModel?> popularNewsList = snapshot.data![2];
                   final List<NewsModel?> latestNewsList = snapshot.data![3];
 
-                  return allNews.isEmpty ||
-                          starredNewsList.isEmpty ||
-                          popularNewsList.isEmpty ||
-                          latestNewsList.isEmpty
-                      ? const Scaffold(
-                          body: Center(child: CircularProgressIndicator()))
-                      : Scaffold(
-                          appBar: AppBar(
-                            centerTitle: true,
-                            actions: [
-                              SearchNews(
-                                mainContext: widget.mainContext,
-                                newsList: allNews,
-                                child: const Icon(Icons.search),
-                              ),
-                            ],
-                            title: CachedNetworkImage(
-                              imageUrl: appSettings.logoFaviconURL,
-                              fit: BoxFit.contain,
-                              height: 30,
-                              placeholder: (context, url) => Image.asset(
-                                'assets/images/default_logo_favicon.png',
-                                fit: BoxFit.contain,
-                                height: 30,
-                              ),
-                              errorWidget: (context, url, error) => Image.asset(
-                                'assets/images/default_logo_favicon.png',
-                                fit: BoxFit.contain,
-                                height: 30,
-                              ),
-                            ),
-                          ),
-                          body: ListView(
-                            children: [
-                              // // Page Title
-                              // Container(
-                              //   padding: const EdgeInsets.only(
-                              //     top: 25,
-                              //     left: 25,
-                              //     right: 25,
-                              //     bottom: 10,
-                              //   ),
-                              //   child: Column(
-                              //     crossAxisAlignment: CrossAxisAlignment.start,
-                              //     children: [
-                              //       pageTitleIcon(
-                              //         context: context,
-                              //         title: "News",
-                              //         icon: const Icon(
-                              //           Icons.newspaper,
-                              //           size: 24,
-                              //         ),
-                              //       ),
-                              //       const Padding(
-                              //         padding:
-                              //             EdgeInsets.symmetric(vertical: 10),
-                              //         child: Text(
-                              //           'Get all the latest news here.',
-                              //         ),
-                              //       ),
-                              //     ],
-                              //   ),
-                              // ),
-                              // // Search News
-                              // SearchNews(
-                              //   mainContext: widget.mainContext,
-                              //   newsList: allNews,
-                              // ),
-                              // Carousel News (Starred News)
-                              CarouselNews(
-                                mainContext: widget.mainContext,
-                                newsList: starredNewsList,
-                              ),
-                              // Popular News Cards
-                              const Padding(
+                  return Scaffold(
+                    appBar: AppBar(
+                      centerTitle: true,
+                      actions: [
+                        SearchNews(
+                          mainContext: widget.mainContext,
+                          newsList: allNews,
+                          user: widget.user!,
+                          child: const Icon(Icons.search),
+                        ),
+                      ],
+                      title: CachedNetworkImage(
+                        imageUrl: appSettings!.logoFaviconURL,
+                        fit: BoxFit.contain,
+                        height: 30,
+                        placeholder: (context, url) => Image.asset(
+                          'assets/images/default_logo_favicon.png',
+                          fit: BoxFit.contain,
+                          height: 30,
+                        ),
+                        errorWidget: (context, url, error) => Image.asset(
+                          'assets/images/default_logo_favicon.png',
+                          fit: BoxFit.contain,
+                          height: 30,
+                        ),
+                      ),
+                    ),
+                    body: ListView(
+                      children: [
+                        // // Page Title
+                        // Container(
+                        //   padding: const EdgeInsets.only(
+                        //     top: 25,
+                        //     left: 25,
+                        //     right: 25,
+                        //     bottom: 10,
+                        //   ),
+                        //   child: Column(
+                        //     crossAxisAlignment: CrossAxisAlignment.start,
+                        //     children: [
+                        //       pageTitleIcon(
+                        //         context: context,
+                        //         title: "News",
+                        //         icon: const Icon(
+                        //           Icons.newspaper,
+                        //           size: 24,
+                        //         ),
+                        //       ),
+                        //       const Padding(
+                        //         padding:
+                        //             EdgeInsets.symmetric(vertical: 10),
+                        //         child: Text(
+                        //           'Get all the latest news here.',
+                        //         ),
+                        //       ),
+                        //     ],
+                        //   ),
+                        // ),
+                        // // Search News
+                        // SearchNews(
+                        //   mainContext: widget.mainContext,
+                        //   newsList: allNews,
+                        // ),
+                        // Carousel News (Starred News)
+                        CarouselNews(
+                          mainContext: widget.mainContext,
+                          newsList: starredNewsList,
+                          user: widget.user!,
+                        ),
+                        // Popular News Cards
+                        popularNewsList.isEmpty
+                            ? const SizedBox()
+                            : const Padding(
                                 padding: EdgeInsets.symmetric(
                                     horizontal: 25, vertical: 10),
                                 child: Text(
@@ -194,13 +194,18 @@ class _NewsState extends State<News> with TickerProviderStateMixin {
                                   ),
                                 ),
                               ),
-                              popularNews(
+                        popularNewsList.isEmpty
+                            ? const SizedBox()
+                            : popularNews(
                                 context: context,
                                 mainContext: widget.mainContext,
                                 newsList: popularNewsList,
+                                user: widget.user!,
                               ),
-                              // Latest News Cards
-                              const Padding(
+                        // Latest News Cards
+                        latestNewsList.isEmpty
+                            ? const SizedBox()
+                            : const Padding(
                                 padding: EdgeInsets.symmetric(
                                     horizontal: 25, vertical: 10),
                                 child: Text(
@@ -211,15 +216,18 @@ class _NewsState extends State<News> with TickerProviderStateMixin {
                                   ),
                                 ),
                               ),
-                              latestNews(
+                        latestNewsList.isEmpty
+                            ? const SizedBox()
+                            : latestNews(
                                 context: context,
                                 mainContext: widget.mainContext,
                                 newsList: latestNewsList,
+                                user: widget.user!,
                               ),
-                              const SizedBox(height: 40),
-                            ],
-                          ),
-                        );
+                        const SizedBox(height: 40),
+                      ],
+                    ),
+                  );
                 }
               },
             ),
