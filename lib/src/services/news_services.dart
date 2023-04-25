@@ -25,8 +25,6 @@ class NewsService {
 
   // convert DocumentSnapshot to model object
   Future<NewsModel?> fromDocumentSnapshot(DocumentSnapshot<Object?> doc) async {
-    print("a: ${doc.get('likedBy')}");
-
     return NewsModel(
       id: doc.get('id'),
       title: doc.get('title'),
@@ -121,8 +119,11 @@ class NewsService {
   }
 
   // get all
-  Future<List<NewsModel?>> getAllBy(
-      {required String fieldName, int? limit, bool desc = true}) async {
+  Future<List<NewsModel?>> getAllBy({
+    required String fieldName,
+    int? limit,
+    bool desc = true,
+  }) async {
     // Get docs from collection reference
     Query query = limit == null
         ? _collectionRef.orderBy(fieldName, descending: desc)
@@ -141,6 +142,24 @@ class NewsService {
     } else {
       return List.empty();
     }
+  }
+
+  // get all liked by user
+  Future<List<NewsModel?>> getAllLikedBy({
+    required UserModel user,
+  }) async {
+    // Get docs from collection reference
+    final List<NewsModel?> all = await NewsService().getAll();
+
+    List<NewsModel> fetch = List.empty(growable: true);
+
+    for (var news in all) {
+      if (news != null && isLike(news: news, user: user)) {
+        fetch.add(news);
+      }
+    }
+
+    return fetch;
   }
 
   Future add({
@@ -476,39 +495,6 @@ class NewsService {
       return false;
     }
   }
-  // Future like({required NewsModel news}) async {
-  //   try {
-  //     dynamic result = _collectionRef.doc(news.id).update({
-  //       'likeCount': news.likeCount + 1,
-  //     }).then((value) => print("News Liked"));
-
-  //     print("Like News: $result");
-
-  //     await UserServices()
-  //         .get(_auth.currentUser!.uid)
-  //         .then((currentUser) async {
-  //       print("Get current user");
-  //       if (currentUser != null) {
-  //         await UserActivityServices()
-  //             .add(
-  //               user: currentUser,
-  //               description: "Liked News (Title: ${news.title})",
-  //               activityType: "news_like",
-  //               networkInfo: _networkInfo,
-  //               deviceInfoPlugin: _deviceInfoPlugin,
-  //             )
-  //             .then((value) => print("Activity Added"));
-  //       }
-  //     });
-
-  //     return true;
-  //   } catch (e) {
-  //     print(e.toString());
-  //     Fluttertoast.showToast(msg: e.toString());
-
-  //     return false;
-  //   }
-  // }
 
   Future unlike({
     required NewsModel news,

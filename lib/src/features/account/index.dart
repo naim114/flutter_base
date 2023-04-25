@@ -5,6 +5,7 @@ import 'package:news_app/src/features/account/profile/index.dart';
 import 'package:news_app/src/features/account/security/index.dart';
 import 'package:news_app/src/features/admin/index.dart';
 import 'package:news_app/src/features/admin/settings/index.dart';
+import 'package:news_app/src/features/news/liked.dart';
 import 'package:news_app/src/services/helpers.dart';
 import 'package:news_app/src/services/user_services.dart';
 import 'package:news_app/src/widgets/builder/user_builder.dart';
@@ -136,6 +137,17 @@ class _AccountState extends State<Account> {
                             onTap: () => Navigator.of(widget.mainContext).push(
                               MaterialPageRoute(
                                 builder: (context) => const AppAbout(),
+                              ),
+                            ),
+                          ),
+                          // Liked News
+                          listTileIcon(
+                            context: context,
+                            icon: CupertinoIcons.heart_fill,
+                            title: "Liked News",
+                            onTap: () => Navigator.of(widget.mainContext).push(
+                              MaterialPageRoute(
+                                builder: (context) => LikedNews(user: user),
                               ),
                             ),
                           ),
