@@ -5,7 +5,6 @@ import 'package:news_app/src/model/user_model.dart';
 class NewsModel {
   final String id;
   final String title;
-  // final int likeCount;
   final UserModel? author;
   final UserModel? updatedBy;
   final String jsonContent;
@@ -23,7 +22,6 @@ class NewsModel {
   NewsModel({
     required this.id,
     required this.title,
-    // this.likeCount = 0,
     this.likedBy,
     this.tag,
     required this.author,

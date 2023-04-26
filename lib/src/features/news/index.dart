@@ -89,7 +89,7 @@ class _NewsState extends State<News> with TickerProviderStateMixin {
                   limit: 5,
                 ),
                 NewsService().getAllBy(
-                  fieldName: 'likeCount',
+                  fieldName: 'likedBy',
                   desc: true,
                   limit: 5,
                 ),
