@@ -30,7 +30,6 @@ class NewsService {
       title: doc.get('title'),
       likedBy:
           doc.get('likedBy') == null ? null : jsonDecode(doc.get('likedBy')),
-      tag: doc.get('tag') == null ? null : jsonDecode(doc.get('tag')),
       author: await UserServices().get(doc.get('author')),
       updatedBy: doc.get('updatedBy') == null
           ? doc.get('updatedBy')
@@ -52,7 +51,6 @@ class NewsService {
       title: doc.get('title'),
       likedBy:
           doc.get('likedBy') == null ? null : jsonDecode(doc.get('likedBy')),
-      tag: doc.get('tag') == null ? null : jsonDecode(doc.get('tag')),
       author: await UserServices().get(doc.get('author')),
       updatedBy: doc.get('updatedBy') == null
           ? doc.get('updatedBy')

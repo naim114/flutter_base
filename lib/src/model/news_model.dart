@@ -17,13 +17,11 @@ class NewsModel {
   final DateTime updatedAt;
 
   final List<dynamic>? likedBy;
-  final List<dynamic>? tag;
 
   NewsModel({
     required this.id,
     required this.title,
     this.likedBy,
-    this.tag,
     required this.author,
     this.updatedBy,
     required this.jsonContent,
@@ -36,7 +34,7 @@ class NewsModel {
 
   @override
   String toString() {
-    return 'NewsModel(id: $id, title: $title, likedBy: $likedBy, tag: $tag, author: $author, updatedBy: $updatedBy, jsonContent: $jsonContent, starred: $starred, createdAt: $createdAt, updatedAt: $updatedAt, imgPath: $imgPath, imgURL: $imgURL)';
+    return 'NewsModel(id: $id, title: $title, likedBy: $likedBy, author: $author, updatedBy: $updatedBy, jsonContent: $jsonContent, starred: $starred, createdAt: $createdAt, updatedAt: $updatedAt, imgPath: $imgPath, imgURL: $imgURL)';
   }
 
   Map<String, Object?> toJson() {
@@ -44,7 +42,6 @@ class NewsModel {
       'id': id,
       'title': title,
       'likedBy': likedBy == null ? null : jsonEncode(likedBy),
-      'tag': tag == null ? null : jsonEncode(tag),
       'author': author!.id,
       'updatedBy': updatedBy == null ? null : updatedBy!.id,
       'jsonContent': jsonContent,
