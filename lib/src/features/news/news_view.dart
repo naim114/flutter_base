@@ -44,7 +44,6 @@ class _NewsViewState extends State<NewsView> {
     );
     liked = NewsService().isLike(news: widget.news, user: widget.user);
 
-    print("a: x: $liked");
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
@@ -98,33 +97,17 @@ class _NewsViewState extends State<NewsView> {
       ),
       body: ListView(
         children: [
-          Padding(
-            padding: const EdgeInsets.only(
-              left: 15,
-              right: 15,
-              bottom: 15,
-            ),
-            child: Text(
-              widget.news.title,
-              style: TextStyle(
-                color: getColorByBackground(context),
-                fontSize: 24,
-                fontWeight: FontWeight.bold,
-              ),
-              maxLines: 5,
-              overflow: TextOverflow.ellipsis,
-            ),
-          ),
+          // Thumbnail
           widget.news.imgURL == null
               ? Image.asset(
                   'assets/images/noimage.png',
                   fit: BoxFit.cover,
-                  height: MediaQuery.of(context).size.height * 0.4,
+                  height: MediaQuery.of(context).size.height * 0.5,
                 )
               : CachedNetworkImage(
                   imageUrl: widget.news.imgURL!,
                   fit: BoxFit.cover,
-                  height: MediaQuery.of(context).size.height * 0.4,
+                  height: MediaQuery.of(context).size.height * 0.5,
                   placeholder: (context, url) => Shimmer.fromColors(
                     baseColor: CupertinoColors.systemGrey,
                     highlightColor: CupertinoColors.systemGrey2,
@@ -139,6 +122,52 @@ class _NewsViewState extends State<NewsView> {
                     height: MediaQuery.of(context).size.height * 0.4,
                   ),
                 ),
+          // Category TODO view news by category
+          widget.news.category == null
+              ? const SizedBox()
+              : Padding(
+                  padding: const EdgeInsets.all(15),
+                  child: Text(
+                    widget.news.category!.toUpperCase(),
+                    style: const TextStyle(
+                      color: CustomColor.primary,
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                    ),
+                    maxLines: 5,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ),
+          Padding(
+            padding: const EdgeInsets.only(
+              left: 15,
+            ),
+            child: Text(
+              widget.news.title,
+              style: TextStyle(
+                color: getColorByBackground(context),
+                fontSize: 28,
+                fontWeight: FontWeight.bold,
+              ),
+              maxLines: 5,
+              overflow: TextOverflow.ellipsis,
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(
+              left: 15,
+              top: 5,
+            ),
+            child: Text(
+              widget.news.description,
+              style: TextStyle(
+                color: getColorByBackground(context),
+                fontSize: 20,
+              ),
+              maxLines: 5,
+              overflow: TextOverflow.ellipsis,
+            ),
+          ),
           Padding(
             padding: const EdgeInsets.only(
               left: 15,

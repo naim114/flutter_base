@@ -30,6 +30,10 @@ class _EditNewsState extends State<EditNews> {
       selection: const TextSelection.collapsed(offset: 0),
     );
 
+    print("tag: z ${widget.news.tag!.map((e) => e.toString()).toList()}");
+    List<String> tags = widget.news.tag!.map((e) => e.toString()).toList();
+    print("tag: zz $tags");
+
     return widget.news.imgPath != null
         ? FutureBuilder<File>(
             future: NewsService().downloadThumbnail(widget.news),
@@ -43,6 +47,10 @@ class _EditNewsState extends State<EditNews> {
                       controller: controller,
                       thumbnailFile: snapshot.data,
                       appBarTitle: "Edit News",
+                      category: widget.news.category,
+                      description: widget.news.description,
+                      thumbnailDescription: widget.news.thumbnailDescription,
+                      tags: tags,
                       onPost: (quillController, thumbnailFile, title, desc,
                           thumbnailDesc, catergory, tag) async {
                         var result;
@@ -80,6 +88,7 @@ class _EditNewsState extends State<EditNews> {
             controller: controller,
             title: widget.news.title,
             appBarTitle: "Edit News",
+            tags: tags,
             onPost: (quillController, thumbnailFile, title, desc, thumbnailDesc,
                 catergory, tag) async {
               var result;

@@ -17,6 +17,7 @@ class NewsEditor extends StatefulWidget {
   final String? description;
   final String? thumbnailDescription;
   final String? category;
+  final List<String>? tags;
 
   final Function(
     QuillController quillController,
@@ -25,7 +26,7 @@ class NewsEditor extends StatefulWidget {
     String description,
     String? thumbnailDescription,
     String? category,
-    List<String>? tag,
+    List<String>? tags,
   ) onPost;
 
   const NewsEditor({
@@ -39,6 +40,7 @@ class NewsEditor extends StatefulWidget {
     this.description,
     this.thumbnailDescription,
     this.category,
+    this.tags,
   });
 
   @override
@@ -95,7 +97,8 @@ class _NewsEditorState extends State<NewsEditor> {
     super.dispose();
     titleController.dispose();
     descController.dispose();
-    _tagController.dispose();
+    thumbnailDescController.dispose();
+    categoryController.dispose();
   }
 
   @override
@@ -105,7 +108,7 @@ class _NewsEditorState extends State<NewsEditor> {
     _thumbnailFile = widget.thumbnailFile;
     titleController.text = widget.title ?? "";
     descController.text = widget.description ?? "";
-    thumbnailDescController.text = widget.description ?? "";
+    thumbnailDescController.text = widget.thumbnailDescription ?? "";
     categoryController.text = widget.category ?? "";
   }
 
@@ -276,6 +279,7 @@ class _NewsEditorState extends State<NewsEditor> {
                     TextFieldTags(
                       textfieldTagsController: _tagController,
                       textSeparators: const [' ', ','],
+                      initialTags: widget.tags,
                       letterCase: LetterCase.normal,
                       validator: (String tag) {
                         if (_tagController.getTags!.contains(tag)) {
@@ -325,9 +329,6 @@ class _NewsEditorState extends State<NewsEditor> {
                                                     style: const TextStyle(
                                                         color: Colors.white),
                                                   ),
-                                                  onTap: () {
-                                                    print("$tag selected");
-                                                  },
                                                 ),
                                                 const SizedBox(width: 4.0),
                                                 InkWell(
