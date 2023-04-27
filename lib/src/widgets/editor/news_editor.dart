@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:news_app/src/widgets/editor/image_uploader.dart';
 import 'package:flutter_quill/flutter_quill.dart' hide Text;
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:textfield_tags/textfield_tags.dart';
 import '../../services/helpers.dart';
 
 class NewsEditor extends StatefulWidget {
@@ -15,6 +16,7 @@ class NewsEditor extends StatefulWidget {
   final String? title;
   final String? description;
   final String? thumbnailDescription;
+  final String? category;
 
   final Function(
     QuillController quillController,
@@ -22,6 +24,8 @@ class NewsEditor extends StatefulWidget {
     String title,
     String description,
     String? thumbnailDescription,
+    String? category,
+    List<String>? tag,
   ) onPost;
 
   const NewsEditor({
@@ -34,6 +38,7 @@ class NewsEditor extends StatefulWidget {
     this.title,
     this.description,
     this.thumbnailDescription,
+    this.category,
   });
 
   @override
@@ -46,19 +51,12 @@ class _NewsEditorState extends State<NewsEditor> {
   final TextEditingController titleController = TextEditingController();
   final TextEditingController descController = TextEditingController();
   final TextEditingController thumbnailDescController = TextEditingController();
+  final TextEditingController categoryController = TextEditingController();
+
+  final TextfieldTagsController _tagController = TextfieldTagsController();
 
   bool _submitted = false;
   bool _loading = false;
-
-  @override
-  void initState() {
-    super.initState();
-    _submitted = false;
-    _thumbnailFile = widget.thumbnailFile;
-    titleController.text = widget.title ?? "";
-    descController.text = widget.description ?? "";
-    thumbnailDescController.text = widget.description ?? "";
-  }
 
   bool post() {
     setState(() => _submitted = true);
@@ -83,6 +81,8 @@ class _NewsEditorState extends State<NewsEditor> {
         titleController.text,
         descController.text,
         thumbnailDescController.text,
+        categoryController.text.isEmpty ? null : categoryController.text,
+        _tagController.getTags,
       );
       // Navigator.pop(context);
     });
@@ -95,6 +95,18 @@ class _NewsEditorState extends State<NewsEditor> {
     super.dispose();
     titleController.dispose();
     descController.dispose();
+    _tagController.dispose();
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _submitted = false;
+    _thumbnailFile = widget.thumbnailFile;
+    titleController.text = widget.title ?? "";
+    descController.text = widget.description ?? "";
+    thumbnailDescController.text = widget.description ?? "";
+    categoryController.text = widget.category ?? "";
   }
 
   @override
@@ -123,25 +135,40 @@ class _NewsEditorState extends State<NewsEditor> {
                 TextButton(
                   onPressed: () => showDialog<String>(
                     context: context,
-                    builder: (BuildContext context) => AlertDialog(
-                      title: const Text('Post News?'),
-                      content: const Text('Post news? Select OK to confirm.'),
-                      actions: <Widget>[
-                        TextButton(
-                          onPressed: () => Navigator.pop(context),
-                          child: const Text(
-                            'Cancel',
-                            style: TextStyle(
-                              color: CupertinoColors.systemGrey,
+                    builder: (BuildContext context) {
+                      if (titleController.text.isEmpty) {
+                        return errorAlert(
+                          "Title can't be empty",
+                          "Title can't be empty. Please enter title under News Details",
+                        );
+                      } else if (descController.text.isEmpty) {
+                        return errorAlert(
+                          "Description can't be empty",
+                          "Description can't be empty. Please enter description under News Details",
+                        );
+                      } else {
+                        return AlertDialog(
+                          title: const Text('Post News?'),
+                          content: Text(
+                              "${_thumbnailFile == null ? "No thumbnail included. Include it at Thumbnail section needed. " : ""}${thumbnailDescController.text.isEmpty ? "No thumbnail description included. Include it at Thumbnail section needed. " : ""}${categoryController.text.isEmpty ? "No category included. . Include it at Category/Tag section needed. " : ""}${_tagController.getTags == null ? "No tags included. . Include it at Category/Tag section needed. " : ""}Select OK to confirm."),
+                          actions: <Widget>[
+                            TextButton(
+                              onPressed: () => Navigator.pop(context),
+                              child: const Text(
+                                'Cancel',
+                                style: TextStyle(
+                                  color: CupertinoColors.systemGrey,
+                                ),
+                              ),
                             ),
-                          ),
-                        ),
-                        TextButton(
-                          onPressed: post,
-                          child: const Text('OK'),
-                        ),
-                      ],
-                    ),
+                            TextButton(
+                              onPressed: post,
+                              child: const Text('OK'),
+                            ),
+                          ],
+                        );
+                      }
+                    },
                   ),
                   child: const Text("Post"),
                 )
@@ -152,8 +179,41 @@ class _NewsEditorState extends State<NewsEditor> {
           : ListView(
               children: [
                 ExpansionTile(
+                    title: const Text("News Details",
+                        style: TextStyle(fontWeight: FontWeight.bold)),
+                    children: [
+                      TextField(
+                        controller: titleController,
+                        decoration: InputDecoration(
+                          contentPadding: const EdgeInsets.all(15),
+                          labelText: 'Title',
+                          hintText: 'Enter title for this article',
+                          focusColor: CupertinoColors.systemGrey,
+                          hoverColor: CupertinoColors.systemGrey,
+                          errorText:
+                              _submitted == true & titleController.text.isEmpty
+                                  ? "Title can't be empty"
+                                  : null,
+                        ),
+                      ),
+                      TextField(
+                        controller: descController,
+                        decoration: InputDecoration(
+                          contentPadding: const EdgeInsets.all(15),
+                          labelText: 'Description',
+                          hintText: 'Enter description for this article',
+                          focusColor: CupertinoColors.systemGrey,
+                          hoverColor: CupertinoColors.systemGrey,
+                          errorText:
+                              _submitted == true & descController.text.isEmpty
+                                  ? "Description can't be empty"
+                                  : null,
+                        ),
+                      ),
+                    ]),
+                ExpansionTile(
                   title: const Text(
-                    "News Details",
+                    "Thumbnail",
                     style: TextStyle(fontWeight: FontWeight.bold),
                   ),
                   children: [
@@ -194,33 +254,106 @@ class _NewsEditorState extends State<NewsEditor> {
                         hoverColor: CupertinoColors.systemGrey,
                       ),
                     ),
+                  ],
+                ),
+                ExpansionTile(
+                  title: const Text(
+                    "Category/Tag",
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                  children: [
                     TextField(
-                      controller: titleController,
-                      decoration: InputDecoration(
-                        contentPadding: const EdgeInsets.all(15),
-                        labelText: 'Title',
-                        hintText: 'Enter title for this article',
+                      controller: categoryController,
+                      decoration: const InputDecoration(
+                        contentPadding: EdgeInsets.all(15),
+                        labelText: 'Category',
+                        hintText:
+                            'Enter category for this article (e.g. politics, sports)',
                         focusColor: CupertinoColors.systemGrey,
                         hoverColor: CupertinoColors.systemGrey,
-                        errorText:
-                            _submitted == true & titleController.text.isEmpty
-                                ? "Title can't be empty"
-                                : null,
                       ),
                     ),
-                    TextField(
-                      controller: descController,
-                      decoration: InputDecoration(
-                        contentPadding: const EdgeInsets.all(15),
-                        labelText: 'Description',
-                        hintText: 'Enter description for this article',
-                        focusColor: CupertinoColors.systemGrey,
-                        hoverColor: CupertinoColors.systemGrey,
-                        errorText:
-                            _submitted == true & descController.text.isEmpty
-                                ? "Description can't be empty"
-                                : null,
-                      ),
+                    TextFieldTags(
+                      textfieldTagsController: _tagController,
+                      textSeparators: const [' ', ','],
+                      letterCase: LetterCase.normal,
+                      validator: (String tag) {
+                        if (_tagController.getTags!.contains(tag)) {
+                          return '$tag already entered';
+                        }
+                        return null;
+                      },
+                      inputfieldBuilder:
+                          (context, tec, fn, error, onChanged, onSubmitted) {
+                        return ((context, sc, tags, onTagDelete) {
+                          return Padding(
+                            padding: const EdgeInsets.all(15.0),
+                            child: TextField(
+                              controller: tec,
+                              focusNode: fn,
+                              decoration: InputDecoration(
+                                helperText: 'Type tags and enter',
+                                hintText:
+                                    _tagController.hasTags ? '' : "Enter tag",
+                                errorText: error,
+                                prefixIcon: tags.isNotEmpty
+                                    ? SingleChildScrollView(
+                                        controller: sc,
+                                        scrollDirection: Axis.horizontal,
+                                        child: Row(
+                                            children: tags.map((String tag) {
+                                          return Container(
+                                            decoration: const BoxDecoration(
+                                              borderRadius: BorderRadius.all(
+                                                Radius.circular(20.0),
+                                              ),
+                                              color: CustomColor.primary,
+                                            ),
+                                            margin: const EdgeInsets.symmetric(
+                                                horizontal: 5.0),
+                                            padding: const EdgeInsets.symmetric(
+                                                horizontal: 10.0,
+                                                vertical: 5.0),
+                                            child: Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
+                                              children: [
+                                                InkWell(
+                                                  child: Text(
+                                                    tag,
+                                                    style: const TextStyle(
+                                                        color: Colors.white),
+                                                  ),
+                                                  onTap: () {
+                                                    print("$tag selected");
+                                                  },
+                                                ),
+                                                const SizedBox(width: 4.0),
+                                                InkWell(
+                                                  child: const Icon(
+                                                    Icons.cancel,
+                                                    size: 14.0,
+                                                    color: Color.fromARGB(
+                                                        255, 233, 233, 233),
+                                                  ),
+                                                  onTap: () {
+                                                    onTagDelete(tag);
+                                                  },
+                                                )
+                                              ],
+                                            ),
+                                          );
+                                        }).toList()),
+                                      )
+                                    : null,
+                              ),
+                              onChanged: onChanged,
+                              onSubmitted: onSubmitted,
+                            ),
+                          );
+                        });
+                      },
                     ),
                   ],
                 ),
@@ -244,4 +377,20 @@ class _NewsEditorState extends State<NewsEditor> {
             ),
     );
   }
+
+  AlertDialog errorAlert(String title, String desc) => AlertDialog(
+        title: Text(title),
+        content: Text(desc),
+        actions: <Widget>[
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text(
+              'Close',
+              style: TextStyle(
+                color: CupertinoColors.systemGrey,
+              ),
+            ),
+          ),
+        ],
+      );
 }

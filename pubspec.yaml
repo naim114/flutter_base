@@ -66,6 +66,7 @@ dependencies:
   path_provider: ^2.0.14
   http: ^0.13.5
   flutter_native_splash: ^2.2.19
+  textfield_tags: ^2.0.2
 
 dev_dependencies:
   flutter_oss_licenses: ^2.0.1

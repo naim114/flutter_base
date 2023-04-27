@@ -44,7 +44,7 @@ class _EditNewsState extends State<EditNews> {
                       thumbnailFile: snapshot.data,
                       appBarTitle: "Edit News",
                       onPost: (quillController, thumbnailFile, title, desc,
-                          thumbnailDesc) async {
+                          thumbnailDesc, catergory, tag) async {
                         var result;
 
                         if (thumbnailFile != null) {
@@ -80,8 +80,8 @@ class _EditNewsState extends State<EditNews> {
             controller: controller,
             title: widget.news.title,
             appBarTitle: "Edit News",
-            onPost: (quillController, thumbnailFile, title, desc,
-                thumbnailDesc) async {
+            onPost: (quillController, thumbnailFile, title, desc, thumbnailDesc,
+                catergory, tag) async {
               var result;
 
               if (thumbnailFile != null) {
