@@ -81,7 +81,7 @@ class _NotificationsState extends State<Notifications> {
                                 title: "Notification",
                                 icon: const Icon(
                                   CupertinoIcons.bell_fill,
-                                  size: 24,
+                                  size: 20,
                                 ),
                               ),
                               const Padding(

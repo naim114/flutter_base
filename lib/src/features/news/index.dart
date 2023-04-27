@@ -190,7 +190,7 @@ class _NewsState extends State<News> with TickerProviderStateMixin {
                                   "Popular News",
                                   style: TextStyle(
                                     fontWeight: FontWeight.bold,
-                                    fontSize: 20,
+                                    fontSize: 16,
                                   ),
                                 ),
                               ),
@@ -212,7 +212,7 @@ class _NewsState extends State<News> with TickerProviderStateMixin {
                                   "Latest News",
                                   style: TextStyle(
                                     fontWeight: FontWeight.bold,
-                                    fontSize: 20,
+                                    fontSize: 16,
                                   ),
                                 ),
                               ),

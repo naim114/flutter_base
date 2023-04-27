@@ -13,10 +13,15 @@ class NewsEditor extends StatefulWidget {
   final String appBarTitle;
   final File? thumbnailFile;
   final String? title;
+  final String? description;
+  final String? thumbnailDescription;
+
   final Function(
     QuillController quillController,
     File? thumbnailFile,
     String title,
+    String description,
+    String? thumbnailDescription,
   ) onPost;
 
   const NewsEditor({
@@ -27,6 +32,8 @@ class NewsEditor extends StatefulWidget {
     this.thumbnailFile,
     required this.onPost,
     this.title,
+    this.description,
+    this.thumbnailDescription,
   });
 
   @override
@@ -35,7 +42,10 @@ class NewsEditor extends StatefulWidget {
 
 class _NewsEditorState extends State<NewsEditor> {
   File? _thumbnailFile;
+
   final TextEditingController titleController = TextEditingController();
+  final TextEditingController descController = TextEditingController();
+  final TextEditingController thumbnailDescController = TextEditingController();
 
   bool _submitted = false;
   bool _loading = false;
@@ -46,12 +56,8 @@ class _NewsEditorState extends State<NewsEditor> {
     _submitted = false;
     _thumbnailFile = widget.thumbnailFile;
     titleController.text = widget.title ?? "";
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-    titleController.dispose();
+    descController.text = widget.description ?? "";
+    thumbnailDescController.text = widget.description ?? "";
   }
 
   bool post() {
@@ -62,16 +68,33 @@ class _NewsEditorState extends State<NewsEditor> {
       Fluttertoast.showToast(msg: "Title can't be empty");
 
       return false;
+    } else if (descController.text.isEmpty) {
+      Fluttertoast.showToast(msg: "Description can't be empty");
+
+      return false;
     }
 
     setState(() => _loading = true);
 
     Future.delayed(const Duration(seconds: 1), () {
-      widget.onPost(widget.controller, _thumbnailFile, titleController.text);
+      widget.onPost(
+        widget.controller,
+        _thumbnailFile,
+        titleController.text,
+        descController.text,
+        thumbnailDescController.text,
+      );
       // Navigator.pop(context);
     });
 
     return true;
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    titleController.dispose();
+    descController.dispose();
   }
 
   @override
@@ -128,43 +151,78 @@ class _NewsEditorState extends State<NewsEditor> {
           ? const Center(child: CircularProgressIndicator())
           : ListView(
               children: [
-                ListTile(
-                  onTap: () => Navigator.of(context).push(
-                    MaterialPageRoute(
-                      builder: (context) => ImageUploader(
-                        appBarTitle: "Upload Thumbnail",
-                        imageFile: _thumbnailFile,
-                        width: 350,
-                        height: 196.88,
-                        onCancel: () => Navigator.of(context).pop(),
-                        onConfirm: (imageFile, uploaderContext) {
-                          setState(() => _thumbnailFile = imageFile);
-                        },
+                ExpansionTile(
+                  title: const Text(
+                    "News Details",
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                  children: [
+                    ListTile(
+                      onTap: () => Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (context) => ImageUploader(
+                            appBarTitle: "Upload Thumbnail",
+                            imageFile: _thumbnailFile,
+                            width: MediaQuery.of(context).size.width * 0.8,
+                            height: MediaQuery.of(context).size.height * 0.25,
+                            onCancel: () => Navigator.of(context).pop(),
+                            onConfirm: (imageFile, uploaderContext) {
+                              setState(() {
+                                _thumbnailFile = imageFile;
+                              });
+                            },
+                          ),
+                        ),
+                      ),
+                      title: const Text("Preview/Upload Thumbnail"),
+                      trailing: const Icon(Icons.arrow_forward_ios_rounded),
+                      shape: const Border(
+                        bottom: BorderSide(
+                          width: 1.25,
+                          color: Color(0xFFcacaca),
+                        ),
                       ),
                     ),
-                  ),
-                  title: const Text("Preview/Upload Thumbnail"),
-                  trailing: const Icon(Icons.arrow_forward_ios_rounded),
-                  shape: const Border(
-                    bottom: BorderSide(
-                      width: 1,
-                      color: CupertinoColors.systemGrey,
+                    TextField(
+                      controller: thumbnailDescController,
+                      decoration: const InputDecoration(
+                        contentPadding: EdgeInsets.all(15),
+                        labelText: 'Thumbnail description',
+                        hintText:
+                            'Enter description for thumbnail (e.g. image source)',
+                        focusColor: CupertinoColors.systemGrey,
+                        hoverColor: CupertinoColors.systemGrey,
+                      ),
                     ),
-                  ),
-                ),
-                const SizedBox(height: 10),
-                TextField(
-                  controller: titleController,
-                  decoration: InputDecoration(
-                    contentPadding: const EdgeInsets.all(15),
-                    labelText: 'Title',
-                    hintText: 'Enter title for this news',
-                    focusColor: CupertinoColors.systemGrey,
-                    hoverColor: CupertinoColors.systemGrey,
-                    errorText: _submitted == true & titleController.text.isEmpty
-                        ? "Title can't be empty"
-                        : null,
-                  ),
+                    TextField(
+                      controller: titleController,
+                      decoration: InputDecoration(
+                        contentPadding: const EdgeInsets.all(15),
+                        labelText: 'Title',
+                        hintText: 'Enter title for this article',
+                        focusColor: CupertinoColors.systemGrey,
+                        hoverColor: CupertinoColors.systemGrey,
+                        errorText:
+                            _submitted == true & titleController.text.isEmpty
+                                ? "Title can't be empty"
+                                : null,
+                      ),
+                    ),
+                    TextField(
+                      controller: descController,
+                      decoration: InputDecoration(
+                        contentPadding: const EdgeInsets.all(15),
+                        labelText: 'Description',
+                        hintText: 'Enter description for this article',
+                        focusColor: CupertinoColors.systemGrey,
+                        hoverColor: CupertinoColors.systemGrey,
+                        errorText:
+                            _submitted == true & descController.text.isEmpty
+                                ? "Description can't be empty"
+                                : null,
+                      ),
+                    ),
+                  ],
                 ),
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: 10.0),

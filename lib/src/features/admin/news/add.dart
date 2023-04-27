@@ -22,7 +22,8 @@ class AddNews extends StatelessWidget {
       context: context,
       controller: controller,
       appBarTitle: "Add News",
-      onPost: (quillController, thumbnailFile, title) async {
+      onPost:
+          (quillController, thumbnailFile, title, desc, thumbnailDesc) async {
         if (thumbnailFile != null) {
           final result = await NewsService().add(
             title: title,
@@ -30,6 +31,7 @@ class AddNews extends StatelessWidget {
                 jsonEncode(quillController.document.toDelta().toJson()),
             author: currentUser,
             imageFile: thumbnailFile,
+            description: desc,
           );
 
           if (result == true && context.mounted) {
@@ -42,6 +44,7 @@ class AddNews extends StatelessWidget {
             jsonContent:
                 jsonEncode(quillController.document.toDelta().toJson()),
             author: currentUser,
+            description: desc,
           );
 
           if (result == true && context.mounted) {

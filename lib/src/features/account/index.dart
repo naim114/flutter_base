@@ -83,7 +83,7 @@ class _AccountState extends State<Account> {
                             title: "Account",
                             icon: const Icon(
                               CupertinoIcons.person_fill,
-                              size: 24,
+                              size: 20,
                             ),
                           ),
                           // PROFILE
@@ -104,7 +104,7 @@ class _AccountState extends State<Account> {
                             child: Text(
                               'Settings',
                               style: TextStyle(
-                                fontSize: 18,
+                                fontSize: 16,
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
@@ -162,7 +162,7 @@ class _AccountState extends State<Account> {
                                       child: Text(
                                         'Admin',
                                         style: TextStyle(
-                                          fontSize: 18,
+                                          fontSize: 16,
                                           fontWeight: FontWeight.bold,
                                         ),
                                       ),

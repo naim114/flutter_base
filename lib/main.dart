@@ -108,6 +108,7 @@ class _MyAppState extends State<MyApp> {
             scaffoldBackgroundColor: CustomColor.neutral1,
             appBarTheme: const AppBarTheme(
                 backgroundColor: CustomColor.neutral1,
+                // titleTextStyle: TextStyle(fontWeight: FontWeight.bold),
                 iconTheme: IconThemeData(
                   color: CustomColor.neutral2,
                 )),
@@ -129,6 +130,7 @@ class _MyAppState extends State<MyApp> {
             scaffoldBackgroundColor: Colors.white,
             appBarTheme: const AppBarTheme(
                 backgroundColor: Colors.white,
+                // titleTextStyle: TextStyle(fontWeight: FontWeight.bold),
                 iconTheme: IconThemeData(
                   color: CustomColor.neutral2,
                 )),

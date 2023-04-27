@@ -40,6 +40,13 @@ class NewsService {
       updatedAt: doc.get('updatedAt').toDate(),
       imgPath: doc.get('imgPath'),
       imgURL: doc.get('imgURL'),
+      description: doc.get('description'),
+      category: doc.get('category'),
+      thumbnailDescription: doc.get('thumbnailDescription'),
+      bookmarkBy: doc.get('bookmarkBy') == null
+          ? null
+          : jsonDecode(doc.get('bookmarkBy')),
+      tag: doc.get('tag') == null ? null : jsonDecode(doc.get('tag')),
     );
   }
 
@@ -61,6 +68,13 @@ class NewsService {
       updatedAt: doc.get('updatedAt').toDate(),
       imgPath: doc.get('imgPath'),
       imgURL: doc.get('imgURL'),
+      description: doc.get('description'),
+      category: doc.get('category'),
+      thumbnailDescription: doc.get('thumbnailDescription'),
+      bookmarkBy: doc.get('bookmarkBy') == null
+          ? null
+          : jsonDecode(doc.get('bookmarkBy')),
+      tag: doc.get('tag') == null ? null : jsonDecode(doc.get('tag')),
     );
   }
 
@@ -164,7 +178,11 @@ class NewsService {
     required String title,
     required String jsonContent,
     required UserModel author,
+    required String description,
     File? imageFile,
+    String? thumbnailDescription,
+    String? category,
+    List<String>? tag,
   }) async {
     try {
       dynamic add = await _collectionRef.add({
@@ -237,6 +255,10 @@ class NewsService {
                 updatedAt: DateTime.now(),
                 imgPath: 'news/thumbnail/${docRef.id}$extension',
                 imgURL: downloadUrl,
+                thumbnailDescription: thumbnailDescription,
+                description: description,
+                category: category,
+                tag: tag,
               ).toJson())
               .then((value) => print("News Added"));
         } else {
@@ -251,6 +273,9 @@ class NewsService {
                 jsonContent: jsonContent,
                 createdAt: DateTime.now(),
                 updatedAt: DateTime.now(),
+                description: description,
+                category: category,
+                tag: tag,
               ).toJson())
               .then((value) => print("News Added"))
               .onError((error, stackTrace) => print("ERROR: $error"));
@@ -293,9 +318,14 @@ class NewsService {
     required String title,
     required String jsonContent,
     required UserModel editor,
+    required String description,
     File? imageFile,
+    String? thumbnailDescription,
+    String? category,
+    List<String>? tag,
   }) async {
     try {
+      // w/ thumbnail
       if (imageFile != null) {
         // if previous thumbnail exist
         if (news.imgPath != null && news.imgURL != null) {
@@ -364,20 +394,31 @@ class NewsService {
           'updatedAt': DateTime.now(),
           'imgPath': 'news/thumbnail/${news.id}$extension',
           'imgURL': downloadUrl,
+          'thumbnailDescription': thumbnailDescription,
+          'description': description,
+          'category': category,
+          'tag': tag,
         }).then((value) => print("News Edited"));
 
         print("Update News: $result");
       } else {
+        // w/o thumbnail
+
         dynamic result = _collectionRef.doc(news.id).update({
           'title': title,
           'jsonContent': jsonContent,
           'updatedBy': editor.id,
           'updatedAt': DateTime.now(),
+          'thumbnailDescription': null,
+          'description': description,
+          'category': category,
+          'tag': tag,
         }).then((value) => print("News Edited"));
 
         print("Update News: $result");
       }
 
+      // activity log
       await UserServices()
           .get(_auth.currentUser!.uid)
           .then((currentUser) async {

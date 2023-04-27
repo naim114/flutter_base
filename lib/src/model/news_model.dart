@@ -18,6 +18,12 @@ class NewsModel {
 
   final List<dynamic>? likedBy;
 
+  final String description;
+  final String? category;
+  final String? thumbnailDescription;
+  final List<dynamic>? bookmarkBy;
+  final List<dynamic>? tag;
+
   NewsModel({
     required this.id,
     required this.title,
@@ -30,11 +36,16 @@ class NewsModel {
     required this.updatedAt,
     this.imgPath,
     this.imgURL,
+    required this.description,
+    this.category,
+    this.thumbnailDescription,
+    this.bookmarkBy,
+    this.tag,
   });
 
   @override
   String toString() {
-    return 'NewsModel(id: $id, title: $title, likedBy: $likedBy, author: $author, updatedBy: $updatedBy, jsonContent: $jsonContent, starred: $starred, createdAt: $createdAt, updatedAt: $updatedAt, imgPath: $imgPath, imgURL: $imgURL)';
+    return 'NewsModel(id: $id, title: $title, likedBy: $likedBy, author: $author, updatedBy: $updatedBy, jsonContent: $jsonContent, starred: $starred, createdAt: $createdAt, updatedAt: $updatedAt, imgPath: $imgPath, imgURL: $imgURL,  description: $description, category: $category, thumbnailDescription: $thumbnailDescription, bookmarkBy: $bookmarkBy, tag: $tag)';
   }
 
   Map<String, Object?> toJson() {
@@ -50,6 +61,11 @@ class NewsModel {
       'updatedAt': updatedAt,
       'imgPath': imgPath,
       'imgURL': imgURL,
+      'description': description,
+      'category': category,
+      'thumbnailDescription': thumbnailDescription,
+      'bookmarkBy': bookmarkBy == null ? null : jsonEncode(bookmarkBy),
+      'tag': tag == null ? null : jsonEncode(tag),
     };
   }
 }

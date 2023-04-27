@@ -43,7 +43,8 @@ class _EditNewsState extends State<EditNews> {
                       controller: controller,
                       thumbnailFile: snapshot.data,
                       appBarTitle: "Edit News",
-                      onPost: (quillController, thumbnailFile, title) async {
+                      onPost: (quillController, thumbnailFile, title, desc,
+                          thumbnailDesc) async {
                         var result;
 
                         if (thumbnailFile != null) {
@@ -54,6 +55,7 @@ class _EditNewsState extends State<EditNews> {
                                 quillController.document.toDelta().toJson()),
                             editor: widget.currentUser,
                             imageFile: thumbnailFile,
+                            description: desc,
                           );
                         } else {
                           result = await NewsService().edit(
@@ -62,6 +64,7 @@ class _EditNewsState extends State<EditNews> {
                             jsonContent: jsonEncode(
                                 quillController.document.toDelta().toJson()),
                             editor: widget.currentUser,
+                            description: desc,
                           );
                         }
 
@@ -77,7 +80,8 @@ class _EditNewsState extends State<EditNews> {
             controller: controller,
             title: widget.news.title,
             appBarTitle: "Edit News",
-            onPost: (quillController, thumbnailFile, title) async {
+            onPost: (quillController, thumbnailFile, title, desc,
+                thumbnailDesc) async {
               var result;
 
               if (thumbnailFile != null) {
@@ -88,6 +92,7 @@ class _EditNewsState extends State<EditNews> {
                       jsonEncode(quillController.document.toDelta().toJson()),
                   editor: widget.currentUser,
                   imageFile: thumbnailFile,
+                  description: desc,
                 );
               } else {
                 result = await NewsService().edit(
@@ -96,6 +101,7 @@ class _EditNewsState extends State<EditNews> {
                   jsonContent:
                       jsonEncode(quillController.document.toDelta().toJson()),
                   editor: widget.currentUser,
+                  description: desc,
                 );
               }
 

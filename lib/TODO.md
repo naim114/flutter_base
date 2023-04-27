@@ -7,12 +7,13 @@ Mid
 High
 
 v2
-- add tags
-- add category
-- add subtitle
+- add tags 
+- add category 
+- add desc
 - add bookmark
 - rework frontpage
 - rework news view
-- add explore page
+- add explore page (search, split news by category)
 - anonymous/google sign in
 - add multiple image/video
+- use better font
