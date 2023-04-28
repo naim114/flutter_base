@@ -427,7 +427,7 @@ class _NewsViewState extends State<NewsView> {
               onTap: () {}, // TODO view news by author
               child: Container(
                 decoration: BoxDecoration(
-                    border: Border.all(),
+                    border: Border.all(color: CustomColor.primary),
                     color: CustomColor.primary,
                     borderRadius: const BorderRadius.all(Radius.circular(10))),
                 child: Column(
@@ -437,6 +437,7 @@ class _NewsViewState extends State<NewsView> {
                       context: context,
                       user: widget.news.author!,
                       includeEdit: false,
+                      fontColor: Colors.white,
                     ),
                     Padding(
                       padding: const EdgeInsets.only(
@@ -448,6 +449,7 @@ class _NewsViewState extends State<NewsView> {
                         "Anne Helen Petersen is a senior culture writer for BuzzFeed News and is based in Missoula, Montana.",
                         style: const TextStyle(
                           fontSize: 18,
+                          color: Colors.white,
                         ),
                       ),
                     ),
@@ -502,9 +504,13 @@ class _NewsViewState extends State<NewsView> {
               ),
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 8.0),
-            child: newsCardSimple(),
+          Column(
+            children: [
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                child: newsCardSimple(),
+              ),
+            ],
           ),
           const Padding(
             padding: EdgeInsets.only(
@@ -520,10 +526,15 @@ class _NewsViewState extends State<NewsView> {
               ),
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 8.0),
-            child: newsCardSimple(),
+          Column(
+            children: [
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                child: newsCardSimple(),
+              ),
+            ],
           ),
+          const SizedBox(height: 15),
         ],
       ),
     );

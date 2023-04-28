@@ -105,8 +105,10 @@ void showComment(
   showModalBottomSheet(
     context: context,
     isScrollControlled: true,
-    builder: (BuildContext context) {
-      return Container(
+    builder: (BuildContext context) => Padding(
+      padding:
+          EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
+      child: Container(
         height: MediaQuery.of(context).size.height * 0.9,
         padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
         decoration: BoxDecoration(
@@ -119,6 +121,7 @@ void showComment(
           ),
         ),
         child: Column(
+          mainAxisSize: MainAxisSize.min,
           children: [
             //  Header
             Padding(
@@ -169,9 +172,38 @@ void showComment(
                 ),
               ),
             ),
+            // Input
+            Padding(
+              padding: const EdgeInsets.only(top: 8.0),
+              child: Container(
+                decoration: BoxDecoration(
+                  border: Border.all(
+                    color: Colors.grey,
+                    width: 1.0,
+                  ),
+                ),
+                child: TextField(
+                  decoration: InputDecoration(
+                    border: InputBorder.none,
+                    fillColor: isDarkTheme(context)
+                        ? CupertinoColors.darkBackgroundGray
+                        : Colors.white,
+                    hintText: 'Enter comment here',
+                    contentPadding: const EdgeInsets.symmetric(
+                        horizontal: 16.0, vertical: 12.0),
+                    suffixIcon: IconButton(
+                      icon: const Icon(Icons.send),
+                      onPressed: () {
+                        // TODO send commend
+                      },
+                    ),
+                  ),
+                ),
+              ),
+            ),
           ],
         ),
-      );
-    },
+      ),
+    ),
   );
 }
