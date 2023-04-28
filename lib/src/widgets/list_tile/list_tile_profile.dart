@@ -8,10 +8,15 @@ import '../../services/helpers.dart';
 
 Widget listTileProfile({
   required BuildContext context,
-  required void Function() onEdit,
+  void Function()? onEdit,
   required UserModel user,
+  bool includeEmail = true,
+  bool includeEdit = true,
+  Color? fontColor,
 }) {
   String name = user.name ?? "No Name";
+
+  Color _defaultColor = fontColor ?? getColorByBackground(context);
 
   return ListTile(
     leading: SizedBox(
@@ -60,9 +65,10 @@ Widget listTileProfile({
                   decoration: const BoxDecoration(
                     shape: BoxShape.circle,
                     image: DecorationImage(
-                        image: AssetImage(
-                            'assets/images/default-profile-picture.png'),
-                        fit: BoxFit.cover),
+                      image: AssetImage(
+                          'assets/images/default-profile-picture.png'),
+                      fit: BoxFit.cover,
+                    ),
                   ),
                 );
               },
@@ -70,39 +76,47 @@ Widget listTileProfile({
     ),
     title: Text(
       name != " " && name != "" ? name : "No Name",
-      style: const TextStyle(fontWeight: FontWeight.bold),
+      style: TextStyle(fontWeight: FontWeight.bold, color: _defaultColor),
     ),
-    subtitle: Text(user.email, overflow: TextOverflow.ellipsis),
+    subtitle: includeEmail
+        ? Text(
+            user.email,
+            overflow: TextOverflow.ellipsis,
+            style: TextStyle(fontWeight: FontWeight.bold, color: _defaultColor),
+          )
+        : null,
     contentPadding: const EdgeInsets.all(15),
-    trailing: OutlinedButton(
-      onPressed: onEdit,
-      style: ButtonStyle(
-        shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-          RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(18.0),
-          ),
-        ),
-      ),
-      child: RichText(
-        text: TextSpan(
-          children: [
-            TextSpan(
-              text: 'Edit ',
-              style: TextStyle(
-                fontSize: 14,
-                color: getColorByBackground(context),
+    trailing: includeEdit
+        ? OutlinedButton(
+            onPressed: onEdit,
+            style: ButtonStyle(
+              shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(18.0),
+                ),
               ),
             ),
-            WidgetSpan(
-              child: Icon(
-                CupertinoIcons.pencil,
-                size: 14,
-                color: getColorByBackground(context),
+            child: RichText(
+              text: TextSpan(
+                children: [
+                  TextSpan(
+                    text: 'Edit ',
+                    style: TextStyle(
+                      fontSize: 14,
+                      color: _defaultColor,
+                    ),
+                  ),
+                  WidgetSpan(
+                    child: Icon(
+                      CupertinoIcons.pencil,
+                      size: 14,
+                      color: _defaultColor,
+                    ),
+                  ),
+                ],
               ),
             ),
-          ],
-        ),
-      ),
-    ),
+          )
+        : null,
   );
 }

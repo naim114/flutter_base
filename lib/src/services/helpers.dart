@@ -1,6 +1,8 @@
 import 'dart:io';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:news_app/src/model/news_model.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:theme_mode_handler/theme_picker_dialog.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -92,4 +94,66 @@ Future<File?> downloadFile(String url) async {
     return file;
   }
   return null;
+}
+
+void showComment(
+  BuildContext context,
+  NewsModel news,
+) {
+  showModalBottomSheet(
+    context: context,
+    isScrollControlled: true,
+    builder: (BuildContext context) {
+      return Container(
+        height: MediaQuery.of(context).size.height * 0.8,
+        padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
+        decoration: const BoxDecoration(
+          color: CupertinoColors.darkBackgroundGray,
+          borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(20.0),
+            topRight: Radius.circular(20.0),
+          ),
+        ),
+        child: Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(bottom: 12),
+              child: Container(
+                width: 40,
+                margin: const EdgeInsets.symmetric(
+                  vertical: 8.0,
+                  horizontal: 4.0,
+                ),
+                decoration: const BoxDecoration(
+                  color: CupertinoColors.systemGrey,
+                  borderRadius: BorderRadius.all(Radius.circular(40)),
+                ),
+                child: const SizedBox(
+                  height: 5,
+                ),
+              ),
+            ),
+            const Text(
+              "Comments",
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                color: Colors.white,
+                fontSize: 16,
+              ),
+            ),
+            const Padding(
+              padding: EdgeInsets.symmetric(vertical: 15),
+              child: Divider(
+                color: Colors.grey,
+                height: 1,
+                thickness: 1,
+                indent: 0,
+                endIndent: 0,
+              ),
+            ),
+          ],
+        ),
+      );
+    },
+  );
 }

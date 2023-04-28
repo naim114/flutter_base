@@ -237,7 +237,12 @@ class _NewsEditorState extends State<NewsEditor> {
                           ),
                         ),
                       ),
-                      title: const Text("Preview/Upload Thumbnail"),
+                      title: Text(
+                        _thumbnailFile == null
+                            ? "Tap to Upload Thumbnail"
+                            : "Tap to Change/Preview Thumbnail",
+                        style: const TextStyle(fontStyle: FontStyle.italic),
+                      ),
                       trailing: const Icon(Icons.arrow_forward_ios_rounded),
                       shape: const Border(
                         bottom: BorderSide(
@@ -325,7 +330,7 @@ class _NewsEditorState extends State<NewsEditor> {
                                               children: [
                                                 InkWell(
                                                   child: Text(
-                                                    tag,
+                                                    "#$tag",
                                                     style: const TextStyle(
                                                         color: Colors.white),
                                                   ),

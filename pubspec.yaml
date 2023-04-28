@@ -67,6 +67,7 @@ dependencies:
   http: ^0.13.5
   flutter_native_splash: ^2.2.19
   textfield_tags: ^2.0.2
+  dotted_line: ^3.1.0
 
 dev_dependencies:
   flutter_oss_licenses: ^2.0.1

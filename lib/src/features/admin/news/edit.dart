@@ -30,9 +30,9 @@ class _EditNewsState extends State<EditNews> {
       selection: const TextSelection.collapsed(offset: 0),
     );
 
-    print("tag: z ${widget.news.tag!.map((e) => e.toString()).toList()}");
-    List<String> tags = widget.news.tag!.map((e) => e.toString()).toList();
-    print("tag: zz $tags");
+    List<String>? tags = widget.news.tag == null
+        ? null
+        : widget.news.tag!.map((e) => e.toString()).toList();
 
     return widget.news.imgPath != null
         ? FutureBuilder<File>(
