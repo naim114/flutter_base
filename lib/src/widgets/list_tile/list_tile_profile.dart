@@ -14,7 +14,7 @@ Widget listTileProfile({
   bool includeEdit = true,
   Color? fontColor,
 }) {
-  Color _defaultColor = fontColor ?? getColorByBackground(context);
+  Color defaultColor = fontColor ?? getColorByBackground(context);
 
   return ListTile(
     leading: SizedBox(
@@ -74,13 +74,16 @@ Widget listTileProfile({
     ),
     title: Text(
       user.name,
-      style: TextStyle(fontWeight: FontWeight.bold, color: _defaultColor),
+      style: TextStyle(fontWeight: FontWeight.bold, color: defaultColor),
+      overflow: TextOverflow.ellipsis,
+      maxLines: 1,
     ),
     subtitle: includeEmail
         ? Text(
             user.email,
             overflow: TextOverflow.ellipsis,
-            style: TextStyle(fontWeight: FontWeight.bold, color: _defaultColor),
+            maxLines: 1,
+            style: TextStyle(fontWeight: FontWeight.bold, color: defaultColor),
           )
         : null,
     contentPadding: const EdgeInsets.all(15),
@@ -101,14 +104,14 @@ Widget listTileProfile({
                     text: 'Edit ',
                     style: TextStyle(
                       fontSize: 14,
-                      color: _defaultColor,
+                      color: defaultColor,
                     ),
                   ),
                   WidgetSpan(
                     child: Icon(
                       CupertinoIcons.pencil,
                       size: 14,
-                      color: _defaultColor,
+                      color: defaultColor,
                     ),
                   ),
                 ],

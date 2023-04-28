@@ -8,6 +8,8 @@ import 'package:theme_mode_handler/theme_picker_dialog.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:http/http.dart' as http;
 
+import '../widgets/list_tile/list_tile_comment.dart';
+
 class CustomColor {
   static const primary = Color(0xFF643FDB);
   static const secondary = Color(0xFFFF8A00);
@@ -105,7 +107,7 @@ void showComment(
     isScrollControlled: true,
     builder: (BuildContext context) {
       return Container(
-        height: MediaQuery.of(context).size.height * 0.8,
+        height: MediaQuery.of(context).size.height * 0.9,
         padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
         decoration: BoxDecoration(
           color: isDarkTheme(context)
@@ -118,6 +120,7 @@ void showComment(
         ),
         child: Column(
           children: [
+            //  Header
             Padding(
               padding: const EdgeInsets.only(bottom: 12),
               child: Container(
@@ -151,6 +154,19 @@ void showComment(
                 thickness: 1,
                 indent: 0,
                 endIndent: 0,
+              ),
+            ),
+            //  Comments Section
+            Expanded(
+              child: SingleChildScrollView(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    listTileComment(context: context),
+                    listTileComment(context: context),
+                    listTileComment(context: context),
+                  ],
+                ),
               ),
             ),
           ],

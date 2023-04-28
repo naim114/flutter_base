@@ -11,12 +11,14 @@ v2
 <!-- - add category  -->
 <!-- - add desc -->
 - add bookmark
+- add comment
+<!-- - make user name required -->
+- add user bio
+
 - rework frontpage
 - rework news view
 - add explore page (search, split news by category)
+
 - anonymous/google sign in
 - add multiple image/video
 - use better font
-- add comment
-- make user name required
-- add user bio
