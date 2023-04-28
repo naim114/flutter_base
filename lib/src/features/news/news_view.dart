@@ -13,6 +13,8 @@ import '../../model/user_model.dart';
 import '../../services/helpers.dart';
 import 'package:dotted_line/dotted_line.dart';
 
+import '../../widgets/card/news_card_simple.dart';
+
 class NewsView extends StatefulWidget {
   final BuildContext mainContext;
   final NewsModel news;
@@ -500,6 +502,10 @@ class _NewsViewState extends State<NewsView> {
               ),
             ),
           ),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 8.0),
+            child: newsCardSimple(),
+          ),
           const Padding(
             padding: EdgeInsets.only(
               left: 20,
@@ -513,6 +519,10 @@ class _NewsViewState extends State<NewsView> {
                 fontSize: 20,
               ),
             ),
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 8.0),
+            child: newsCardSimple(),
           ),
         ],
       ),

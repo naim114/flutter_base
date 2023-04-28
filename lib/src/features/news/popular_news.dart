@@ -12,30 +12,33 @@ Widget popularNews({
   required UserModel user,
 }) =>
     Column(
-      children: List.generate(newsList.length, (index) {
-        NewsModel news = newsList[index]!;
+      children: List.generate(
+        newsList.length,
+        (index) {
+          NewsModel news = newsList[index]!;
 
-        return Padding(
-          padding: const EdgeInsets.symmetric(
-            horizontal: 20,
-            vertical: 3,
-          ),
-          child: newsCard(
-            context: context,
-            imageURL: news.imgURL,
-            title: news.title,
-            date: news.createdAt,
-            likeCount: news.likedBy == null ? 0 : news.likedBy!.length,
-            onTap: () => Navigator.of(mainContext).push(
-              MaterialPageRoute(
-                builder: (context) => NewsView(
-                  mainContext: mainContext,
-                  news: news,
-                  user: user,
+          return Padding(
+            padding: const EdgeInsets.symmetric(
+              horizontal: 20,
+              vertical: 3,
+            ),
+            child: newsCard(
+              context: context,
+              imageURL: news.imgURL,
+              title: news.title,
+              date: news.createdAt,
+              likeCount: news.likedBy == null ? 0 : news.likedBy!.length,
+              onTap: () => Navigator.of(mainContext).push(
+                MaterialPageRoute(
+                  builder: (context) => NewsView(
+                    mainContext: mainContext,
+                    news: news,
+                    user: user,
+                  ),
                 ),
               ),
             ),
-          ),
-        );
-      }),
+          );
+        },
+      ),
     );
