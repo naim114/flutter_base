@@ -14,8 +14,6 @@ Widget listTileProfile({
   bool includeEdit = true,
   Color? fontColor,
 }) {
-  String name = user.name ?? "No Name";
-
   Color _defaultColor = fontColor ?? getColorByBackground(context);
 
   return ListTile(
@@ -75,7 +73,7 @@ Widget listTileProfile({
             ),
     ),
     title: Text(
-      name != " " && name != "" ? name : "No Name",
+      user.name,
       style: TextStyle(fontWeight: FontWeight.bold, color: _defaultColor),
     ),
     subtitle: includeEmail

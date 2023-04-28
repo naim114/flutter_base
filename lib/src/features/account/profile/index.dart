@@ -35,7 +35,7 @@ class _ProfileState extends State<Profile> {
 
   @override
   void initState() {
-    nameController.text = widget.user.name ?? "";
+    nameController.text = widget.user.name;
     phoneController.text = widget.user.phone ?? "";
     addressController.text = widget.user.address ?? "";
     birthdayController.text = widget.user.birthday != null

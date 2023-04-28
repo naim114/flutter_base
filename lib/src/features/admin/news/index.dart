@@ -153,13 +153,13 @@ class _AdminPanelNewsState extends State<AdminPanelNews> {
                           if (_isAscending == true) {
                             _isAscending = false;
                             widget.newsList.sort((itemA, itemB) => itemB
-                                .author!.name!
-                                .compareTo(itemA.author!.name!));
+                                .author!.name
+                                .compareTo(itemA.author!.name));
                           } else {
                             _isAscending = true;
                             widget.newsList.sort((itemA, itemB) => itemA
-                                .author!.name!
-                                .compareTo(itemB.author!.name!));
+                                .author!.name
+                                .compareTo(itemB.author!.name));
                           }
                         });
                       },
@@ -189,13 +189,13 @@ class _AdminPanelNewsState extends State<AdminPanelNews> {
                           if (_isAscending == true) {
                             _isAscending = false;
                             widget.newsList.sort((itemA, itemB) => itemB
-                                .updatedBy!.name!
-                                .compareTo(itemA.updatedBy!.name!));
+                                .updatedBy!.name
+                                .compareTo(itemA.updatedBy!.name));
                           } else {
                             _isAscending = true;
                             widget.newsList.sort((itemA, itemB) => itemA
-                                .updatedBy!.name!
-                                .compareTo(itemB.updatedBy!.name!));
+                                .updatedBy!.name
+                                .compareTo(itemB.updatedBy!.name));
                           }
                         });
                       },
@@ -269,15 +269,12 @@ class _AdminPanelNewsState extends State<AdminPanelNews> {
                               softWrap: true,
                             ),
                           )),
-                          DataCell(Text(news.author!.name == null ||
-                                  news.author!.name == ""
-                              ? "None"
-                              : news.author!.name!)),
+                          DataCell(Text(news.author!.name)),
                           DataCell(Text(DateFormat('dd/MM/yyyy hh:mm a')
                               .format(news.createdAt))),
                           DataCell(Text(news.updatedBy == null
                               ? "None"
-                              : news.updatedBy!.name!)),
+                              : news.updatedBy!.name)),
                           DataCell(Text(DateFormat('dd/MM/yyyy hh:mm a')
                               .format(news.updatedAt))),
                           DataCell(Text(news.likedBy == null

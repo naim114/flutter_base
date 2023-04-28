@@ -5,7 +5,7 @@ import 'package:news_app/src/model/role_model.dart';
 class UserModel {
   final String id;
   final String email;
-  final String? name;
+  final String name;
   final DateTime? birthday;
   final String? phone;
   final String? address;
@@ -24,7 +24,7 @@ class UserModel {
 
   UserModel({
     required this.id,
-    this.name,
+    required this.name,
     this.birthday,
     this.phone,
     this.address,

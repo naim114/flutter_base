@@ -107,9 +107,11 @@ void showComment(
       return Container(
         height: MediaQuery.of(context).size.height * 0.8,
         padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
-        decoration: const BoxDecoration(
-          color: CupertinoColors.darkBackgroundGray,
-          borderRadius: BorderRadius.only(
+        decoration: BoxDecoration(
+          color: isDarkTheme(context)
+              ? CupertinoColors.darkBackgroundGray
+              : Colors.white,
+          borderRadius: const BorderRadius.only(
             topLeft: Radius.circular(20.0),
             topRight: Radius.circular(20.0),
           ),
@@ -133,11 +135,11 @@ void showComment(
                 ),
               ),
             ),
-            const Text(
+            Text(
               "Comments",
               style: TextStyle(
                 fontWeight: FontWeight.bold,
-                color: Colors.white,
+                color: getColorByBackground(context),
                 fontSize: 16,
               ),
             ),
