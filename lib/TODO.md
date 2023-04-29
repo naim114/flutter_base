@@ -23,4 +23,4 @@ v2
 - add multiple image/video
 - use better font
 
-- optimize futurebuilder & refresh indicator
+- optimize futurebuilder & refresh indicator key: _refreshIndicatorKey,
