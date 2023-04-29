@@ -182,7 +182,7 @@ class CommentServices {
         padding:
             EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
         child: Container(
-          height: MediaQuery.of(context).size.height * 0.9,
+          height: MediaQuery.of(context).size.height * 0.95,
           padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
           decoration: BoxDecoration(
             color: isDarkTheme(context)
@@ -282,47 +282,45 @@ class CommentServices {
                           );
                   }),
               // Input
+              const Divider(
+                color: Colors.grey,
+                thickness: 1,
+                indent: 0,
+                endIndent: 0,
+              ),
               Padding(
-                padding: const EdgeInsets.only(top: 8.0),
-                child: Container(
-                  decoration: BoxDecoration(
-                    border: Border.all(
-                      color: Colors.grey,
-                      width: 1.0,
-                    ),
-                  ),
-                  child: TextField(
-                    controller: commentController,
-                    decoration: InputDecoration(
-                      border: InputBorder.none,
-                      fillColor: isDarkTheme(context)
-                          ? CupertinoColors.darkBackgroundGray
-                          : Colors.white,
-                      hintText: 'Enter comment here',
-                      contentPadding: const EdgeInsets.symmetric(
-                          horizontal: 16.0, vertical: 12.0),
-                      suffixIcon: IconButton(
-                        icon: const Icon(Icons.send),
-                        onPressed: () async {
-                          if (commentController.text.isEmpty) {
-                            Fluttertoast.showToast(
-                                msg: "Please enter comment before send");
-                          } else {
-                            Fluttertoast.showToast(msg: "Sending comment");
+                padding: const EdgeInsets.only(top: 3.0),
+                child: TextField(
+                  controller: commentController,
+                  decoration: InputDecoration(
+                    border: InputBorder.none,
+                    fillColor: isDarkTheme(context)
+                        ? CupertinoColors.darkBackgroundGray
+                        : Colors.white,
+                    hintText: 'Enter comment here',
+                    contentPadding: const EdgeInsets.symmetric(
+                        horizontal: 16.0, vertical: 12.0),
+                    suffixIcon: IconButton(
+                      icon: const Icon(Icons.send),
+                      onPressed: () async {
+                        if (commentController.text.isEmpty) {
+                          Fluttertoast.showToast(
+                              msg: "Please enter comment before send");
+                        } else {
+                          Fluttertoast.showToast(msg: "Sending comment");
 
-                            dynamic add = await CommentServices().add(
-                                text: commentController.text,
-                                author: currentUser,
-                                news: news);
+                          dynamic add = await CommentServices().add(
+                              text: commentController.text,
+                              author: currentUser,
+                              news: news);
 
-                            if (add == true && context.mounted) {
-                              Navigator.pop(context);
-                              Fluttertoast.showToast(msg: "Comment sent");
-                              print("Comment sent");
-                            }
+                          if (add == true && context.mounted) {
+                            Navigator.pop(context);
+                            Fluttertoast.showToast(msg: "Comment sent");
+                            print("Comment sent");
                           }
-                        },
-                      ),
+                        }
+                      },
                     ),
                   ),
                 ),
