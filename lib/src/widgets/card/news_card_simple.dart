@@ -1,9 +1,27 @@
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:news_app/src/model/news_model.dart';
+import 'package:news_app/src/model/user_model.dart';
+import 'package:shimmer/shimmer.dart';
 
-Widget newsCardSimple() => GestureDetector(
-      onTap: () {
-        // TODO push to news view
-      },
+import '../../features/news/news_view.dart';
+
+Widget newsCardSimple({
+  required NewsModel news,
+  required BuildContext context,
+  required UserModel user,
+}) =>
+    GestureDetector(
+      onTap: () => Navigator.of(context).push(
+        MaterialPageRoute(
+          builder: (context) => NewsView(
+            mainContext: context,
+            news: news,
+            user: user,
+          ),
+        ),
+      ),
       child: SizedBox(
         width: double.infinity,
         child: Padding(
@@ -12,19 +30,36 @@ Widget newsCardSimple() => GestureDetector(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               SizedBox(
-                  width: 80,
-                  height: 80,
-                  child: Image.asset(
-                    'assets/images/noimage.png',
-                    fit: BoxFit.cover,
-                  )),
+                width: 80,
+                height: 80,
+                child: news.imgURL == null
+                    ? Image.asset(
+                        'assets/images/noimage.png',
+                        fit: BoxFit.cover,
+                      )
+                    : CachedNetworkImage(
+                        imageUrl: news.imgURL!,
+                        fit: BoxFit.cover,
+                        placeholder: (context, url) => Shimmer.fromColors(
+                          baseColor: CupertinoColors.systemGrey,
+                          highlightColor: CupertinoColors.systemGrey2,
+                          child: Container(
+                            color: Colors.grey,
+                          ),
+                        ),
+                        errorWidget: (context, url, error) => Image.asset(
+                          'assets/images/noimage.png',
+                          fit: BoxFit.cover,
+                        ),
+                      ),
+              ),
               const SizedBox(width: 15),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      "Stolen or Original? Hear Songs From 7 Landmark Copyright Cases.",
+                      news.title,
                       maxLines: 3,
                       overflow: TextOverflow.ellipsis,
                       style: const TextStyle(

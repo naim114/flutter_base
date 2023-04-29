@@ -250,7 +250,6 @@ class CommentServices {
                           child: Center(child: CircularProgressIndicator()));
                     }
 
-                    print("kungfu: ${snapshot.data}");
                     return snapshot.data == null ||
                             (snapshot.data != null && snapshot.data!.isEmpty)
                         ? const Expanded(
