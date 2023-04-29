@@ -22,3 +22,5 @@ v2
 - anonymous/google sign in
 - add multiple image/video
 - use better font
+
+- optimize futurebuilder & refresh indicator
