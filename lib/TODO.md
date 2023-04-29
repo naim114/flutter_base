@@ -11,9 +11,9 @@ v2
 <!-- - add category  -->
 <!-- - add desc -->
 - add bookmark
-- add comment
+<!-- - add comment -->
 <!-- - make user name required -->
-- add user bio
+<!-- - add user bio -->
 
 - rework frontpage
 - rework news view
