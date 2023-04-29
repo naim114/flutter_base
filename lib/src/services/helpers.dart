@@ -1,14 +1,11 @@
 import 'dart:io';
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:news_app/src/model/news_model.dart';
+import 'package:intl/intl.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:theme_mode_handler/theme_picker_dialog.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:http/http.dart' as http;
-
-import '../widgets/list_tile/list_tile_comment.dart';
 
 class CustomColor {
   static const primary = Color(0xFF643FDB);
@@ -98,112 +95,29 @@ Future<File?> downloadFile(String url) async {
   return null;
 }
 
-void showComment(
-  BuildContext context,
-  NewsModel news,
-) {
-  showModalBottomSheet(
-    context: context,
-    isScrollControlled: true,
-    builder: (BuildContext context) => Padding(
-      padding:
-          EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
-      child: Container(
-        height: MediaQuery.of(context).size.height * 0.9,
-        padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
-        decoration: BoxDecoration(
-          color: isDarkTheme(context)
-              ? CupertinoColors.darkBackgroundGray
-              : Colors.white,
-          borderRadius: const BorderRadius.only(
-            topLeft: Radius.circular(20.0),
-            topRight: Radius.circular(20.0),
-          ),
-        ),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            //  Header
-            Padding(
-              padding: const EdgeInsets.only(bottom: 12),
-              child: Container(
-                width: 40,
-                margin: const EdgeInsets.symmetric(
-                  vertical: 8.0,
-                  horizontal: 4.0,
-                ),
-                decoration: const BoxDecoration(
-                  color: CupertinoColors.systemGrey,
-                  borderRadius: BorderRadius.all(Radius.circular(40)),
-                ),
-                child: const SizedBox(
-                  height: 5,
-                ),
-              ),
-            ),
-            Text(
-              "Comments",
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-                color: getColorByBackground(context),
-                fontSize: 16,
-              ),
-            ),
-            const Padding(
-              padding: EdgeInsets.symmetric(vertical: 15),
-              child: Divider(
-                color: Colors.grey,
-                height: 1,
-                thickness: 1,
-                indent: 0,
-                endIndent: 0,
-              ),
-            ),
-            //  Comments Section
-            Expanded(
-              child: SingleChildScrollView(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    listTileComment(context: context),
-                    listTileComment(context: context),
-                    listTileComment(context: context),
-                  ],
-                ),
-              ),
-            ),
-            // Input
-            Padding(
-              padding: const EdgeInsets.only(top: 8.0),
-              child: Container(
-                decoration: BoxDecoration(
-                  border: Border.all(
-                    color: Colors.grey,
-                    width: 1.0,
-                  ),
-                ),
-                child: TextField(
-                  decoration: InputDecoration(
-                    border: InputBorder.none,
-                    fillColor: isDarkTheme(context)
-                        ? CupertinoColors.darkBackgroundGray
-                        : Colors.white,
-                    hintText: 'Enter comment here',
-                    contentPadding: const EdgeInsets.symmetric(
-                        horizontal: 16.0, vertical: 12.0),
-                    suffixIcon: IconButton(
-                      icon: const Icon(Icons.send),
-                      onPressed: () {
-                        // TODO send commend
-                      },
-                    ),
-                  ),
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
-    ),
-  );
+String timeAgo(DateTime dateTime) {
+  final now = DateTime.now();
+  final difference = now.difference(dateTime);
+
+  if (difference.inDays > 365) {
+    final years = (difference.inDays / 365).floor();
+    return '$years year${years > 1 ? "s" : ""} ago';
+  } else if (difference.inDays > 30) {
+    final months = (difference.inDays / 30).floor();
+    return '$months month${months > 1 ? "s" : ""} ago';
+  } else if (difference.inDays > 0) {
+    final days = difference.inDays;
+    return '$days day${days > 1 ? "s" : ""} ago';
+  } else if (difference.inHours > 0) {
+    final hours = difference.inHours;
+    return '$hours hour${hours > 1 ? "s" : ""} ago';
+  } else if (difference.inMinutes > 0) {
+    final minutes = difference.inMinutes;
+    return '$minutes minute${minutes > 1 ? "s" : ""} ago';
+  } else if (difference.inSeconds >= 0) {
+    final seconds = difference.inSeconds;
+    return '$seconds second${seconds > 1 ? "s" : ""} ago';
+  } else {
+    return 'Just now';
+  }
 }

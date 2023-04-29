@@ -189,7 +189,6 @@ class NewsService {
         'createdAt': DateTime.now(),
         'updatedAt': DateTime.now(),
       }).then((docRef) async {
-        print('docRef: $docRef');
         if (imageFile != null) {
           print("Thumbnail included");
 

@@ -3,6 +3,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:news_app/src/model/news_model.dart';
+import 'package:news_app/src/services/comment_services.dart';
 import 'package:news_app/src/services/news_services.dart';
 import 'package:flutter_quill/flutter_quill.dart' hide Text;
 import 'package:fluttertoast/fluttertoast.dart';
@@ -304,8 +305,11 @@ class _NewsViewState extends State<NewsView> {
                       ),
                 const SizedBox(width: 5),
                 OutlinedButton(
-                  onPressed: () =>
-                      showComment(context, widget.news), // TODO comment
+                  onPressed: () => CommentServices().showComment(
+                    context,
+                    widget.news,
+                    widget.user,
+                  ), // TODO comment
                   style: ButtonStyle(
                     shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                       RoundedRectangleBorder(
@@ -465,8 +469,11 @@ class _NewsViewState extends State<NewsView> {
               right: 20,
             ),
             child: OutlinedButton(
-              onPressed: () =>
-                  showComment(context, widget.news), // TODO comment
+              onPressed: () => CommentServices().showComment(
+                context,
+                widget.news,
+                widget.user,
+              ), // TODO comment
               style: ButtonStyle(
                 backgroundColor:
                     MaterialStateProperty.resolveWith((states) => Colors.black),
