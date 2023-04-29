@@ -7,19 +7,19 @@ import '../../services/helpers.dart';
 import '../../services/news_services.dart';
 import '../../widgets/card/news_card.dart';
 
-class LikedNews extends StatefulWidget {
+class BookmarkedNews extends StatefulWidget {
   final UserModel user;
 
-  const LikedNews({
+  const BookmarkedNews({
     Key? key,
     required this.user,
   }) : super(key: key);
 
   @override
-  State<LikedNews> createState() => _LikedNewsState();
+  State<BookmarkedNews> createState() => BookmarkedNewsState();
 }
 
-class _LikedNewsState extends State<LikedNews> {
+class BookmarkedNewsState extends State<BookmarkedNews> {
   final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey =
       GlobalKey<RefreshIndicatorState>();
 
@@ -29,14 +29,14 @@ class _LikedNewsState extends State<LikedNews> {
   Future<void> _refreshData() async {
     try {
       final List<NewsModel?> fetch =
-          await NewsService().getAllLikedBy(user: widget.user);
+          await NewsService().getAllBookmarkedBy(user: widget.user);
 
       setState(() {
-        loading = false;
         newsList = fetch;
+        loading = false;
       });
     } catch (e) {
-      print("Error Get Liked News: ${e.toString()}");
+      print("Error Get Bookmarked News: ${e.toString()}");
     }
   }
 
@@ -60,7 +60,7 @@ class _LikedNewsState extends State<LikedNews> {
           ),
         ),
         title: Text(
-          "Liked News",
+          "Bookmarked News",
           style: TextStyle(
             fontWeight: FontWeight.bold,
             color: getColorByBackground(context),

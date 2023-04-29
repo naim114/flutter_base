@@ -10,11 +10,10 @@ import 'package:flutter_quill/flutter_quill.dart' hide Text;
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
 import 'package:news_app/src/widgets/list_tile/list_tile_profile.dart';
+import 'package:dotted_line/dotted_line.dart';
 import 'package:shimmer/shimmer.dart';
 import '../../model/user_model.dart';
 import '../../services/helpers.dart';
-import 'package:dotted_line/dotted_line.dart';
-
 import '../../widgets/card/news_card_simple.dart';
 
 class NewsView extends StatefulWidget {
@@ -34,22 +33,38 @@ class NewsView extends StatefulWidget {
 }
 
 class _NewsViewState extends State<NewsView> {
-  bool liked = false;
+  final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey =
+      GlobalKey<RefreshIndicatorState>();
 
-  @override
-  void initState() {
-    super.initState();
-    liked = NewsService().isLike(news: widget.news, user: widget.user);
+  List<Object?> allList = [
+    [],
+    [],
+  ];
+
+  Future<void> _refreshData() async {
+    try {
+      final NewsModel? news = await NewsService().get(widget.news.id);
+      final List<CommentModel?> comments =
+          await CommentServices().getByNews(widget.news);
+
+      setState(() {
+        allList = [
+          news,
+          comments,
+        ];
+      });
+
+      // Trigger a refresh of the RefreshIndicator widget
+      _refreshIndicatorKey.currentState?.show();
+    } catch (e) {
+      print("Error Get All News:  ${e.toString()}");
+    }
+
+    setState(() {});
   }
 
   @override
   Widget build(BuildContext context) {
-    final controller = QuillController(
-      document: Document.fromJson(jsonDecode(widget.news.jsonContent)),
-      selection: const TextSelection.collapsed(offset: 0),
-    );
-    liked = NewsService().isLike(news: widget.news, user: widget.user);
-
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
@@ -69,8 +84,14 @@ class _NewsViewState extends State<NewsView> {
           ),
         ),
       ),
-      body: FutureBuilder(
-          future: CommentServices().getByNews(widget.news),
+      body: RefreshIndicator(
+        key: _refreshIndicatorKey,
+        onRefresh: _refreshData,
+        child: FutureBuilder(
+          future: Future.wait([
+            NewsService().get(widget.news.id),
+            CommentServices().getByNews(widget.news)
+          ]),
           builder: (context, snapshot) {
             if (snapshot.hasError) {
               return const Center(
@@ -79,23 +100,31 @@ class _NewsViewState extends State<NewsView> {
                 style: TextStyle(color: CupertinoColors.systemGrey),
               ));
             } else if (!snapshot.hasData ||
+                snapshot.data![0] == null ||
                 snapshot.connectionState == ConnectionState.waiting) {
               return const Center(child: CircularProgressIndicator());
             }
 
-            List<CommentModel?>? comments = snapshot.data;
+            NewsModel? news = snapshot.data![0] as NewsModel?;
+            List<CommentModel?>? comments =
+                snapshot.data![1] as List<CommentModel?>?;
+
+            final controller = QuillController(
+              document: Document.fromJson(jsonDecode(news!.jsonContent)),
+              selection: const TextSelection.collapsed(offset: 0),
+            );
 
             return ListView(
               children: [
                 // Thumbnail
-                widget.news.imgURL == null
+                news.imgURL == null
                     ? Image.asset(
                         'assets/images/noimage.png',
                         fit: BoxFit.cover,
                         height: MediaQuery.of(context).size.height * 0.5,
                       )
                     : CachedNetworkImage(
-                        imageUrl: widget.news.imgURL!,
+                        imageUrl: news.imgURL!,
                         fit: BoxFit.cover,
                         height: MediaQuery.of(context).size.height * 0.5,
                         placeholder: (context, url) => Shimmer.fromColors(
@@ -113,14 +142,14 @@ class _NewsViewState extends State<NewsView> {
                         ),
                       ),
                 // Thumbnail Desc
-                widget.news.thumbnailDescription == null
+                news.thumbnailDescription == null
                     ? const SizedBox()
                     : Padding(
                         padding: const EdgeInsets.only(
                           top: 8,
                         ),
                         child: Text(
-                          widget.news.thumbnailDescription!,
+                          news.thumbnailDescription!,
                           style: const TextStyle(
                             color: CupertinoColors.systemGrey,
                             fontStyle: FontStyle.italic,
@@ -131,7 +160,7 @@ class _NewsViewState extends State<NewsView> {
                         ),
                       ),
                 // Category TODO view news by category
-                widget.news.category == null
+                news.category == null
                     ? const SizedBox()
                     : Padding(
                         padding: const EdgeInsets.only(
@@ -140,7 +169,7 @@ class _NewsViewState extends State<NewsView> {
                           bottom: 10,
                         ),
                         child: Text(
-                          widget.news.category!.toUpperCase(),
+                          news.category!.toUpperCase(),
                           style: const TextStyle(
                             color: CustomColor.primary,
                             fontSize: 20,
@@ -157,7 +186,7 @@ class _NewsViewState extends State<NewsView> {
                     right: 15,
                   ),
                   child: Text(
-                    widget.news.title,
+                    news.title,
                     style: TextStyle(
                       color: getColorByBackground(context),
                       fontSize: 32,
@@ -175,7 +204,7 @@ class _NewsViewState extends State<NewsView> {
                     top: 5,
                   ),
                   child: Text(
-                    widget.news.description,
+                    news.description,
                     style: TextStyle(
                       color: getColorByBackground(context),
                       fontSize: 20,
@@ -185,37 +214,33 @@ class _NewsViewState extends State<NewsView> {
                   ),
                 ),
                 // Author TODO view news by author
-                widget.news.author == null
+                news.author == null
                     ? const SizedBox()
                     : listTileProfile(
                         context: context,
-                        user: widget.news.author!,
+                        user: news.author!,
                         includeEdit: false,
                       ),
                 // Date
                 Padding(
                   padding: const EdgeInsets.only(left: 15, bottom: 5),
                   child: Text(
-                    "Posted on ${DateFormat('MMMM d, y').format(widget.news.createdAt)}",
+                    "Posted on ${DateFormat('MMMM d, y').format(news.createdAt)}",
                     style: const TextStyle(
                       fontSize: 16,
                     ),
                   ),
                 ),
-                widget.news.createdAt.year == widget.news.updatedAt.year &&
-                        widget.news.createdAt.month ==
-                            widget.news.updatedAt.month &&
-                        widget.news.createdAt.day ==
-                            widget.news.updatedAt.day &&
-                        widget.news.createdAt.hour ==
-                            widget.news.updatedAt.hour &&
-                        widget.news.createdAt.minute ==
-                            widget.news.updatedAt.minute
+                news.createdAt.year == news.updatedAt.year &&
+                        news.createdAt.month == news.updatedAt.month &&
+                        news.createdAt.day == news.updatedAt.day &&
+                        news.createdAt.hour == news.updatedAt.hour &&
+                        news.createdAt.minute == news.updatedAt.minute
                     ? const SizedBox()
                     : Padding(
                         padding: const EdgeInsets.only(left: 15, bottom: 10),
                         child: Text(
-                          "Updated on ${DateFormat('MMMM d, y').format(widget.news.updatedAt)}",
+                          "Updated on ${DateFormat('MMMM d, y').format(news.updatedAt)}",
                           style: const TextStyle(
                             fontSize: 16,
                           ),
@@ -226,33 +251,72 @@ class _NewsViewState extends State<NewsView> {
                   padding: const EdgeInsets.symmetric(horizontal: 15),
                   child: Row(
                     children: [
-                      OutlinedButton(
-                        onPressed: () {}, // TODO bookmark
-                        style: ButtonStyle(
-                          shape:
-                              MaterialStateProperty.all<RoundedRectangleBorder>(
-                            RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(18.0),
-                            ),
-                          ),
-                        ),
-                        child: Icon(
-                          Icons.bookmark,
-                          color: getColorByBackground(context),
-                        ),
-                      ),
-                      const SizedBox(width: 5),
-                      liked
+                      NewsService().isBookmark(news: news, user: widget.user)
                           ? OutlinedButton(
                               onPressed: () async {
-                                dynamic result = await NewsService().unlike(
-                                    news: widget.news, user: widget.user);
+                                dynamic result = await NewsService()
+                                    .unbookmark(news: news, user: widget.user);
+                                print("result: $result");
+
+                                if (result == true) {
+                                  Fluttertoast.showToast(
+                                      msg: "News unbookmarked");
+                                }
+
+                                _refreshData();
+                              },
+                              style: ButtonStyle(
+                                shape: MaterialStateProperty.all<
+                                    RoundedRectangleBorder>(
+                                  RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(18.0),
+                                  ),
+                                ),
+                              ),
+                              child: const Icon(
+                                Icons.bookmark,
+                                color: CustomColor.secondary,
+                              ),
+                            )
+                          : OutlinedButton(
+                              onPressed: () async {
+                                dynamic result = await NewsService()
+                                    .bookmark(news: news, user: widget.user);
+                                print("result: $result");
+
+                                if (result == true) {
+                                  Fluttertoast.showToast(
+                                      msg: "News bookmarked");
+                                }
+
+                                _refreshData();
+                              },
+                              style: ButtonStyle(
+                                shape: MaterialStateProperty.all<
+                                    RoundedRectangleBorder>(
+                                  RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(18.0),
+                                  ),
+                                ),
+                              ),
+                              child: Icon(
+                                Icons.bookmark,
+                                color: getColorByBackground(context),
+                              ),
+                            ),
+                      const SizedBox(width: 5),
+                      NewsService().isLike(news: news, user: widget.user)
+                          ? OutlinedButton(
+                              onPressed: () async {
+                                dynamic result = await NewsService()
+                                    .unlike(news: news, user: widget.user);
                                 print("result: $result");
 
                                 if (result == true) {
                                   Fluttertoast.showToast(msg: "News unliked");
-                                  setState(() => liked = false);
                                 }
+
+                                _refreshData();
                               },
                               style: ButtonStyle(
                                 shape: MaterialStateProperty.all<
@@ -274,7 +338,7 @@ class _NewsViewState extends State<NewsView> {
                                     ),
                                     TextSpan(
                                       text:
-                                          ' ${widget.news.likedBy == null ? 0 : widget.news.likedBy!.length}',
+                                          ' ${news.likedBy == null ? 0 : news.likedBy!.length}',
                                       style: TextStyle(
                                         color: getColorByBackground(context),
                                         fontWeight: FontWeight.bold,
@@ -287,13 +351,14 @@ class _NewsViewState extends State<NewsView> {
                           : OutlinedButton(
                               onPressed: () async {
                                 dynamic result = await NewsService()
-                                    .like(news: widget.news, user: widget.user);
+                                    .like(news: news, user: widget.user);
                                 print("result: $result");
 
                                 if (result == true) {
                                   Fluttertoast.showToast(msg: "News liked");
-                                  setState(() => liked = true);
                                 }
+
+                                _refreshData();
                               },
                               style: ButtonStyle(
                                 shape: MaterialStateProperty.all<
@@ -315,7 +380,7 @@ class _NewsViewState extends State<NewsView> {
                                     ),
                                     TextSpan(
                                       text:
-                                          ' ${widget.news.likedBy == null ? 0 : widget.news.likedBy!.length}',
+                                          ' ${news.likedBy == null ? 0 : news.likedBy!.length}',
                                       style: TextStyle(
                                         color: getColorByBackground(context),
                                         fontWeight: FontWeight.bold,
@@ -329,7 +394,7 @@ class _NewsViewState extends State<NewsView> {
                       OutlinedButton(
                         onPressed: () => CommentServices().showComment(
                           context,
-                          widget.news,
+                          news,
                           widget.user,
                         ),
                         style: ButtonStyle(
@@ -377,7 +442,7 @@ class _NewsViewState extends State<NewsView> {
                   dashColor: getColorByBackground(context),
                 ),
                 // Tag
-                widget.news.tag == null
+                news.tag == null
                     ? const SizedBox()
                     : Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -404,7 +469,7 @@ class _NewsViewState extends State<NewsView> {
                             child: SingleChildScrollView(
                               scrollDirection: Axis.horizontal,
                               child: Row(
-                                children: widget.news.tag!.map((tag) {
+                                children: news.tag!.map((tag) {
                                   return Container(
                                     decoration: const BoxDecoration(
                                       borderRadius: BorderRadius.all(
@@ -464,7 +529,7 @@ class _NewsViewState extends State<NewsView> {
                         children: [
                           listTileProfile(
                             context: context,
-                            user: widget.news.author!,
+                            user: news.author!,
                             includeEdit: false,
                             fontColor: Colors.white,
                           ),
@@ -475,7 +540,8 @@ class _NewsViewState extends State<NewsView> {
                               bottom: 30,
                             ),
                             child: Text(
-                              "Anne Helen Petersen is a senior culture writer for BuzzFeed News and is based in Missoula, Montana.",
+                              news.author!.bio ??
+                                  "Tap to read more article from ${news.author!.name}",
                               style: const TextStyle(
                                 fontSize: 18,
                                 color: Colors.white,
@@ -496,9 +562,9 @@ class _NewsViewState extends State<NewsView> {
                   child: OutlinedButton(
                     onPressed: () => CommentServices().showComment(
                       context,
-                      widget.news,
+                      news,
                       widget.user,
-                    ), // TODO comment
+                    ),
                     style: ButtonStyle(
                       backgroundColor: MaterialStateProperty.resolveWith(
                           (states) => Colors.black),
@@ -627,7 +693,9 @@ class _NewsViewState extends State<NewsView> {
                 const SizedBox(height: 15),
               ],
             );
-          }),
+          },
+        ),
+      ),
     );
   }
 }

@@ -78,6 +78,31 @@ class NewsService {
     );
   }
 
+  // convert QueryDocumentSnapshot to model object
+  Future<NewsModel?> fromMap(Map<String, dynamic> map) async {
+    return NewsModel(
+      id: map['id'],
+      title: map['title'],
+      likedBy: map['likedBy'] == null ? null : jsonDecode(map['likedBy']),
+      author: await UserServices().get(map['author']),
+      updatedBy: map['updatedBy'] == null
+          ? map['updatedBy']
+          : await UserServices().get(map['author']),
+      jsonContent: map['jsonContent'],
+      starred: map['starred'],
+      createdAt: map['createdAt'].toDate(),
+      updatedAt: map['updatedAt'].toDate(),
+      imgPath: map['imgPath'],
+      imgURL: map['imgURL'],
+      description: map['description'],
+      category: map['category'],
+      thumbnailDescription: map['thumbnailDescription'],
+      bookmarkBy:
+          map['bookmarkBy'] == null ? null : jsonDecode(map['bookmarkBy']),
+      tag: map['tag'] == null ? null : jsonDecode(map['tag']),
+    );
+  }
+
   // get all
   Future<List<NewsModel?>> getAll() async {
     // Get docs from collection reference
@@ -167,6 +192,24 @@ class NewsService {
 
     for (var news in all) {
       if (news != null && isLike(news: news, user: user)) {
+        fetch.add(news);
+      }
+    }
+
+    return fetch;
+  }
+
+  // get all bookmark by user
+  Future<List<NewsModel?>> getAllBookmarkedBy({
+    required UserModel user,
+  }) async {
+    // Get docs from collection reference
+    final List<NewsModel?> all = await NewsService().getAll();
+
+    List<NewsModel> fetch = List.empty(growable: true);
+
+    for (var news in all) {
+      if (news != null && isBookmark(news: news, user: user)) {
         fetch.add(news);
       }
     }
@@ -546,7 +589,7 @@ class NewsService {
 
         dynamic result = _collectionRef.doc(news.id).update({
           'likedBy': jsonEncode(likedBy),
-        }).then((value) => print("News Liked"));
+        }).then((value) => print("News Unliked"));
 
         print("Like News: $result");
       }
@@ -638,5 +681,106 @@ class NewsService {
     await file.writeAsBytes(bytes);
 
     return file;
+  }
+
+  Future bookmark({
+    required NewsModel news,
+    required UserModel user,
+  }) async {
+    try {
+      final List<dynamic> bookmarkBy =
+          news.bookmarkBy ?? List.empty(growable: true);
+
+      bookmarkBy.add(user.id);
+
+      dynamic result = _collectionRef.doc(news.id).update({
+        'bookmarkBy': jsonEncode(bookmarkBy),
+      }).then((value) => print("News Bookmarked"));
+
+      print("Bookmark News: $result");
+
+      await UserServices()
+          .get(_auth.currentUser!.uid)
+          .then((currentUser) async {
+        print("Get current user");
+        if (currentUser != null) {
+          await UserActivityServices()
+              .add(
+                user: currentUser,
+                description: "Bookmark News (Title: ${news.title})",
+                activityType: "news_bookmark",
+                networkInfo: _networkInfo,
+                deviceInfoPlugin: _deviceInfoPlugin,
+              )
+              .then((value) => print("Activity Added"));
+        }
+      });
+
+      return true;
+    } catch (e) {
+      print(e.toString());
+      Fluttertoast.showToast(msg: e.toString());
+
+      return false;
+    }
+  }
+
+  Future unbookmark({
+    required NewsModel news,
+    required UserModel user,
+  }) async {
+    try {
+      final List<dynamic> bookmarkBy =
+          news.bookmarkBy ?? List.empty(growable: true);
+
+      if (bookmarkBy.contains(user.id)) {
+        bookmarkBy.remove(user.id);
+
+        dynamic result = _collectionRef.doc(news.id).update({
+          'bookmarkBy': jsonEncode(bookmarkBy),
+        }).then((value) => print("News Unbookmarked"));
+
+        print("Unbookmark News: $result");
+      }
+
+      await UserServices()
+          .get(_auth.currentUser!.uid)
+          .then((currentUser) async {
+        print("Get current user");
+        if (currentUser != null) {
+          await UserActivityServices()
+              .add(
+                user: currentUser,
+                description: "Bookmark News (Title: ${news.title})",
+                activityType: "news_unbookmark",
+                networkInfo: _networkInfo,
+                deviceInfoPlugin: _deviceInfoPlugin,
+              )
+              .then((value) => print("Activity Added"));
+        }
+      });
+
+      return true;
+    } catch (e) {
+      print(e.toString());
+      Fluttertoast.showToast(msg: e.toString());
+
+      return false;
+    }
+  }
+
+  bool isBookmark({
+    required NewsModel news,
+    required UserModel user,
+  }) {
+    if (news.bookmarkBy != null) {
+      for (String id in news.bookmarkBy!) {
+        if (id == user.id) {
+          return true;
+        }
+      }
+    }
+
+    return false;
   }
 }

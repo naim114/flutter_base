@@ -15,6 +15,7 @@ import '../../model/user_model.dart';
 import '../../services/auth_services.dart';
 import '../../widgets/list_tile/list_tile_icon.dart';
 import '../../widgets/list_tile/list_tile_profile.dart';
+import '../news/bookmarked.dart';
 
 class Account extends StatefulWidget {
   const Account({
@@ -148,6 +149,18 @@ class _AccountState extends State<Account> {
                             onTap: () => Navigator.of(widget.mainContext).push(
                               MaterialPageRoute(
                                 builder: (context) => LikedNews(user: user),
+                              ),
+                            ),
+                          ),
+                          // Liked News
+                          listTileIcon(
+                            context: context,
+                            icon: CupertinoIcons.bookmark_fill,
+                            title: "Bookmarked News",
+                            onTap: () => Navigator.of(widget.mainContext).push(
+                              MaterialPageRoute(
+                                builder: (context) =>
+                                    BookmarkedNews(user: user),
                               ),
                             ),
                           ),
