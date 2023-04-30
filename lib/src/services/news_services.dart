@@ -4,6 +4,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:news_app/src/model/news_model.dart';
 import 'package:news_app/src/services/user_activity_services.dart';
 import 'package:news_app/src/services/user_services.dart';
@@ -11,8 +14,13 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:network_info_plus/network_info_plus.dart';
 import 'package:path/path.dart' as path;
 import 'package:path_provider/path_provider.dart';
+import 'package:search_page/search_page.dart';
+import '../features/news/news_view.dart';
 import '../model/user_model.dart';
 import 'package:http/http.dart' as http;
+
+import '../widgets/card/news_card.dart';
+import 'helpers.dart';
 
 class NewsService {
   final CollectionReference _collectionRef =
@@ -782,5 +790,97 @@ class NewsService {
     }
 
     return false;
+  }
+
+  Future searchNews({
+    required BuildContext context,
+    required UserModel user,
+    String? query,
+  }) async {
+    List<NewsModel?> newsList = await NewsService().getAll();
+
+    if (context.mounted) {
+      return showSearch(
+        context: context,
+        query: query,
+        delegate: SearchPage(
+          barTheme: Theme.of(context).brightness == Brightness.dark
+              ? ThemeData(
+                  inputDecorationTheme: const InputDecorationTheme(
+                    border: InputBorder.none,
+                    hintStyle: TextStyle(color: Colors.grey),
+                  ),
+                  textTheme: Theme.of(context).textTheme.apply(
+                        bodyColor: Colors.white,
+                        displayColor: Colors.white,
+                      ),
+                  scaffoldBackgroundColor: CustomColor.neutral1,
+                  appBarTheme: const AppBarTheme(
+                    backgroundColor: CustomColor.neutral1,
+                  ),
+                )
+              : ThemeData(
+                  inputDecorationTheme: const InputDecorationTheme(
+                    border: InputBorder.none,
+                    hintStyle: TextStyle(color: Colors.grey),
+                  ),
+                  textTheme: Theme.of(context).textTheme.apply(
+                        bodyColor: CustomColor.neutral1,
+                        displayColor: CustomColor.neutral1,
+                      ),
+                  scaffoldBackgroundColor: Colors.white,
+                  appBarTheme: const AppBarTheme(
+                    backgroundColor: Colors.white,
+                    iconTheme: IconThemeData(color: CupertinoColors.systemGrey),
+                  ),
+                ),
+          onQueryUpdate: print,
+          items: newsList,
+          searchLabel: 'Search news',
+          suggestion: const Center(
+            child: Text(
+                'Search news by typing title, description, author or tags'),
+          ),
+          failure: const Center(
+            child: Text('No news found :('),
+          ),
+          filter: (news) {
+            return [
+              news!.title,
+              DateFormat('dd/MM/yyyy').format(news.createdAt),
+              news.author!.name,
+              news.author!.email,
+              news.category,
+              news.description,
+              ...?news.tag == null
+                  ? null
+                  : news.tag!.map((e) => e.toString()).toList(),
+            ];
+          },
+          builder: (news) => Padding(
+            padding: const EdgeInsets.symmetric(
+              horizontal: 10,
+              vertical: 5,
+            ),
+            child: newsCard(
+              context: context,
+              imageURL: news!.imgURL,
+              title: news.title,
+              date: news.createdAt,
+              likeCount: news.likedBy == null ? 0 : news.likedBy!.length,
+              onTap: () => Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (context) => NewsView(
+                    mainContext: context,
+                    news: news,
+                    user: user,
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ),
+      );
+    }
   }
 }

@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:news_app/src/features/news/carousel_news.dart';
 import 'package:news_app/src/features/news/latest_news.dart';
 import 'package:news_app/src/features/news/popular_news.dart';
-import 'package:news_app/src/features/news/search_news.dart';
 import 'package:news_app/src/services/news_services.dart';
 import 'package:provider/provider.dart';
 import '../../model/app_settings_model.dart';
@@ -115,12 +114,14 @@ class _NewsState extends State<News> with TickerProviderStateMixin {
                     appBar: AppBar(
                       centerTitle: true,
                       actions: [
-                        SearchNews(
-                          mainContext: widget.mainContext,
-                          newsList: allNews,
-                          user: widget.user!,
-                          child: const Icon(Icons.search),
-                        ),
+                        IconButton(
+                          onPressed: () {
+                            NewsService().searchNews(
+                                context: widget.mainContext,
+                                user: widget.user!);
+                          },
+                          icon: const Icon(Icons.search),
+                        )
                       ],
                       title: CachedNetworkImage(
                         imageUrl: appSettings!.logoFaviconURL,
