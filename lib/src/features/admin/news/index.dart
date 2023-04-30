@@ -4,6 +4,7 @@ import 'package:news_app/src/features/admin/news/add.dart';
 import 'package:news_app/src/features/admin/news/edit.dart';
 import 'package:news_app/src/features/news/news_view.dart';
 import 'package:news_app/src/model/news_model.dart';
+import 'package:news_app/src/services/comment_services.dart';
 import 'package:news_app/src/services/news_services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
@@ -372,6 +373,14 @@ class _AdminPanelNewsState extends State<AdminPanelNews> {
                                       ),
                                     );
                                     widget.notifyRefresh(true);
+                                  },
+                                ),
+                                // Comment
+                                IconButton(
+                                  icon: const Icon(Icons.chat_bubble),
+                                  onPressed: () {
+                                    CommentServices().showComment(
+                                        context, news, widget.currentUser);
                                   },
                                 ),
                                 // Delete

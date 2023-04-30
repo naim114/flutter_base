@@ -307,51 +307,66 @@ class _NewsEditorState extends State<NewsEditor> {
                                     _tagController.hasTags ? '' : "Enter tag",
                                 errorText: error,
                                 prefixIcon: tags.isNotEmpty
-                                    ? SingleChildScrollView(
-                                        controller: sc,
-                                        scrollDirection: Axis.horizontal,
-                                        child: Row(
-                                            children: tags.map((String tag) {
-                                          return Container(
-                                            decoration: const BoxDecoration(
-                                              borderRadius: BorderRadius.all(
-                                                Radius.circular(20.0),
-                                              ),
-                                              color: CustomColor.primary,
-                                            ),
-                                            margin: const EdgeInsets.symmetric(
-                                                horizontal: 5.0),
-                                            padding: const EdgeInsets.symmetric(
-                                                horizontal: 10.0,
-                                                vertical: 5.0),
+                                    ? Padding(
+                                        padding:
+                                            const EdgeInsets.only(right: 8.0),
+                                        child: SizedBox(
+                                          width: MediaQuery.of(context)
+                                                  .size
+                                                  .width *
+                                              0.7,
+                                          child: SingleChildScrollView(
+                                            controller: sc,
+                                            scrollDirection: Axis.horizontal,
                                             child: Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment
-                                                      .spaceBetween,
-                                              children: [
-                                                InkWell(
-                                                  child: Text(
-                                                    "#$tag",
-                                                    style: const TextStyle(
-                                                        color: Colors.white),
+                                                children:
+                                                    tags.map((String tag) {
+                                              return Container(
+                                                decoration: const BoxDecoration(
+                                                  borderRadius:
+                                                      BorderRadius.all(
+                                                    Radius.circular(20.0),
                                                   ),
+                                                  color: CustomColor.primary,
                                                 ),
-                                                const SizedBox(width: 4.0),
-                                                InkWell(
-                                                  child: const Icon(
-                                                    Icons.cancel,
-                                                    size: 14.0,
-                                                    color: Color.fromARGB(
-                                                        255, 233, 233, 233),
-                                                  ),
-                                                  onTap: () {
-                                                    onTagDelete(tag);
-                                                  },
-                                                )
-                                              ],
-                                            ),
-                                          );
-                                        }).toList()),
+                                                margin:
+                                                    const EdgeInsets.symmetric(
+                                                        horizontal: 5.0),
+                                                padding:
+                                                    const EdgeInsets.symmetric(
+                                                        horizontal: 10.0,
+                                                        vertical: 5.0),
+                                                child: Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment
+                                                          .spaceBetween,
+                                                  children: [
+                                                    InkWell(
+                                                      child: Text(
+                                                        "#$tag",
+                                                        style: const TextStyle(
+                                                            color:
+                                                                Colors.white),
+                                                      ),
+                                                    ),
+                                                    const SizedBox(width: 4.0),
+                                                    InkWell(
+                                                      child: const Icon(
+                                                        Icons.cancel,
+                                                        size: 14.0,
+                                                        color: Color.fromARGB(
+                                                            255, 233, 233, 233),
+                                                      ),
+                                                      onTap: () {
+                                                        onTagDelete(tag);
+                                                      },
+                                                    )
+                                                  ],
+                                                ),
+                                              );
+                                            }).toList()),
+                                          ),
+                                        ),
                                       )
                                     : null,
                               ),

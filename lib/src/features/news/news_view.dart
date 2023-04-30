@@ -617,9 +617,16 @@ class _NewsViewState extends State<NewsView> {
                     ]),
                     builder: (context, snapshot) {
                       if (snapshot.connectionState == ConnectionState.waiting) {
-                        return const Center(child: CircularProgressIndicator());
+                        return const Padding(
+                          padding: EdgeInsets.only(top: 8.0),
+                          child: Center(child: CircularProgressIndicator()),
+                        );
                       } else if (snapshot.hasError) {
-                        return Center(child: Text('Error: ${snapshot.error}'));
+                        return Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child:
+                              Center(child: Text('Error: ${snapshot.error}')),
+                        );
                       }
 
                       final List<NewsModel?> latestNewsList = snapshot.data![0];
