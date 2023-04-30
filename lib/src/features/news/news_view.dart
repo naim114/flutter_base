@@ -188,7 +188,7 @@ class _NewsViewState extends State<NewsView> {
                             news.category!.toUpperCase(),
                             style: const TextStyle(
                               color: CustomColor.primary,
-                              fontSize: 20,
+                              fontSize: 18,
                               fontWeight: FontWeight.bold,
                             ),
                             maxLines: 5,
@@ -560,7 +560,7 @@ class _NewsViewState extends State<NewsView> {
                                 news.author!.bio ??
                                     "Tap to read more article from ${news.author!.name}",
                                 style: const TextStyle(
-                                  fontSize: 18,
+                                  fontSize: 16,
                                   color: Colors.white,
                                 ),
                               ),
@@ -643,7 +643,7 @@ class _NewsViewState extends State<NewsView> {
                               "MORE NEWS",
                               style: TextStyle(
                                 fontWeight: FontWeight.bold,
-                                fontSize: 20,
+                                fontSize: 18,
                               ),
                             ),
                           ),
@@ -679,7 +679,7 @@ class _NewsViewState extends State<NewsView> {
                               "EDITOR'S PICK",
                               style: TextStyle(
                                 fontWeight: FontWeight.bold,
-                                fontSize: 20,
+                                fontSize: 18,
                               ),
                             ),
                           ),

@@ -292,6 +292,7 @@ class CommentServices {
                 padding: const EdgeInsets.only(top: 3.0),
                 child: TextField(
                   controller: commentController,
+                  autofocus: true,
                   decoration: InputDecoration(
                     border: InputBorder.none,
                     fillColor: isDarkTheme(context)

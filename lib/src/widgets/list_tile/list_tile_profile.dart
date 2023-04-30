@@ -83,7 +83,7 @@ Widget listTileProfile({
             user.email,
             overflow: TextOverflow.ellipsis,
             maxLines: 1,
-            style: TextStyle(fontWeight: FontWeight.bold, color: defaultColor),
+            style: TextStyle(color: defaultColor),
           )
         : null,
     contentPadding: const EdgeInsets.all(15),
