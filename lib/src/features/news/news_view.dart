@@ -171,7 +171,7 @@ class _NewsViewState extends State<NewsView> {
                           maxLines: 5,
                           overflow: TextOverflow.ellipsis,
                         ),
-                  // Category TODO view news by category
+                  // Category
                   news.category == null
                       ? const SizedBox()
                       : Padding(
@@ -180,15 +180,40 @@ class _NewsViewState extends State<NewsView> {
                             top: 10,
                             bottom: 10,
                           ),
-                          child: Text(
-                            news.category!.toUpperCase(),
-                            style: const TextStyle(
-                              color: CustomColor.primary,
-                              fontSize: 18,
-                              fontWeight: FontWeight.bold,
+                          child: GestureDetector(
+                            onTap: () async {
+                              showDialog(
+                                context: widget.mainContext,
+                                barrierDismissible: false,
+                                builder: (BuildContext context) {
+                                  return const Center(
+                                    child: CircularProgressIndicator(),
+                                  );
+                                },
+                              );
+
+                              await NewsService().searchNews(
+                                context: widget.mainContext,
+                                user: widget.user,
+                                query: news.category,
+                              );
+
+                              if (context.mounted) {
+                                Navigator.of(widget.mainContext,
+                                        rootNavigator: true)
+                                    .pop();
+                              }
+                            },
+                            child: Text(
+                              news.category!.toUpperCase(),
+                              style: const TextStyle(
+                                color: CustomColor.primary,
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                              ),
+                              maxLines: 5,
+                              overflow: TextOverflow.ellipsis,
                             ),
-                            maxLines: 5,
-                            overflow: TextOverflow.ellipsis,
                           ),
                         ),
                   // Title
@@ -225,13 +250,38 @@ class _NewsViewState extends State<NewsView> {
                       overflow: TextOverflow.ellipsis,
                     ),
                   ),
-                  // Author TODO view news by author
+                  // Author
                   news.author == null
                       ? const SizedBox()
-                      : listTileProfile(
-                          context: context,
-                          user: news.author!,
-                          includeEdit: false,
+                      : GestureDetector(
+                          onTap: () async {
+                            showDialog(
+                              context: widget.mainContext,
+                              barrierDismissible: false,
+                              builder: (BuildContext context) {
+                                return const Center(
+                                  child: CircularProgressIndicator(),
+                                );
+                              },
+                            );
+
+                            await NewsService().searchNews(
+                              context: widget.mainContext,
+                              user: widget.user,
+                              query: news.author!.name,
+                            );
+
+                            if (context.mounted) {
+                              Navigator.of(widget.mainContext,
+                                      rootNavigator: true)
+                                  .pop();
+                            }
+                          },
+                          child: listTileProfile(
+                            context: context,
+                            user: news.author!,
+                            includeEdit: false,
+                          ),
                         ),
                   // Date
                   Padding(
@@ -504,8 +554,31 @@ class _NewsViewState extends State<NewsView> {
                                               style: const TextStyle(
                                                   color: Colors.white),
                                             ),
-                                            onTap:
-                                                () {}, // TODO view article by tag
+                                            onTap: () async {
+                                              showDialog(
+                                                context: widget.mainContext,
+                                                barrierDismissible: false,
+                                                builder:
+                                                    (BuildContext context) {
+                                                  return const Center(
+                                                    child:
+                                                        CircularProgressIndicator(),
+                                                  );
+                                                },
+                                              );
+
+                                              await NewsService().searchNews(
+                                                context: widget.mainContext,
+                                                user: widget.user,
+                                                query: tag,
+                                              );
+
+                                              if (context.mounted) {
+                                                Navigator.of(widget.mainContext,
+                                                        rootNavigator: true)
+                                                    .pop();
+                                              }
+                                            },
                                           ),
                                         ],
                                       ),
@@ -530,7 +603,28 @@ class _NewsViewState extends State<NewsView> {
                       bottom: 15,
                     ),
                     child: InkWell(
-                      onTap: () {}, // TODO view news by author
+                      onTap: () async {
+                        showDialog(
+                          context: widget.mainContext,
+                          barrierDismissible: false,
+                          builder: (BuildContext context) {
+                            return const Center(
+                              child: CircularProgressIndicator(),
+                            );
+                          },
+                        );
+
+                        await NewsService().searchNews(
+                          context: widget.mainContext,
+                          user: widget.user,
+                          query: widget.news.author!.name,
+                        );
+
+                        if (context.mounted) {
+                          Navigator.of(widget.mainContext, rootNavigator: true)
+                              .pop();
+                        }
+                      },
                       child: Container(
                         decoration: BoxDecoration(
                             border: Border.all(color: CustomColor.primary),
@@ -618,7 +712,7 @@ class _NewsViewState extends State<NewsView> {
                     builder: (context, snapshot) {
                       if (snapshot.connectionState == ConnectionState.waiting) {
                         return const Padding(
-                          padding: EdgeInsets.only(top: 8.0),
+                          padding: EdgeInsets.only(top: 15.0),
                           child: Center(child: CircularProgressIndicator()),
                         );
                       } else if (snapshot.hasError) {

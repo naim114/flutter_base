@@ -115,10 +115,26 @@ class _NewsState extends State<News> with TickerProviderStateMixin {
                       centerTitle: true,
                       actions: [
                         IconButton(
-                          onPressed: () {
-                            NewsService().searchNews(
+                          onPressed: () async {
+                            showDialog(
+                              context: widget.mainContext,
+                              barrierDismissible: false,
+                              builder: (BuildContext context) {
+                                return const Center(
+                                  child: CircularProgressIndicator(),
+                                );
+                              },
+                            );
+
+                            await NewsService().searchNews(
                                 context: widget.mainContext,
                                 user: widget.user!);
+
+                            if (context.mounted) {
+                              Navigator.of(widget.mainContext,
+                                      rootNavigator: true)
+                                  .pop();
+                            }
                           },
                           icon: const Icon(Icons.search),
                         )

@@ -10,7 +10,7 @@ v2
 <!-- - add tags  -->
 <!-- - add category  -->
 <!-- - add desc -->
-- add bookmark
+<!-- - add bookmark -->
 <!-- - add comment -->
 <!-- - make user name required -->
 <!-- - add user bio -->
