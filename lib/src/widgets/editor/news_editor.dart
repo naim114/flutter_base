@@ -99,6 +99,7 @@ class _NewsEditorState extends State<NewsEditor> {
     descController.dispose();
     thumbnailDescController.dispose();
     categoryController.dispose();
+    _tagController.dispose();
   }
 
   @override

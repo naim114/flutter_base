@@ -357,7 +357,6 @@ class _AdminPanelNewsState extends State<AdminPanelNews> {
                                         ),
                                       ),
                                     );
-                                    widget.notifyRefresh(true);
                                   },
                                 ),
                                 // Edit

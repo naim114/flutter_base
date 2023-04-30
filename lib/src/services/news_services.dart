@@ -439,7 +439,7 @@ class NewsService {
           'thumbnailDescription': thumbnailDescription,
           'description': description,
           'category': category,
-          'tag': tag,
+          'tag': jsonEncode(tag),
         }).then((value) => print("News Edited"));
 
         print("Update News: $result");
@@ -454,7 +454,7 @@ class NewsService {
           'thumbnailDescription': null,
           'description': description,
           'category': category,
-          'tag': tag,
+          'tag': jsonEncode(tag),
         }).then((value) => print("News Edited"));
 
         print("Update News: $result");

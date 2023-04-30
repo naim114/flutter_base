@@ -35,6 +35,7 @@ class _EditNewsState extends State<EditNews> {
         : widget.news.tag!.map((e) => e.toString()).toList();
 
     return widget.news.imgPath != null
+        // w/ thumbnail
         ? FutureBuilder<File>(
             future: NewsService().downloadThumbnail(widget.news),
             builder: (context, snapshot) {
@@ -64,6 +65,9 @@ class _EditNewsState extends State<EditNews> {
                             editor: widget.currentUser,
                             imageFile: thumbnailFile,
                             description: desc,
+                            category: catergory,
+                            tag: tag,
+                            thumbnailDescription: thumbnailDesc,
                           );
                         } else {
                           result = await NewsService().edit(
@@ -73,6 +77,9 @@ class _EditNewsState extends State<EditNews> {
                                 quillController.document.toDelta().toJson()),
                             editor: widget.currentUser,
                             description: desc,
+                            category: catergory,
+                            tag: tag,
+                            thumbnailDescription: null,
                           );
                         }
 
@@ -83,11 +90,15 @@ class _EditNewsState extends State<EditNews> {
                       },
                     );
             })
+        // w/o thumbnail
         : NewsEditor(
             context: context,
             controller: controller,
             title: widget.news.title,
             appBarTitle: "Edit News",
+            category: widget.news.category,
+            description: widget.news.description,
+            thumbnailDescription: widget.news.thumbnailDescription,
             tags: tags,
             onPost: (quillController, thumbnailFile, title, desc, thumbnailDesc,
                 catergory, tag) async {
@@ -102,6 +113,9 @@ class _EditNewsState extends State<EditNews> {
                   editor: widget.currentUser,
                   imageFile: thumbnailFile,
                   description: desc,
+                  category: catergory,
+                  tag: tag,
+                  thumbnailDescription: thumbnailDesc,
                 );
               } else {
                 result = await NewsService().edit(
@@ -111,6 +125,9 @@ class _EditNewsState extends State<EditNews> {
                       jsonEncode(quillController.document.toDelta().toJson()),
                   editor: widget.currentUser,
                   description: desc,
+                  category: catergory,
+                  tag: tag,
+                  thumbnailDescription: null,
                 );
               }
 

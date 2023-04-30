@@ -157,23 +157,19 @@ class _NewsViewState extends State<NewsView> {
                             height: MediaQuery.of(context).size.height * 0.4,
                           ),
                         ),
+                  const SizedBox(height: 8),
                   // Thumbnail Desc
                   news.thumbnailDescription == null
                       ? const SizedBox()
-                      : Padding(
-                          padding: const EdgeInsets.only(
-                            top: 8,
+                      : Text(
+                          news.thumbnailDescription!,
+                          style: const TextStyle(
+                            color: CupertinoColors.systemGrey,
+                            fontStyle: FontStyle.italic,
                           ),
-                          child: Text(
-                            news.thumbnailDescription!,
-                            style: const TextStyle(
-                              color: CupertinoColors.systemGrey,
-                              fontStyle: FontStyle.italic,
-                            ),
-                            textAlign: TextAlign.center,
-                            maxLines: 5,
-                            overflow: TextOverflow.ellipsis,
-                          ),
+                          textAlign: TextAlign.center,
+                          maxLines: 5,
+                          overflow: TextOverflow.ellipsis,
                         ),
                   // Category TODO view news by category
                   news.category == null
