@@ -24,16 +24,20 @@ class _NotificationBuilderState extends State<NotificationBuilder> {
   final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey =
       GlobalKey<RefreshIndicatorState>();
 
-  List<NotificationModel?> dataList = List.empty(growable: true);
+  List<NotificationModel> dataList = List.empty(growable: true);
+  bool loading = true;
 
   Future<void> _refreshData() async {
     try {
       // Call the asynchronous operation to fetch data
-      final List<NotificationModel?> fetchedData =
-          await NotificationServices().getAll();
+      final List<NotificationModel> fetchedData =
+          (await NotificationServices().getAll())
+              .whereType<NotificationModel>()
+              .toList();
 
       // Update the state with the fetched data and call setState to rebuild the UI
       setState(() {
+        loading = false;
         dataList = fetchedData;
       });
 
@@ -47,42 +51,45 @@ class _NotificationBuilderState extends State<NotificationBuilder> {
   }
 
   @override
+  void initState() {
+    super.initState();
+    _refreshData();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return RefreshIndicator(
-      key: _refreshIndicatorKey,
-      onRefresh: _refreshData,
-      child: FutureBuilder<List<NotificationModel?>>(
-        future: NotificationServices().getAll(),
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting ||
-              snapshot.data == null) {
-            return const Scaffold(
-                body: Center(child: CircularProgressIndicator()));
-          } else if (snapshot.data != null) {
-            List<NotificationModel> dataList =
-                snapshot.data!.whereType<NotificationModel>().toList();
+    return loading
+        ? const Scaffold(body: Center(child: CircularProgressIndicator()))
+        : RefreshIndicator(
+            key: _refreshIndicatorKey,
+            onRefresh: _refreshData,
+            child: Builder(
+              builder: (context) {
+                if (widget.pushTo == 'AdminPanelNotification') {
+                  List<NotificationModel> uniqueNotiList = dataList
+                      .groupBy((noti) => noti.groupId)
+                      .values
+                      .map((group) => group.toSet().toList()[0])
+                      .toList();
 
-            if (widget.pushTo == 'AdminPanelNotification') {
-              List<NotificationModel> uniqueNotiList = dataList
-                  .groupBy((noti) => noti.groupId)
-                  .values
-                  .map((group) => group.toSet().toList()[0])
-                  .toList();
-
-              return AdminPanelNotification(
-                currentUser: widget.currentUser,
-                notiList: uniqueNotiList,
-                notifyRefresh: (refresh) {
-                  _refreshData();
-                },
-              );
-            }
-          }
-
-          return const Scaffold(
-              body: Center(child: CircularProgressIndicator()));
-        },
-      ),
-    );
+                  return AdminPanelNotification(
+                    currentUser: widget.currentUser,
+                    notiList: uniqueNotiList,
+                    notifyRefresh: (refresh) {
+                      _refreshData();
+                    },
+                  );
+                } else {
+                  return AdminPanelNotification(
+                    currentUser: widget.currentUser,
+                    notiList: dataList,
+                    notifyRefresh: (refresh) {
+                      _refreshData();
+                    },
+                  );
+                }
+              },
+            ),
+          );
   }
 }

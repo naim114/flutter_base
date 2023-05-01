@@ -15,8 +15,8 @@ v2
 <!-- - make user name required -->
 <!-- - add user bio -->
 
-- rework frontpage
-- rework news view
+<!-- - rework frontpage -->
+<!-- - rework news view -->
 - add explore page (search, split news by category)
 
 - anonymous/google sign in

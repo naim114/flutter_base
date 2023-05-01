@@ -190,77 +190,86 @@ class _AdminPanelUsersState extends State<AdminPanelUsers> {
                     return DataRow(
                       cells: [
                         DataCell(
-                          SizedBox(
-                            width: MediaQuery.of(context).size.height * 0.055,
-                            child: user.avatarURL == null
-                                ? Container(
-                                    height: MediaQuery.of(context).size.height *
-                                        0.055,
-                                    width: MediaQuery.of(context).size.height *
-                                        0.055,
-                                    decoration: const BoxDecoration(
-                                      shape: BoxShape.circle,
-                                      image: DecorationImage(
-                                          image: AssetImage(
-                                              'assets/images/default-profile-picture.png'),
-                                          fit: BoxFit.cover),
-                                    ),
-                                  )
-                                : CachedNetworkImage(
-                                    imageUrl: user.avatarURL!,
-                                    fit: BoxFit.cover,
-                                    imageBuilder: (context, imageProvider) =>
-                                        Container(
+                          Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 3.0),
+                            child: SizedBox(
+                              width: MediaQuery.of(context).size.height * 0.05,
+                              child: user.avatarURL == null
+                                  ? Container(
                                       height:
                                           MediaQuery.of(context).size.height *
-                                              0.055,
+                                              0.05,
                                       width:
                                           MediaQuery.of(context).size.height *
-                                              0.055,
-                                      decoration: BoxDecoration(
+                                              0.05,
+                                      decoration: const BoxDecoration(
                                         shape: BoxShape.circle,
                                         image: DecorationImage(
-                                            image: imageProvider,
+                                            image: AssetImage(
+                                                'assets/images/default-profile-picture.png'),
                                             fit: BoxFit.cover),
                                       ),
-                                    ),
-                                    placeholder: (context, url) =>
-                                        Shimmer.fromColors(
-                                      baseColor: CupertinoColors.systemGrey,
-                                      highlightColor:
-                                          CupertinoColors.systemGrey2,
-                                      child: Container(
+                                    )
+                                  : CachedNetworkImage(
+                                      imageUrl: user.avatarURL!,
+                                      fit: BoxFit.cover,
+                                      imageBuilder: (context, imageProvider) =>
+                                          Container(
                                         height:
                                             MediaQuery.of(context).size.height *
-                                                0.055,
+                                                0.05,
                                         width:
                                             MediaQuery.of(context).size.height *
-                                                0.055,
-                                        decoration: const BoxDecoration(
-                                          shape: BoxShape.circle,
-                                          color: Colors.grey,
-                                        ),
-                                      ),
-                                    ),
-                                    errorWidget: (context, url, error) {
-                                      print("Avatar Error: $error");
-                                      return Container(
-                                        height:
-                                            MediaQuery.of(context).size.height *
-                                                0.055,
-                                        width:
-                                            MediaQuery.of(context).size.height *
-                                                0.055,
-                                        decoration: const BoxDecoration(
+                                                0.05,
+                                        decoration: BoxDecoration(
                                           shape: BoxShape.circle,
                                           image: DecorationImage(
-                                              image: AssetImage(
-                                                  'assets/images/default-profile-picture.png'),
+                                              image: imageProvider,
                                               fit: BoxFit.cover),
                                         ),
-                                      );
-                                    },
-                                  ),
+                                      ),
+                                      placeholder: (context, url) =>
+                                          Shimmer.fromColors(
+                                        baseColor: CupertinoColors.systemGrey,
+                                        highlightColor:
+                                            CupertinoColors.systemGrey2,
+                                        child: Container(
+                                          height: MediaQuery.of(context)
+                                                  .size
+                                                  .height *
+                                              0.05,
+                                          width: MediaQuery.of(context)
+                                                  .size
+                                                  .height *
+                                              0.05,
+                                          decoration: const BoxDecoration(
+                                            shape: BoxShape.circle,
+                                            color: Colors.grey,
+                                          ),
+                                        ),
+                                      ),
+                                      errorWidget: (context, url, error) {
+                                        print("Avatar Error: $error");
+                                        return Container(
+                                          height: MediaQuery.of(context)
+                                                  .size
+                                                  .height *
+                                              0.05,
+                                          width: MediaQuery.of(context)
+                                                  .size
+                                                  .height *
+                                              0.05,
+                                          decoration: const BoxDecoration(
+                                            shape: BoxShape.circle,
+                                            image: DecorationImage(
+                                                image: AssetImage(
+                                                    'assets/images/default-profile-picture.png'),
+                                                fit: BoxFit.cover),
+                                          ),
+                                        );
+                                      },
+                                    ),
+                            ),
                           ),
                         ),
                         DataCell(Text(user.role!.displayName)),
