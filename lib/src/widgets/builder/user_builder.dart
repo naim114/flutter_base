@@ -63,6 +63,8 @@ class _UsersBuilderState extends State<UsersBuilder> {
             List<UserModel> userList =
                 snapshot.data!.whereType<UserModel>().toList();
 
+            userList.removeWhere((user) => user.role!.name == 'super_admin');
+
             if (widget.pushTo == 'AdminPanelUsers') {
               return AdminPanelUsers(
                 userList: userList,

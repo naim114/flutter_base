@@ -310,11 +310,14 @@ class _NewsEditorState extends State<NewsEditor> {
                                     ? Padding(
                                         padding:
                                             const EdgeInsets.only(right: 8.0),
-                                        child: SizedBox(
-                                          width: MediaQuery.of(context)
-                                                  .size
-                                                  .width *
-                                              0.7,
+                                        child: ConstrainedBox(
+                                          constraints: BoxConstraints(
+                                            minWidth: 0,
+                                            maxWidth: MediaQuery.of(context)
+                                                    .size
+                                                    .width *
+                                                0.7,
+                                          ),
                                           child: SingleChildScrollView(
                                             controller: sc,
                                             scrollDirection: Axis.horizontal,

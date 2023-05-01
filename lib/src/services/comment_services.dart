@@ -182,7 +182,7 @@ class CommentServices {
         padding:
             EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
         child: Container(
-          height: MediaQuery.of(context).size.height * 0.97,
+          height: MediaQuery.of(context).size.height,
           padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
           decoration: BoxDecoration(
             color: isDarkTheme(context)
@@ -198,7 +198,7 @@ class CommentServices {
             children: [
               //  Header
               Padding(
-                padding: const EdgeInsets.only(bottom: 12),
+                padding: const EdgeInsets.only(bottom: 5),
                 child: Container(
                   width: 40,
                   margin: const EdgeInsets.symmetric(
@@ -214,16 +214,33 @@ class CommentServices {
                   ),
                 ),
               ),
-              Text(
-                "Comments",
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  color: getColorByBackground(context),
-                  fontSize: 16,
-                ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    "Comments",
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      color: getColorByBackground(context),
+                      fontSize: 18,
+                    ),
+                  ),
+                  IconButton(
+                    onPressed: () => Navigator.pop(context),
+                    icon: const Icon(Icons.close),
+                  )
+                ],
               ),
+              // Text(
+              //   "Comments",
+              //   style: TextStyle(
+              //     fontWeight: FontWeight.bold,
+              //     color: getColorByBackground(context),
+              //     fontSize: 16,
+              //   ),
+              // ),
               const Padding(
-                padding: EdgeInsets.symmetric(vertical: 15),
+                padding: EdgeInsets.symmetric(vertical: 10),
                 child: Divider(
                   color: Colors.grey,
                   height: 1,
