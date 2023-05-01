@@ -6,7 +6,7 @@ import '../../model/news_model.dart';
 import '../../services/helpers.dart';
 import '../../services/news_services.dart';
 import '../../widgets/card/news_card.dart';
-import '../../widgets/card/news_card_big.dart';
+import '../../widgets/card/news_card_main.dart';
 
 class BookmarkedNews extends StatefulWidget {
   final UserModel user;

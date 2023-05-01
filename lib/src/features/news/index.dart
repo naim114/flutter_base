@@ -1,8 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:news_app/src/features/news/carousel_news.dart';
-import 'package:news_app/src/features/news/latest_news.dart';
-import 'package:news_app/src/features/news/popular_news.dart';
+import 'package:news_app/src/features/news/news_section.dart';
 import 'package:news_app/src/services/news_services.dart';
 import 'package:provider/provider.dart';
 import '../../model/app_settings_model.dart';
@@ -27,7 +25,6 @@ class _NewsState extends State<News> with TickerProviderStateMixin {
       GlobalKey<RefreshIndicatorState>();
 
   List<List<NewsModel?>> allList = [
-    [], // fetchedAllNews
     [], // fetchedStarredNews
     [], // fetchedPopularNews
     [], // fetchedLatestNews
@@ -35,7 +32,6 @@ class _NewsState extends State<News> with TickerProviderStateMixin {
 
   Future<void> _refreshData() async {
     try {
-      final List<NewsModel?> fetchedAllNews = await NewsService().getAll();
       final List<NewsModel?> fetchedStarredNews = await NewsService().getAllBy(
         fieldName: 'starred',
         desc: true,
@@ -53,12 +49,7 @@ class _NewsState extends State<News> with TickerProviderStateMixin {
       );
 
       setState(() {
-        allList = [
-          fetchedAllNews,
-          fetchedStarredNews,
-          fetchedPopularNews,
-          fetchedLatestNews
-        ];
+        allList = [fetchedStarredNews, fetchedPopularNews, fetchedLatestNews];
       });
 
       // Trigger a refresh of the RefreshIndicator widget
@@ -81,7 +72,6 @@ class _NewsState extends State<News> with TickerProviderStateMixin {
             onRefresh: _refreshData,
             child: FutureBuilder(
               future: Future.wait([
-                NewsService().getAll(),
                 NewsService().getAllBy(
                   fieldName: 'starred',
                   desc: true,
@@ -105,10 +95,9 @@ class _NewsState extends State<News> with TickerProviderStateMixin {
                 } else if (snapshot.hasError) {
                   return Center(child: Text('Error: ${snapshot.error}'));
                 } else {
-                  final List<NewsModel?> allNews = snapshot.data![0];
-                  final List<NewsModel?> starredNewsList = snapshot.data![1];
-                  final List<NewsModel?> popularNewsList = snapshot.data![2];
-                  final List<NewsModel?> latestNewsList = snapshot.data![3];
+                  final List<NewsModel?> starredNewsList = snapshot.data![0];
+                  final List<NewsModel?> popularNewsList = snapshot.data![1];
+                  final List<NewsModel?> latestNewsList = snapshot.data![2];
 
                   return Scaffold(
                     appBar: AppBar(
@@ -157,89 +146,37 @@ class _NewsState extends State<News> with TickerProviderStateMixin {
                     ),
                     body: ListView(
                       children: [
-                        // // Page Title
-                        // Container(
-                        //   padding: const EdgeInsets.only(
-                        //     top: 25,
-                        //     left: 25,
-                        //     right: 25,
-                        //     bottom: 10,
-                        //   ),
-                        //   child: Column(
-                        //     crossAxisAlignment: CrossAxisAlignment.start,
-                        //     children: [
-                        //       pageTitleIcon(
-                        //         context: context,
-                        //         title: "News",
-                        //         icon: const Icon(
-                        //           Icons.newspaper,
-                        //           size: 24,
-                        //         ),
-                        //       ),
-                        //       const Padding(
-                        //         padding:
-                        //             EdgeInsets.symmetric(vertical: 10),
-                        //         child: Text(
-                        //           'Get all the latest news here.',
-                        //         ),
-                        //       ),
-                        //     ],
-                        //   ),
-                        // ),
-                        // // Search News
-                        // SearchNews(
-                        //   mainContext: widget.mainContext,
-                        //   newsList: allNews,
-                        // ),
-                        // Carousel News (Starred News)
-                        CarouselNews(
-                          mainContext: widget.mainContext,
-                          newsList: starredNewsList,
-                          user: widget.user!,
-                        ),
+                        const SizedBox(height: 5),
+                        starredNewsList.isEmpty
+                            ? const SizedBox()
+                            : newsSection(
+                                context: context,
+                                mainContext: widget.mainContext,
+                                newsList: starredNewsList,
+                                user: widget.user!,
+                                title: 'More News',
+                              ),
+                        const SizedBox(height: 5),
                         // Popular News Cards
                         popularNewsList.isEmpty
                             ? const SizedBox()
-                            : const Padding(
-                                padding: EdgeInsets.symmetric(
-                                    horizontal: 25, vertical: 10),
-                                child: Text(
-                                  "Popular News",
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 16,
-                                  ),
-                                ),
-                              ),
-                        popularNewsList.isEmpty
-                            ? const SizedBox()
-                            : popularNews(
+                            : newsSection(
                                 context: context,
                                 mainContext: widget.mainContext,
                                 newsList: popularNewsList,
                                 user: widget.user!,
+                                title: 'Popular News',
                               ),
+                        const SizedBox(height: 5),
                         // Latest News Cards
                         latestNewsList.isEmpty
                             ? const SizedBox()
-                            : const Padding(
-                                padding: EdgeInsets.symmetric(
-                                    horizontal: 25, vertical: 10),
-                                child: Text(
-                                  "Latest News",
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 16,
-                                  ),
-                                ),
-                              ),
-                        latestNewsList.isEmpty
-                            ? const SizedBox()
-                            : latestNews(
+                            : newsSection(
                                 context: context,
                                 mainContext: widget.mainContext,
                                 newsList: latestNewsList,
                                 user: widget.user!,
+                                title: 'Latest News',
                               ),
                         const SizedBox(height: 40),
                       ],

@@ -4,7 +4,7 @@ import 'package:news_app/src/model/user_model.dart';
 import '../../model/news_model.dart';
 import '../../services/helpers.dart';
 import '../../services/news_services.dart';
-import '../../widgets/card/news_card_big.dart';
+import '../../widgets/card/news_card_main.dart';
 
 class LikedNews extends StatefulWidget {
   final UserModel user;
