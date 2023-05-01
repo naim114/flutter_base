@@ -6,6 +6,7 @@ import '../../model/news_model.dart';
 import '../../services/helpers.dart';
 import '../../services/news_services.dart';
 import '../../widgets/card/news_card.dart';
+import '../../widgets/card/news_card_big.dart';
 
 class BookmarkedNews extends StatefulWidget {
   final UserModel user;
@@ -77,28 +78,10 @@ class BookmarkedNewsState extends State<BookmarkedNews> {
                 itemBuilder: (context, index) {
                   NewsModel news = newsList[index]!;
 
-                  return Padding(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 20,
-                      vertical: 3,
-                    ),
-                    child: newsCard(
-                      context: context,
-                      imageURL: news.imgURL,
-                      title: news.title,
-                      date: news.createdAt,
-                      likeCount:
-                          news.likedBy == null ? 0 : news.likedBy!.length,
-                      onTap: () => Navigator.of(context).push(
-                        MaterialPageRoute(
-                          builder: (context) => NewsView(
-                            mainContext: context,
-                            news: news,
-                            user: widget.user,
-                          ),
-                        ),
-                      ),
-                    ),
+                  return newsCardMain(
+                    context: context,
+                    news: news,
+                    user: widget.user,
                   );
                 },
               ),

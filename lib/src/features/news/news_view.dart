@@ -148,13 +148,13 @@ class _NewsViewState extends State<NewsView> {
                             highlightColor: CupertinoColors.systemGrey2,
                             child: Container(
                               color: Colors.grey,
-                              height: MediaQuery.of(context).size.height * 0.4,
+                              height: MediaQuery.of(context).size.height * 0.5,
                             ),
                           ),
                           errorWidget: (context, url, error) => Image.asset(
                             'assets/images/noimage.png',
                             fit: BoxFit.cover,
-                            height: MediaQuery.of(context).size.height * 0.4,
+                            height: MediaQuery.of(context).size.height * 0.5,
                           ),
                         ),
                   const SizedBox(height: 8),
@@ -168,7 +168,6 @@ class _NewsViewState extends State<NewsView> {
                             fontStyle: FontStyle.italic,
                           ),
                           textAlign: TextAlign.center,
-                          maxLines: 5,
                           overflow: TextOverflow.ellipsis,
                         ),
                   // Category
@@ -211,7 +210,7 @@ class _NewsViewState extends State<NewsView> {
                                 fontSize: 18,
                                 fontWeight: FontWeight.bold,
                               ),
-                              maxLines: 5,
+                              maxLines: 1,
                               overflow: TextOverflow.ellipsis,
                             ),
                           ),
@@ -229,7 +228,7 @@ class _NewsViewState extends State<NewsView> {
                         fontSize: 32,
                         fontWeight: FontWeight.bold,
                       ),
-                      maxLines: 5,
+                      maxLines: 10,
                       overflow: TextOverflow.ellipsis,
                     ),
                   ),
@@ -246,7 +245,7 @@ class _NewsViewState extends State<NewsView> {
                         color: getColorByBackground(context),
                         fontSize: 20,
                       ),
-                      maxLines: 5,
+                      maxLines: 20,
                       overflow: TextOverflow.ellipsis,
                     ),
                   ),
@@ -647,8 +646,10 @@ class _NewsViewState extends State<NewsView> {
                                 bottom: 30,
                               ),
                               child: Text(
-                                news.author!.bio ??
-                                    "Tap to read more article from ${news.author!.name}",
+                                news.author!.bio == null ||
+                                        news.author!.bio!.isEmpty
+                                    ? "Tap to read more article from ${news.author!.name}"
+                                    : news.author!.bio!,
                                 style: const TextStyle(
                                   fontSize: 16,
                                   color: Colors.white,
