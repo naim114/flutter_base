@@ -6,6 +6,7 @@ import 'package:news_app/src/services/helpers.dart';
 import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 import 'package:provider/provider.dart';
 import '../../model/user_model.dart';
+import '../explore/index.dart';
 import '../news/index.dart';
 
 class FrontFrame extends StatefulWidget {
@@ -35,6 +36,13 @@ class _FrontFrameState extends State<FrontFrame> {
         inactiveColorPrimary: CupertinoColors.systemGrey,
       ),
       PersistentBottomNavBarItem(
+        icon: const Icon(Icons.search),
+        title: ("Explore"),
+        activeColorPrimary:
+            isDarkTheme(context) ? Colors.white : CustomColor.primary,
+        inactiveColorPrimary: CupertinoColors.systemGrey,
+      ),
+      PersistentBottomNavBarItem(
         icon: const Icon(CupertinoIcons.bell_fill),
         title: ("Notification"),
         activeColorPrimary:
@@ -59,7 +67,16 @@ class _FrontFrameState extends State<FrontFrame> {
       context,
       controller: _controller,
       screens: [
-        News(mainContext: context, user: user),
+        News(
+          mainContext: context,
+          user: user,
+          onAvatarTap: () => _controller.jumpToTab(3),
+        ),
+        Explore(
+          mainContext: context,
+          user: user,
+          onAvatarTap: () => _controller.jumpToTab(3),
+        ),
         Notifications(mainContext: context, user: user),
         Account(mainContext: context, user: user),
       ],

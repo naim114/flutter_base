@@ -8,6 +8,7 @@ import 'package:shimmer/shimmer.dart';
 
 import '../../../model/user_model.dart';
 import '../../../services/helpers.dart';
+import '../../../widgets/image/avatar.dart';
 
 class AdminPanelUsers extends StatefulWidget {
   final List<UserModel> userList;
@@ -192,83 +193,10 @@ class _AdminPanelUsersState extends State<AdminPanelUsers> {
                         DataCell(
                           Padding(
                             padding: const EdgeInsets.symmetric(vertical: 3.0),
-                            child: SizedBox(
+                            child: avatar(
+                              user: user,
+                              height: MediaQuery.of(context).size.height * 0.05,
                               width: MediaQuery.of(context).size.height * 0.05,
-                              child: user.avatarURL == null
-                                  ? Container(
-                                      height:
-                                          MediaQuery.of(context).size.height *
-                                              0.05,
-                                      width:
-                                          MediaQuery.of(context).size.height *
-                                              0.05,
-                                      decoration: const BoxDecoration(
-                                        shape: BoxShape.circle,
-                                        image: DecorationImage(
-                                            image: AssetImage(
-                                                'assets/images/default-profile-picture.png'),
-                                            fit: BoxFit.cover),
-                                      ),
-                                    )
-                                  : CachedNetworkImage(
-                                      imageUrl: user.avatarURL!,
-                                      fit: BoxFit.cover,
-                                      imageBuilder: (context, imageProvider) =>
-                                          Container(
-                                        height:
-                                            MediaQuery.of(context).size.height *
-                                                0.05,
-                                        width:
-                                            MediaQuery.of(context).size.height *
-                                                0.05,
-                                        decoration: BoxDecoration(
-                                          shape: BoxShape.circle,
-                                          image: DecorationImage(
-                                              image: imageProvider,
-                                              fit: BoxFit.cover),
-                                        ),
-                                      ),
-                                      placeholder: (context, url) =>
-                                          Shimmer.fromColors(
-                                        baseColor: CupertinoColors.systemGrey,
-                                        highlightColor:
-                                            CupertinoColors.systemGrey2,
-                                        child: Container(
-                                          height: MediaQuery.of(context)
-                                                  .size
-                                                  .height *
-                                              0.05,
-                                          width: MediaQuery.of(context)
-                                                  .size
-                                                  .height *
-                                              0.05,
-                                          decoration: const BoxDecoration(
-                                            shape: BoxShape.circle,
-                                            color: Colors.grey,
-                                          ),
-                                        ),
-                                      ),
-                                      errorWidget: (context, url, error) {
-                                        print("Avatar Error: $error");
-                                        return Container(
-                                          height: MediaQuery.of(context)
-                                                  .size
-                                                  .height *
-                                              0.05,
-                                          width: MediaQuery.of(context)
-                                                  .size
-                                                  .height *
-                                              0.05,
-                                          decoration: const BoxDecoration(
-                                            shape: BoxShape.circle,
-                                            image: DecorationImage(
-                                                image: AssetImage(
-                                                    'assets/images/default-profile-picture.png'),
-                                                fit: BoxFit.cover),
-                                          ),
-                                        );
-                                      },
-                                    ),
                             ),
                           ),
                         ),

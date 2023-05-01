@@ -1,4 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:news_app/src/features/news/news_section.dart';
 import 'package:news_app/src/services/news_services.dart';
@@ -6,15 +7,18 @@ import 'package:provider/provider.dart';
 import '../../model/app_settings_model.dart';
 import '../../model/news_model.dart';
 import '../../model/user_model.dart';
+import '../../widgets/image/avatar.dart';
 
 class News extends StatefulWidget {
   const News({
     super.key,
     required this.mainContext,
     required this.user,
+    required this.onAvatarTap,
   });
   final BuildContext mainContext;
   final UserModel? user;
+  final void Function()? onAvatarTap;
 
   @override
   State<News> createState() => _NewsState();
@@ -93,32 +97,8 @@ class _NewsState extends State<News> with TickerProviderStateMixin {
                 return Scaffold(
                   appBar: AppBar(
                     centerTitle: true,
-                    actions: [
-                      IconButton(
-                        onPressed: () async {
-                          showDialog(
-                            context: widget.mainContext,
-                            barrierDismissible: false,
-                            builder: (BuildContext context) {
-                              return const Center(
-                                child: CircularProgressIndicator(),
-                              );
-                            },
-                          );
-
-                          await NewsService().searchNews(
-                              context: widget.mainContext, user: widget.user!);
-
-                          if (context.mounted) {
-                            Navigator.of(widget.mainContext,
-                                    rootNavigator: true)
-                                .pop();
-                          }
-                        },
-                        icon: const Icon(Icons.search),
-                      )
-                    ],
                     title: CachedNetworkImage(
+                      // TODO extract widget
                       imageUrl: appSettings!.logoFaviconURL,
                       fit: BoxFit.contain,
                       height: 30,
@@ -131,6 +111,21 @@ class _NewsState extends State<News> with TickerProviderStateMixin {
                         'assets/images/default_logo_favicon.png',
                         fit: BoxFit.contain,
                         height: 30,
+                      ),
+                    ),
+                    leading: GestureDetector(
+                      onTap: widget.onAvatarTap,
+                      child: Padding(
+                        padding: const EdgeInsets.only(
+                          left: 20.0,
+                          top: 10,
+                          bottom: 10,
+                        ),
+                        child: avatar(
+                          user: widget.user!,
+                          width: MediaQuery.of(context).size.height * 0.05,
+                          height: MediaQuery.of(context).size.height * 0.05,
+                        ),
                       ),
                     ),
                   ),
