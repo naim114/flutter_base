@@ -183,6 +183,7 @@ class _NewsEditorState extends State<NewsEditor> {
           : ListView(
               children: [
                 ExpansionTile(
+                    initiallyExpanded: true,
                     title: const Text("News Details",
                         style: TextStyle(fontWeight: FontWeight.bold)),
                     children: [
@@ -216,6 +217,7 @@ class _NewsEditorState extends State<NewsEditor> {
                       ),
                     ]),
                 ExpansionTile(
+                  initiallyExpanded: true,
                   title: const Text(
                     "Thumbnail",
                     style: TextStyle(fontWeight: FontWeight.bold),
@@ -266,6 +268,7 @@ class _NewsEditorState extends State<NewsEditor> {
                   ],
                 ),
                 ExpansionTile(
+                  initiallyExpanded: true,
                   title: const Text(
                     "Category/Tag",
                     style: TextStyle(fontWeight: FontWeight.bold),
