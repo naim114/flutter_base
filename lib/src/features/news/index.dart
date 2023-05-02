@@ -90,9 +90,9 @@ class _NewsState extends State<News> with TickerProviderStateMixin {
             onRefresh: _refreshData,
             child: Builder(
               builder: (context) {
-                final List<NewsModel?> starredNewsList = allList[0];
-                final List<NewsModel?> popularNewsList = allList[1];
-                final List<NewsModel?> latestNewsList = allList[2];
+                final List<NewsModel> starredNewsList = allList[0];
+                final List<NewsModel> popularNewsList = allList[1];
+                final List<NewsModel> latestNewsList = allList[2];
 
                 return Scaffold(
                   appBar: AppBar(

@@ -114,7 +114,8 @@ class NewsService {
   // get all
   Future<List<NewsModel?>> getAll() async {
     // Get docs from collection reference
-    QuerySnapshot querySnapshot = await _collectionRef.get();
+    QuerySnapshot querySnapshot =
+        await _collectionRef.orderBy('createdAt', descending: true).get();
 
     if (querySnapshot.docs.isNotEmpty) {
       List<DocumentSnapshot> docList = querySnapshot.docs;
@@ -145,7 +146,8 @@ class NewsService {
   Future<List<NewsModel?>> getBy(String fieldName, String value) async {
     List<NewsModel?> dataList = List.empty(growable: true);
 
-    QuerySnapshot querySnapshot = await _collectionRef.get();
+    QuerySnapshot querySnapshot =
+        await _collectionRef.orderBy('createdAt', descending: true).get();
 
     final List<QueryDocumentSnapshot<Object?>> allDoc =
         querySnapshot.docs.toList();
