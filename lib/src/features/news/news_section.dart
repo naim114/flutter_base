@@ -16,7 +16,7 @@ Widget newsSection({
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         newsCardMain(
-          context: context,
+          context: mainContext,
           news: newsList[0]!,
           user: user,
         ),

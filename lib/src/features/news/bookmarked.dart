@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:news_app/src/features/news/news_view.dart';
 import 'package:news_app/src/model/user_model.dart';
 
 import '../../model/news_model.dart';
 import '../../services/helpers.dart';
 import '../../services/news_services.dart';
-import '../../widgets/card/news_card.dart';
 import '../../widgets/card/news_card_main.dart';
 
 class BookmarkedNews extends StatefulWidget {

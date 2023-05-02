@@ -1,10 +1,7 @@
-import 'package:cached_network_image/cached_network_image.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:news_app/src/features/news/news_section.dart';
 import 'package:news_app/src/services/news_services.dart';
-import 'package:provider/provider.dart';
-import '../../model/app_settings_model.dart';
+import 'package:news_app/src/widgets/image/logo_favicon.dart';
 import '../../model/news_model.dart';
 import '../../model/user_model.dart';
 import '../../widgets/image/avatar.dart';
@@ -44,13 +41,20 @@ class _NewsState extends State<News> with TickerProviderStateMixin {
       ))
           .whereType<NewsModel>()
           .toList();
-      final List<NewsModel> fetchedPopularNews = (await NewsService().getAllBy(
-        fieldName: 'likeCount',
-        desc: true,
-        limit: 5,
-      ))
-          .whereType<NewsModel>()
-          .toList();
+
+      final List<NewsModel> fetchedAllNews =
+          (await NewsService().getAll()).whereType<NewsModel>().toList();
+
+      final List<NewsModel> fetchedPopularNews = fetchedAllNews
+          .where((news) =>
+              news.likedBy != null &&
+              news.likedBy!.isNotEmpty) // only consider news with likes
+          .toList()
+        ..sort((a, b) => b.likedBy!.length
+            .compareTo(a.likedBy!.length)) // sort by number of likes
+        ..take(5) // take only the top five news with the most likes
+            .toList();
+
       final List<NewsModel> fetchedLatestNews = (await NewsService().getAllBy(
         fieldName: 'createdAt',
         desc: true,
@@ -81,9 +85,7 @@ class _NewsState extends State<News> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    final appSettings = Provider.of<AppSettingsModel?>(context);
-
-    return (appSettings == null && widget.user == null) || loading
+    return loading
         ? const Scaffold(body: Center(child: CircularProgressIndicator()))
         : RefreshIndicator(
             key: _refreshIndicatorKey,
@@ -97,22 +99,7 @@ class _NewsState extends State<News> with TickerProviderStateMixin {
                 return Scaffold(
                   appBar: AppBar(
                     centerTitle: true,
-                    title: CachedNetworkImage(
-                      // TODO extract widget
-                      imageUrl: appSettings!.logoFaviconURL,
-                      fit: BoxFit.contain,
-                      height: 30,
-                      placeholder: (context, url) => Image.asset(
-                        'assets/images/default_logo_favicon.png',
-                        fit: BoxFit.contain,
-                        height: 30,
-                      ),
-                      errorWidget: (context, url, error) => Image.asset(
-                        'assets/images/default_logo_favicon.png',
-                        fit: BoxFit.contain,
-                        height: 30,
-                      ),
-                    ),
+                    title: logoFavicon(context: context),
                     leading: GestureDetector(
                       onTap: widget.onAvatarTap,
                       child: Padding(
@@ -131,6 +118,7 @@ class _NewsState extends State<News> with TickerProviderStateMixin {
                   ),
                   body: ListView(
                     children: [
+                      // Latest News
                       const SizedBox(height: 5),
                       starredNewsList.isEmpty
                           ? const SizedBox()
@@ -142,7 +130,7 @@ class _NewsState extends State<News> with TickerProviderStateMixin {
                               title: 'More News',
                             ),
                       const SizedBox(height: 5),
-                      // Popular News Cards
+                      // Popular News
                       popularNewsList.isEmpty
                           ? const SizedBox()
                           : newsSection(
@@ -153,7 +141,7 @@ class _NewsState extends State<News> with TickerProviderStateMixin {
                               title: 'Popular News',
                             ),
                       const SizedBox(height: 5),
-                      // Latest News Cards
+                      // Latest News
                       latestNewsList.isEmpty
                           ? const SizedBox()
                           : newsSection(

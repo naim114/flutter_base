@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:network_info_plus/network_info_plus.dart';
@@ -20,7 +19,6 @@ class CommentServices {
   final CollectionReference _collectionRef =
       FirebaseFirestore.instance.collection('Comment');
   final FirebaseAuth _auth = FirebaseAuth.instance;
-  final FirebaseStorage _firebaseStorage = FirebaseStorage.instance;
 
   static final DeviceInfoPlugin _deviceInfoPlugin = DeviceInfoPlugin();
   final NetworkInfo _networkInfo = NetworkInfo();

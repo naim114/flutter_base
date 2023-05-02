@@ -117,7 +117,7 @@ class _ExploreState extends State<Explore> {
                   );
                   children.add(
                     ListView(
-                      padding: const EdgeInsets.symmetric(vertical: 10),
+                      padding: const EdgeInsets.only(bottom: 40),
                       children: List.generate(newsList.length, (index) {
                         NewsModel news = newsList[index];
 
@@ -132,7 +132,6 @@ class _ExploreState extends State<Explore> {
                 });
                 return DefaultTabController(
                   length: groupedNews.length + 1,
-                  // length: 1,
                   initialIndex: 0,
                   child: Scaffold(
                     appBar: AppBar(
@@ -178,12 +177,12 @@ class _ExploreState extends State<Explore> {
                                 borderRadius: BorderRadius.circular(50.0),
                                 borderSide: const BorderSide(
                                   color: CupertinoColors.systemGrey,
-                                  width: 1.5,
+                                  width: 1,
                                 ),
                               ),
                               contentPadding: const EdgeInsets.all(0),
                               prefixIcon: const Icon(Icons.search),
-                              hintText: 'Search news here',
+                              hintText: 'Search news',
                             ),
                           ),
                         ),
