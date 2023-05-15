@@ -35,12 +35,6 @@ class _AdminPanelNotificationState extends State<AdminPanelNotification> {
   bool _isAscending = true;
 
   @override
-  void initState() {
-    filteredData = widget.notiList;
-    super.initState();
-  }
-
-  @override
   void dispose() {
     searchController.dispose();
     super.dispose();
@@ -58,7 +52,15 @@ class _AdminPanelNotificationState extends State<AdminPanelNotification> {
   }
 
   @override
+  void initState() {
+    filteredData = widget.notiList;
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
+    filteredData = widget.notiList;
+
     return Scaffold(
       appBar: AppBar(
         elevation: 0,

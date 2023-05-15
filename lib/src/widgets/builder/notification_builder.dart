@@ -80,13 +80,8 @@ class _NotificationBuilderState extends State<NotificationBuilder> {
                     },
                   );
                 } else {
-                  return AdminPanelNotification(
-                    currentUser: widget.currentUser,
-                    notiList: dataList,
-                    notifyRefresh: (refresh) {
-                      _refreshData();
-                    },
-                  );
+                  return const Scaffold(
+                      body: Center(child: CircularProgressIndicator()));
                 }
               },
             ),

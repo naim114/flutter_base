@@ -74,13 +74,8 @@ class _NewsBuilderState extends State<NewsBuilder> {
                     },
                   );
                 } else {
-                  return AdminPanelNews(
-                    currentUser: widget.currentUser,
-                    newsList: newsList,
-                    notifyRefresh: (refresh) {
-                      _refreshData();
-                    },
-                  );
+                  return const Scaffold(
+                      body: Center(child: CircularProgressIndicator()));
                 }
               },
             ),

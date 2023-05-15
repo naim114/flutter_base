@@ -87,36 +87,36 @@ class _NewsState extends State<News> with TickerProviderStateMixin {
   Widget build(BuildContext context) {
     return loading
         ? const Scaffold(body: Center(child: CircularProgressIndicator()))
-        : RefreshIndicator(
-            key: _refreshIndicatorKey,
-            onRefresh: _refreshData,
-            child: Builder(
-              builder: (context) {
-                final List<NewsModel> starredNewsList = allList[0];
-                final List<NewsModel> popularNewsList = allList[1];
-                final List<NewsModel> latestNewsList = allList[2];
-
-                return Scaffold(
-                  appBar: AppBar(
-                    centerTitle: true,
-                    title: logoFavicon(context: context),
-                    leading: GestureDetector(
-                      onTap: widget.onAvatarTap,
-                      child: Padding(
-                        padding: const EdgeInsets.only(
-                          left: 20.0,
-                          top: 10,
-                          bottom: 10,
-                        ),
-                        child: avatar(
-                          user: widget.user!,
-                          width: MediaQuery.of(context).size.height * 0.05,
-                          height: MediaQuery.of(context).size.height * 0.05,
-                        ),
-                      ),
-                    ),
+        : Scaffold(
+            appBar: AppBar(
+              centerTitle: true,
+              title: logoFavicon(context: context),
+              leading: GestureDetector(
+                onTap: widget.onAvatarTap,
+                child: Padding(
+                  padding: const EdgeInsets.only(
+                    left: 20.0,
+                    top: 10,
+                    bottom: 10,
                   ),
-                  body: ListView(
+                  child: avatar(
+                    user: widget.user!,
+                    width: MediaQuery.of(context).size.height * 0.05,
+                    height: MediaQuery.of(context).size.height * 0.05,
+                  ),
+                ),
+              ),
+            ),
+            body: RefreshIndicator(
+              key: _refreshIndicatorKey,
+              onRefresh: _refreshData,
+              child: Builder(
+                builder: (context) {
+                  final List<NewsModel> starredNewsList = allList[0];
+                  final List<NewsModel> popularNewsList = allList[1];
+                  final List<NewsModel> latestNewsList = allList[2];
+
+                  return ListView(
                     children: [
                       // Latest News
                       const SizedBox(height: 5),
@@ -153,9 +153,9 @@ class _NewsState extends State<News> with TickerProviderStateMixin {
                             ),
                       const SizedBox(height: 40),
                     ],
-                  ),
-                );
-              },
+                  );
+                },
+              ),
             ),
           );
   }

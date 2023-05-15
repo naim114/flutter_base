@@ -86,7 +86,6 @@ class _NewsEditorState extends State<NewsEditor> {
         categoryController.text.isEmpty ? null : categoryController.text,
         _tagController.getTags,
       );
-      // Navigator.pop(context);
     });
 
     return true;

@@ -34,7 +34,6 @@ class _UsersBuilderState extends State<UsersBuilder> {
       // Call the asynchronous operation to fetch data
       final List<UserModel> fetchedData =
           (await UserServices().getAll()).whereType<UserModel>().toList();
-      ;
 
       // Update the state with the fetched data and call setState to rebuild the UI
       setState(() {
@@ -92,13 +91,8 @@ class _UsersBuilderState extends State<UsersBuilder> {
                     },
                   );
                 } else {
-                  return AdminPanelUsers(
-                    userList: dataList,
-                    currentUser: widget.currentUser,
-                    notifyRefresh: (refresh) {
-                      _refreshData();
-                    },
-                  );
+                  return const Scaffold(
+                      body: Center(child: CircularProgressIndicator()));
                 }
               },
             ),

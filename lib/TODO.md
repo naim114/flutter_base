@@ -17,7 +17,7 @@ v2
 
 <!-- - rework frontpage -->
 <!-- - rework news view -->
-- add explore page (search, split news by category)
+<!-- - add explore page (search, split news by category) -->
 
 - anonymous/google sign in
 - add multiple image/video

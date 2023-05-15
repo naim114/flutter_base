@@ -49,15 +49,11 @@ Widget newsCardMain({
           ),
           // Description
           Padding(
-            padding: const EdgeInsets.only(
-              top: 5,
-            ),
+            padding: const EdgeInsets.only(top: 5),
             child: Text(
               news.description,
-              style: TextStyle(
-                color: getColorByBackground(context),
-                fontSize: 20,
-              ),
+              style:
+                  TextStyle(color: getColorByBackground(context), fontSize: 18),
               maxLines: 3,
               overflow: TextOverflow.ellipsis,
             ),

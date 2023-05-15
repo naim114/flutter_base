@@ -32,12 +32,6 @@ class _AdminPanelUsersState extends State<AdminPanelUsers> {
   bool _isAscending = true;
 
   @override
-  void initState() {
-    filteredData = widget.userList;
-    super.initState();
-  }
-
-  @override
   void dispose() {
     searchController.dispose();
     super.dispose();
@@ -57,7 +51,15 @@ class _AdminPanelUsersState extends State<AdminPanelUsers> {
   }
 
   @override
+  void initState() {
+    filteredData = widget.userList;
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
+    filteredData = widget.userList;
+
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
