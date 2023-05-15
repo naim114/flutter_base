@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:news_app/src/features/news/comments.dart';
 import 'package:news_app/src/model/comment_model.dart';
 import 'package:news_app/src/model/news_model.dart';
 import 'package:news_app/src/services/comment_services.dart';
@@ -454,10 +455,13 @@ class _NewsViewState extends State<NewsView> {
                               ),
                         const SizedBox(width: 5),
                         OutlinedButton(
-                          onPressed: () => CommentServices().showComment(
-                            context,
-                            news,
-                            widget.user,
+                          onPressed: () => Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (context) => NewsComments(
+                                news: news,
+                                currentUser: widget.user,
+                              ),
+                            ),
                           ),
                           style: ButtonStyle(
                             shape: MaterialStateProperty.all<
@@ -668,10 +672,13 @@ class _NewsViewState extends State<NewsView> {
                       right: 20,
                     ),
                     child: OutlinedButton(
-                      onPressed: () => CommentServices().showComment(
-                        context,
-                        news,
-                        widget.user,
+                      onPressed: () => Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (context) => NewsComments(
+                            news: news,
+                            currentUser: widget.user,
+                          ),
+                        ),
                       ),
                       style: ButtonStyle(
                         backgroundColor: MaterialStateProperty.resolveWith(

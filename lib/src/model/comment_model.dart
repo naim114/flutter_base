@@ -20,7 +20,7 @@ class CommentModel {
 
   @override
   String toString() {
-    return 'CommentModel(id: $id, news: $news,text: $text,author: $author,createdAt: $createdAt)';
+    return 'CommentModel(id: $id, news: $news, text: $text,author: $author, createdAt: $createdAt)';
   }
 
   Map<String, Object?> toJson() {

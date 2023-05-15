@@ -4,13 +4,13 @@ import 'package:news_app/src/features/admin/news/add.dart';
 import 'package:news_app/src/features/admin/news/edit.dart';
 import 'package:news_app/src/features/news/news_view.dart';
 import 'package:news_app/src/model/news_model.dart';
-import 'package:news_app/src/services/comment_services.dart';
 import 'package:news_app/src/services/news_services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
 
 import '../../../model/user_model.dart';
 import '../../../services/helpers.dart';
+import '../../news/comments.dart';
 
 class AdminPanelNews extends StatefulWidget {
   const AdminPanelNews({
@@ -380,10 +380,14 @@ class _AdminPanelNewsState extends State<AdminPanelNews> {
                                 // Comment
                                 IconButton(
                                   icon: const Icon(Icons.chat_bubble),
-                                  onPressed: () {
-                                    CommentServices().showComment(
-                                        context, news, widget.currentUser);
-                                  },
+                                  onPressed: () => Navigator.of(context).push(
+                                    MaterialPageRoute(
+                                      builder: (context) => NewsComments(
+                                        news: news,
+                                        currentUser: widget.currentUser,
+                                      ),
+                                    ),
+                                  ),
                                 ),
                                 // Delete
                                 IconButton(
