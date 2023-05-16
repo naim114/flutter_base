@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:news_app/src/features/news/news_section.dart';
 import 'package:news_app/src/services/news_services.dart';
 import 'package:news_app/src/widgets/image/logo_favicon.dart';
+import 'package:news_app/src/widgets/skeleton/skeleton_news.dart';
 import '../../model/news_model.dart';
 import '../../model/user_model.dart';
 import '../../widgets/image/avatar.dart';
@@ -86,7 +87,7 @@ class _NewsState extends State<News> with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     return loading
-        ? const Scaffold(body: Center(child: CircularProgressIndicator()))
+        ? const SkeletonNews()
         : Scaffold(
             appBar: AppBar(
               centerTitle: true,

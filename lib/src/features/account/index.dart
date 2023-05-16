@@ -9,6 +9,7 @@ import 'package:news_app/src/features/news/liked.dart';
 import 'package:news_app/src/services/helpers.dart';
 import 'package:news_app/src/services/user_services.dart';
 import 'package:news_app/src/widgets/builder/user_builder.dart';
+import 'package:news_app/src/widgets/skeleton/skeleton_news.dart';
 import 'package:news_app/src/widgets/typography/page_title_icon.dart';
 
 import '../../model/user_model.dart';
@@ -228,6 +229,18 @@ class _AccountState extends State<Account> {
                                         : const SizedBox(),
                                   ],
                                 ),
+                          ListTile(
+                            title: Text(
+                              'test TODO delete',
+                              style: TextStyle(
+                                  color: Colors.red[400],
+                                  fontWeight: FontWeight.bold),
+                            ),
+                            onTap: () => Navigator.of(widget.mainContext).push(
+                              MaterialPageRoute(
+                                  builder: (context) => const SkeletonNews()),
+                            ),
+                          ),
                           ListTile(
                             title: Text(
                               'Log Out',

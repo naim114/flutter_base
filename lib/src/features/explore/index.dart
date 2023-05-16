@@ -7,6 +7,7 @@ import '../../model/news_model.dart';
 import '../../model/user_model.dart';
 import '../../widgets/card/news_card_main.dart';
 import '../../widgets/image/avatar.dart';
+import '../../widgets/skeleton/skeleton_news.dart';
 
 class Explore extends StatefulWidget {
   const Explore({
@@ -67,7 +68,7 @@ class _ExploreState extends State<Explore> {
   @override
   Widget build(BuildContext context) {
     return loading
-        ? const Scaffold(body: Center(child: CircularProgressIndicator()))
+        ? const SkeletonNews()
         : RefreshIndicator(
             key: _refreshIndicatorKey,
             onRefresh: _refreshData,
