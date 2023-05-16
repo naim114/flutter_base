@@ -15,8 +15,6 @@ class SignUp extends StatefulWidget {
 }
 
 class _SignUpState extends State<SignUp> {
-  final AuthService _authService = AuthService();
-
   final nameController = TextEditingController();
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
@@ -156,7 +154,7 @@ class _SignUpState extends State<SignUp> {
                           // if validation success
 
                           try {
-                            final result = await _authService.signUp(
+                            final result = await AuthService().signUp(
                               name: nameController.text,
                               email: emailController.text,
                               password: passwordController.text,
@@ -171,7 +169,7 @@ class _SignUpState extends State<SignUp> {
                               setState(() =>
                                   _buttonChild = const Text("Register Now"));
 
-                              final signOut = _authService.signOut(result);
+                              final signOut = AuthService().signOut(result);
                               print("Sign Out: ${signOut.toString()}");
 
                               if (context.mounted) {

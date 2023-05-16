@@ -15,8 +15,6 @@ class LogIn extends StatefulWidget {
 }
 
 class _LogInState extends State<LogIn> {
-  final AuthService _authService = AuthService();
-
   final passwordController = TextEditingController();
   final emailController = TextEditingController();
 
@@ -113,7 +111,7 @@ class _LogInState extends State<LogIn> {
 
                 if (_validateEmptyField() && validateEmail(emailController)) {
                   // if validation success
-                  final result = await _authService.signIn(
+                  final result = await AuthService().signIn(
                     emailController.text,
                     passwordController.text,
                   );
@@ -124,6 +122,11 @@ class _LogInState extends State<LogIn> {
                     Fluttertoast.showToast(
                         msg: "Could not sign in with credentials");
                     setState(() => _buttonChild = const Text("Log In"));
+                  } else {
+                    if (context.mounted) {
+                      Navigator.pop(context);
+                    }
+                    Fluttertoast.showToast(msg: "Welcome :)");
                   }
                 }
               },

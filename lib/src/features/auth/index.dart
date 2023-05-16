@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:news_app/src/features/auth/log_in.dart';
 import 'package:news_app/src/features/auth/sign_up.dart';
 import 'package:news_app/src/services/helpers.dart';
@@ -10,6 +11,7 @@ import 'package:news_app/src/widgets/button/custom_pill_button.dart';
 
 import '../../model/app_settings_model.dart';
 import '../../services/app_settings_services.dart';
+import '../../services/auth_services.dart';
 
 class AuthIndex extends StatelessWidget {
   const AuthIndex({super.key});
@@ -198,7 +200,19 @@ Widget registerButton({
                       context: context,
                       borderColor: CustomColor.primary,
                       fillColor: Colors.transparent,
-                      onPressed: () {},
+                      onPressed: () async {
+                        Navigator.pop(context);
+
+                        try {
+                          final result =
+                              await AuthService().continueWithGoogle();
+
+                          print("Sign Up With Google: ${result.toString()}");
+                        } catch (e) {
+                          print(e.toString());
+                          Fluttertoast.showToast(msg: e.toString());
+                        }
+                      },
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
@@ -209,7 +223,7 @@ Widget registerButton({
                           ),
                           const SizedBox(width: 10),
                           Text(
-                            'Register with Google',
+                            'Continue with Google',
                             style: TextStyle(
                               color: isDarkTheme(context)
                                   ? Colors.white
@@ -260,7 +274,7 @@ Widget registerButton({
           },
         ),
         child: const Text(
-          'Sign Up',
+          'Create an account',
           style: TextStyle(
             color: Colors.white,
             fontSize: 18,
@@ -335,7 +349,19 @@ Widget loginButton({
                       context: context,
                       borderColor: CustomColor.primary,
                       fillColor: Colors.transparent,
-                      onPressed: () {},
+                      onPressed: () async {
+                        Navigator.pop(context);
+
+                        try {
+                          final result =
+                              await AuthService().continueWithGoogle();
+
+                          print("Sign Up With Google: ${result.toString()}");
+                        } catch (e) {
+                          print(e.toString());
+                          Fluttertoast.showToast(msg: e.toString());
+                        }
+                      },
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
@@ -397,7 +423,7 @@ Widget loginButton({
           },
         ),
         child: Text(
-          'Log In',
+          'Continue',
           style: TextStyle(
             color: isDarkTheme(context)
                 ? Colors.white

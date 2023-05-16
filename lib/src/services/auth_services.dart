@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:crypto/crypto.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:news_app/src/model/user_model.dart';
 import 'package:news_app/src/services/role_services.dart';
 import 'package:news_app/src/services/user_activity_services.dart';
@@ -14,6 +15,7 @@ import 'package:network_info_plus/network_info_plus.dart';
 class AuthService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore _db = FirebaseFirestore.instance;
+  final GoogleSignIn _googleSignIn = GoogleSignIn();
 
   static final DeviceInfoPlugin _deviceInfoPlugin = DeviceInfoPlugin();
   final NetworkInfo _networkInfo = NetworkInfo();
@@ -154,11 +156,94 @@ class AuthService {
           }
         });
       });
+
+      return true;
     } catch (e) {
       print(e.toString());
       Fluttertoast.showToast(msg: e.toString());
 
       return false;
+    }
+  }
+
+  Future<UserModel?> continueWithGoogle() async {
+    try {
+      // Configure Google Sign-In
+      final GoogleSignInAccount? googleSignInAccount =
+          await _googleSignIn.signIn();
+
+      if (googleSignInAccount != null) {
+        final GoogleSignInAuthentication googleAuth =
+            await googleSignInAccount.authentication;
+
+        // Create user credential using Google token
+        final AuthCredential credential = GoogleAuthProvider.credential(
+          idToken: googleAuth.idToken,
+          accessToken: googleAuth.accessToken,
+        );
+
+        // Sign in with credential
+        UserCredential result =
+            await FirebaseAuth.instance.signInWithCredential(credential);
+
+        // Get result
+        User? user = result.user;
+
+        if (user != null) {
+          // Check if user already exists in Firestore
+          final addedUser = await UserServices().get(user.uid);
+
+          if (addedUser != null) {
+            return addedUser;
+          } else {
+            // New user, add to Firestore
+            final userRole = await RoleServices().getBy('name', 'user');
+
+            if (userRole.isNotEmpty) {
+              await _db.collection("User").doc(user.uid).set(
+                    UserModel(
+                      name: user.displayName ?? '',
+                      createdAt: DateTime.now(),
+                      email: user.email ?? '',
+                      role: userRole.first,
+                      id: user.uid,
+                      updatedAt: DateTime.now(),
+                      password: '',
+                    ).toJson(),
+                  );
+            }
+
+            await UserServices().get(user.uid).then((user) {
+              if (user != null) {
+                return UserActivityServices().add(
+                  user: user,
+                  description: "Sign Up/Create Account",
+                  activityType: "sign_up",
+                  networkInfo: _networkInfo,
+                  deviceInfoPlugin: _deviceInfoPlugin,
+                );
+              }
+            });
+
+            Fluttertoast.showToast(msg: "Sign up success!");
+
+            final addedUser = await UserServices().get(user.uid);
+
+            print("Added: $addedUser");
+
+            return addedUser;
+          }
+        }
+      }
+
+      return null;
+    } catch (e) {
+      Fluttertoast.showToast(
+        msg: e.toString(),
+      );
+
+      Fluttertoast.showToast(msg: "Could not sign in with credentials");
+      return null;
     }
   }
 
