@@ -1,5 +1,5 @@
 # News App
-<img src="https://firebasestorage.googleapis.com/v0/b/news-app-v2-e2716.appspot.com/o/demo%2Flogo_main.png?alt=media&token=4d9187f3-8676-4501-8b08-53d6f31d5210" href="https://github.com/naim114/news_app" width="400" >
+<img src="https://github.com/naim114/news_app/blob/master/demo/logo_main.png" href="https://github.com/naim114/news_app" width="400" >
 
 News App is a simple application that allows users to read, and post news. The app is built using Flutter and Firebase.
 
