@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:news_app/src/features/auth/log_in.dart';
+import 'package:news_app/src/features/auth/index.dart';
 import 'package:news_app/src/features/main/index.dart';
 import 'package:news_app/src/model/user_model.dart';
 import 'package:news_app/src/services/helpers.dart';
@@ -30,7 +30,7 @@ class Wrapper extends StatelessWidget {
           );
         } else {
           if (user == null) {
-            return const LogIn();
+            return const AuthIndex();
           } else {
             return const FrontFrame();
           }

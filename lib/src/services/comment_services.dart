@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:network_info_plus/network_info_plus.dart';
 import 'package:news_app/src/model/comment_model.dart';
@@ -9,11 +8,7 @@ import 'package:news_app/src/model/news_model.dart';
 import 'package:news_app/src/services/news_services.dart';
 import 'package:news_app/src/services/user_activity_services.dart';
 import 'package:news_app/src/services/user_services.dart';
-import 'package:flutter/cupertino.dart';
-
 import '../model/user_model.dart';
-import '../widgets/list_tile/list_tile_comment.dart';
-import 'helpers.dart';
 
 class CommentServices {
   final CollectionReference _collectionRef =

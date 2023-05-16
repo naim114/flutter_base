@@ -1,13 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:news_app/src/features/auth/sign_up.dart';
 import 'package:news_app/src/services/helpers.dart';
 import 'package:news_app/src/widgets/appbar/custom_appbar.dart';
 import 'package:news_app/src/widgets/button/custom_button.dart';
 import 'package:news_app/src/widgets/typography/custom_textfield.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import '../../services/auth_services.dart';
-import '../../widgets/image/logo_main.dart';
 
 class LogIn extends StatefulWidget {
   const LogIn({super.key});
@@ -43,8 +41,9 @@ class _LogInState extends State<LogIn> {
     return Scaffold(
       appBar: customAppBar(
         context: context,
-        onPressed: () {},
-        noBackButton: true,
+        onPressed: () {
+          Navigator.pop(context);
+        },
         actions: [
           IconButton(
             icon: isDarkTheme(context)
@@ -55,111 +54,99 @@ class _LogInState extends State<LogIn> {
           ),
         ],
       ),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 30),
-          child: Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Column(
+      body: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 30),
+        child: Column(
+          children: [
+            const Padding(
+              padding: EdgeInsets.only(bottom: 30.0),
+              child: Text(
+                "Log in with email",
+                style: TextStyle(
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+            // const Padding(
+            //   padding: EdgeInsets.only(bottom: 30.0),
+            //   child: Text(
+            //     "Log In",
+            //     style: TextStyle(
+            //       fontSize: 24,
+            //       fontWeight: FontWeight.bold,
+            //     ),
+            //   ),
+            // ),
+            Padding(
+              padding: const EdgeInsets.only(bottom: 10),
+              child: CustomTextField(
+                controller: emailController,
+                icon: const Icon(CupertinoIcons.at),
+                labelText: 'Email',
+                errorText: _submitted == true && emailController.text.isEmpty
+                    ? "Input can't be empty"
+                    : _submitted == true && !validateEmail(emailController)
+                        ? "Please enter the correct email"
+                        : null,
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(top: 10, bottom: 20),
+              child: CustomTextField(
+                controller: passwordController,
+                icon: const Icon(CupertinoIcons.padlock),
+                labelText: 'Password',
+                isPassword: true,
+                errorText: _submitted == true && passwordController.text.isEmpty
+                    ? "Input can't be empty"
+                    : null,
+              ),
+            ),
+            customButton(
+              child: _buttonChild,
+              onPressed: () async {
+                setState(() => _submitted = true);
+                setState(() => _buttonChild = const CircularProgressIndicator(
+                      color: Colors.white,
+                    ));
+
+                if (_validateEmptyField() && validateEmail(emailController)) {
+                  // if validation success
+                  final result = await _authService.signIn(
+                    emailController.text,
+                    passwordController.text,
+                  );
+
+                  print("Log In: ${result.toString()}");
+
+                  if (result != null && result == false) {
+                    Fluttertoast.showToast(
+                        msg: "Could not sign in with credentials");
+                    setState(() => _buttonChild = const Text("Log In"));
+                  }
+                }
+              },
+            ),
+            TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: RichText(
+                text: const TextSpan(
+                  style: TextStyle(fontWeight: FontWeight.bold),
                   children: [
-                    Padding(
-                      padding: const EdgeInsets.only(bottom: 50.0),
-                      child: logoMain(context: context),
+                    TextSpan(
+                      text: 'Don\'t have an account? ',
+                      style: TextStyle(color: CustomColor.neutral2),
                     ),
-                    // const Padding(
-                    //   padding: EdgeInsets.only(bottom: 30.0),
-                    //   child: Text(
-                    //     "Log In",
-                    //     style: TextStyle(
-                    //       fontSize: 24,
-                    //       fontWeight: FontWeight.bold,
-                    //     ),
-                    //   ),
-                    // ),
-                    Padding(
-                      padding: const EdgeInsets.only(bottom: 10),
-                      child: CustomTextField(
-                        controller: emailController,
-                        icon: const Icon(CupertinoIcons.at),
-                        labelText: 'Email',
-                        errorText:
-                            _submitted == true && emailController.text.isEmpty
-                                ? "Input can't be empty"
-                                : _submitted == true &&
-                                        !validateEmail(emailController)
-                                    ? "Please enter the correct email"
-                                    : null,
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(top: 10, bottom: 20),
-                      child: CustomTextField(
-                        controller: passwordController,
-                        icon: const Icon(CupertinoIcons.padlock),
-                        labelText: 'Password',
-                        isPassword: true,
-                        errorText: _submitted == true &&
-                                passwordController.text.isEmpty
-                            ? "Input can't be empty"
-                            : null,
-                      ),
-                    ),
-                    customButton(
-                      child: _buttonChild,
-                      onPressed: () async {
-                        setState(() => _submitted = true);
-                        setState(() =>
-                            _buttonChild = const CircularProgressIndicator(
-                              color: Colors.white,
-                            ));
-
-                        if (_validateEmptyField() &&
-                            validateEmail(emailController)) {
-                          // if validation success
-                          final result = await _authService.signIn(
-                            emailController.text,
-                            passwordController.text,
-                          );
-
-                          print("Log In: ${result.toString()}");
-
-                          if (result != null && result == false) {
-                            Fluttertoast.showToast(
-                                msg: "Could not sign in with credentials");
-                            setState(() => _buttonChild = const Text("Log In"));
-                          }
-                        }
-                      },
+                    TextSpan(
+                      text: 'Sign Up',
+                      style: TextStyle(color: CustomColor.secondary),
                     ),
                   ],
                 ),
-                TextButton(
-                  onPressed: () => Navigator.of(context).push(
-                    MaterialPageRoute(
-                      builder: (context) => const SignUp(),
-                    ),
-                  ),
-                  child: RichText(
-                    text: const TextSpan(
-                      style: TextStyle(fontWeight: FontWeight.bold),
-                      children: [
-                        TextSpan(
-                          text: 'Don\'t have an account? ',
-                          style: TextStyle(color: CustomColor.neutral2),
-                        ),
-                        TextSpan(
-                          text: 'Sign Up',
-                          style: TextStyle(color: CustomColor.secondary),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ],
+              ),
             ),
-          ),
+          ],
         ),
       ),
     );
