@@ -26,4 +26,4 @@ Download: [Demo APK](https://firebasestorage.googleapis.com/v0/b/news-app-v2-e27
 <img src="https://firebasestorage.googleapis.com/v0/b/news-app-v2-e2716.appspot.com/o/demo%2Fhome.gif?alt=media&token=dab01e89-cea0-4216-83b7-3129d6a265da" width="250" > 
 <img src="https://firebasestorage.googleapis.com/v0/b/news-app-v2-e2716.appspot.com/o/demo%2Fexplore.gif?alt=media&token=0020be28-abb8-4935-902d-9b9287d36ce0" width="250" > 
 <img src="https://firebasestorage.googleapis.com/v0/b/news-app-v2-e2716.appspot.com/o/demo%2Fnoti.gif?alt=media&token=f1633b48-91fd-4796-b001-f348b3c9eb72" width="250" > 
-<img src="https://firebasestorage.googleapis.com/v0/b/news-app-v2-e2716.appspot.com/o/demo%2Fprofile.png?alt=media&token=48c0971e-c24d-41e1-a98b-52989209d2a7" width="250" >
+<img src="https://firebasestorage.googleapis.com/v0/b/news-app-v2-e2716.appspot.com/o/demo%2Fprofile.png?alt=media&token=48c0971e-c24d-41e1-a98b-52989209d2a7" width="250" > 
