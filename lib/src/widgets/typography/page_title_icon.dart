@@ -5,7 +5,7 @@ Widget pageTitleIcon({
   required BuildContext context,
   required String title,
   required Icon icon,
-  double fontSize = 24,
+  double fontSize = 20,
 }) =>
     RichText(
       text: TextSpan(

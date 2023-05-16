@@ -115,18 +115,12 @@ class _UsersPickerState extends State<UsersPicker> {
                           if (_isAscending == true) {
                             _isAscending = false;
                             widget.userList.sort((userA, userB) {
-                              String userAName = userA.name ?? "None";
-                              String userBName = userB.name ?? "None";
-
-                              return userAName.compareTo(userBName);
+                              return userA.name.compareTo(userB.name);
                             });
                           } else {
                             _isAscending = true;
                             widget.userList.sort((userA, userB) {
-                              String userAName = userA.name ?? "None";
-                              String userBName = userB.name ?? "None";
-
-                              return userBName.compareTo(userAName);
+                              return userB.name.compareTo(userA.name);
                             });
                           }
                         });
@@ -198,9 +192,7 @@ class _UsersPickerState extends State<UsersPicker> {
                       }),
                       cells: [
                         DataCell(Text(user.email)),
-                        DataCell(Text(user.name == null || user.name == ""
-                            ? "None"
-                            : user.name!)),
+                        DataCell(Text(user.name)),
                         DataCell(Text(user.role!.displayName)),
                         DataCell(Text(
                             DateFormat('dd/MM/yyyy').format(user.createdAt))),

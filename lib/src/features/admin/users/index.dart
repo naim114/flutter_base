@@ -1,13 +1,12 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:news_app/src/features/admin/users/edit.dart';
 import 'package:news_app/src/services/user_services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:shimmer/shimmer.dart';
 
 import '../../../model/user_model.dart';
 import '../../../services/helpers.dart';
+import '../../../widgets/image/avatar.dart';
 
 class AdminPanelUsers extends StatefulWidget {
   final List<UserModel> userList;
@@ -33,12 +32,6 @@ class _AdminPanelUsersState extends State<AdminPanelUsers> {
   bool _isAscending = true;
 
   @override
-  void initState() {
-    filteredData = widget.userList;
-    super.initState();
-  }
-
-  @override
   void dispose() {
     searchController.dispose();
     super.dispose();
@@ -51,14 +44,22 @@ class _AdminPanelUsersState extends State<AdminPanelUsers> {
           : widget.userList
               .where((user) =>
                   user.email.toLowerCase().contains(text.toLowerCase()) ||
-                  user.name!.toLowerCase().contains(text.toLowerCase()) ||
+                  user.name.toLowerCase().contains(text.toLowerCase()) ||
                   user.role!.name.toLowerCase().contains(text.toLowerCase()))
               .toList();
     });
   }
 
   @override
+  void initState() {
+    filteredData = widget.userList;
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
+    filteredData = widget.userList;
+
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
@@ -155,11 +156,11 @@ class _AdminPanelUsersState extends State<AdminPanelUsers> {
                           if (_isAscending == true) {
                             _isAscending = false;
                             widget.userList.sort((userA, userB) =>
-                                userA.name!.compareTo(userB.name!));
+                                userA.name.compareTo(userB.name));
                           } else {
                             _isAscending = true;
                             widget.userList.sort((userA, userB) =>
-                                userB.name!.compareTo(userA.name!));
+                                userB.name.compareTo(userA.name));
                           }
                         });
                       },
@@ -190,84 +191,18 @@ class _AdminPanelUsersState extends State<AdminPanelUsers> {
                     return DataRow(
                       cells: [
                         DataCell(
-                          SizedBox(
-                            width: MediaQuery.of(context).size.height * 0.055,
-                            child: user.avatarURL == null
-                                ? Container(
-                                    height: MediaQuery.of(context).size.height *
-                                        0.055,
-                                    width: MediaQuery.of(context).size.height *
-                                        0.055,
-                                    decoration: const BoxDecoration(
-                                      shape: BoxShape.circle,
-                                      image: DecorationImage(
-                                          image: AssetImage(
-                                              'assets/images/default-profile-picture.png'),
-                                          fit: BoxFit.cover),
-                                    ),
-                                  )
-                                : CachedNetworkImage(
-                                    imageUrl: user.avatarURL!,
-                                    fit: BoxFit.cover,
-                                    imageBuilder: (context, imageProvider) =>
-                                        Container(
-                                      height:
-                                          MediaQuery.of(context).size.height *
-                                              0.055,
-                                      width:
-                                          MediaQuery.of(context).size.height *
-                                              0.055,
-                                      decoration: BoxDecoration(
-                                        shape: BoxShape.circle,
-                                        image: DecorationImage(
-                                            image: imageProvider,
-                                            fit: BoxFit.cover),
-                                      ),
-                                    ),
-                                    placeholder: (context, url) =>
-                                        Shimmer.fromColors(
-                                      baseColor: CupertinoColors.systemGrey,
-                                      highlightColor:
-                                          CupertinoColors.systemGrey2,
-                                      child: Container(
-                                        height:
-                                            MediaQuery.of(context).size.height *
-                                                0.055,
-                                        width:
-                                            MediaQuery.of(context).size.height *
-                                                0.055,
-                                        decoration: const BoxDecoration(
-                                          shape: BoxShape.circle,
-                                          color: Colors.grey,
-                                        ),
-                                      ),
-                                    ),
-                                    errorWidget: (context, url, error) {
-                                      print("Avatar Error: $error");
-                                      return Container(
-                                        height:
-                                            MediaQuery.of(context).size.height *
-                                                0.055,
-                                        width:
-                                            MediaQuery.of(context).size.height *
-                                                0.055,
-                                        decoration: const BoxDecoration(
-                                          shape: BoxShape.circle,
-                                          image: DecorationImage(
-                                              image: AssetImage(
-                                                  'assets/images/default-profile-picture.png'),
-                                              fit: BoxFit.cover),
-                                        ),
-                                      );
-                                    },
-                                  ),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 3.0),
+                            child: avatar(
+                              user: user,
+                              height: MediaQuery.of(context).size.height * 0.05,
+                              width: MediaQuery.of(context).size.height * 0.05,
+                            ),
                           ),
                         ),
                         DataCell(Text(user.role!.displayName)),
                         DataCell(Text(user.email)),
-                        DataCell(Text(user.name == null || user.name == ""
-                            ? "None"
-                            : user.name!)),
+                        DataCell(Text(user.name)),
                         DataCell(Text(
                             user.disableAt == null ? "Active" : "Disabled")),
                         DataCell(

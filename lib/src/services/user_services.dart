@@ -97,6 +97,7 @@ class UserServices {
           ? doc.get('birthday')
           : doc.get('birthday').toDate(),
       phone: doc.get('phone'),
+      bio: doc.get('bio'),
       address: doc.get('address'),
       country: Countries.values
           .firstWhere((country) => country.number == doc.get('country')),
@@ -124,6 +125,7 @@ class UserServices {
           : doc.get('birthday').toDate(),
       phone: doc.get('phone'),
       address: doc.get('address'),
+      bio: doc.get('bio'),
       country: Countries.values
           .firstWhere((country) => country.number == doc.get('country')),
       avatarPath: doc.get('avatarPath'),
@@ -145,6 +147,7 @@ class UserServices {
     required DateTime? birthday,
     required String? phone,
     required String? address,
+    required String? bio,
     required String countryNumber,
   }) async {
     try {
@@ -153,6 +156,7 @@ class UserServices {
         'birthday': birthday,
         'phone': phone,
         'address': address,
+        'bio': bio,
         'country': countryNumber,
         'updatedAt': DateTime.now(),
       }).then((value) => print("User Updated"));

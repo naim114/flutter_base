@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:news_app/src/features/auth/log_in.dart';
 import 'package:news_app/src/services/auth_services.dart';
 import 'package:news_app/src/services/helpers.dart';
 import 'package:news_app/src/widgets/appbar/custom_appbar.dart';
@@ -15,8 +16,6 @@ class SignUp extends StatefulWidget {
 }
 
 class _SignUpState extends State<SignUp> {
-  final AuthService _authService = AuthService();
-
   final nameController = TextEditingController();
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
@@ -70,7 +69,7 @@ class _SignUpState extends State<SignUp> {
                     const Padding(
                       padding: EdgeInsets.only(bottom: 30.0),
                       child: Text(
-                        "Sign Up",
+                        "Sign up with email",
                         style: TextStyle(
                           fontSize: 24,
                           fontWeight: FontWeight.bold,
@@ -156,7 +155,7 @@ class _SignUpState extends State<SignUp> {
                           // if validation success
 
                           try {
-                            final result = await _authService.signUp(
+                            final result = await AuthService().signUp(
                               name: nameController.text,
                               email: emailController.text,
                               password: passwordController.text,
@@ -171,7 +170,7 @@ class _SignUpState extends State<SignUp> {
                               setState(() =>
                                   _buttonChild = const Text("Register Now"));
 
-                              final signOut = _authService.signOut(result);
+                              final signOut = AuthService().signOut(result);
                               print("Sign Out: ${signOut.toString()}");
 
                               if (context.mounted) {
@@ -194,7 +193,12 @@ class _SignUpState extends State<SignUp> {
                   ],
                 ),
                 TextButton(
-                  onPressed: () => Navigator.pop(context),
+                  onPressed: () {
+                    Navigator.pop(context);
+                    Navigator.of(context).push(
+                      MaterialPageRoute(builder: (context) => const LogIn()),
+                    );
+                  },
                   child: RichText(
                     text: const TextSpan(
                       style: TextStyle(fontWeight: FontWeight.bold),

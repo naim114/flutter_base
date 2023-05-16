@@ -22,15 +22,22 @@ class _NewsBuilderState extends State<NewsBuilder> {
   final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey =
       GlobalKey<RefreshIndicatorState>();
 
-  List<NewsModel?> newsList = List.empty(growable: true);
+  List<NewsModel> newsList = List.empty(growable: true);
+  bool loading = true;
 
   Future<void> _refreshData() async {
     try {
       // Call the asynchronous operation to fetch data
-      final List<NewsModel?> fetchedNews = await NewsService().getAll();
+      final List<NewsModel> fetchedNews =
+          widget.currentUser.role!.name == 'super_admin'
+              ? (await NewsService().getAll()).whereType<NewsModel>().toList()
+              : (await NewsService().getBy('author', widget.currentUser.id))
+                  .whereType<NewsModel>()
+                  .toList();
 
       // Update the state with the fetched data and call setState to rebuild the UI
       setState(() {
+        loading = false;
         newsList = fetchedNews;
       });
 
@@ -44,36 +51,34 @@ class _NewsBuilderState extends State<NewsBuilder> {
   }
 
   @override
+  void initState() {
+    super.initState();
+    _refreshData();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return RefreshIndicator(
-      key: _refreshIndicatorKey,
-      onRefresh: _refreshData,
-      child: FutureBuilder<List<NewsModel?>>(
-        future: NewsService().getAll(),
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting ||
-              snapshot.data == null) {
-            return const Scaffold(
-                body: Center(child: CircularProgressIndicator()));
-          } else if (snapshot.data != null) {
-            List<NewsModel> dataList =
-                snapshot.data!.whereType<NewsModel>().toList();
-
-            if (widget.pushTo == 'AdminPanelNews') {
-              return AdminPanelNews(
-                currentUser: widget.currentUser,
-                newsList: dataList,
-                notifyRefresh: (refresh) {
-                  _refreshData();
-                },
-              );
-            }
-          }
-
-          return const Scaffold(
-              body: Center(child: CircularProgressIndicator()));
-        },
-      ),
-    );
+    return loading
+        ? const Scaffold(body: Center(child: CircularProgressIndicator()))
+        : RefreshIndicator(
+            key: _refreshIndicatorKey,
+            onRefresh: _refreshData,
+            child: Builder(
+              builder: (context) {
+                if (widget.pushTo == 'AdminPanelNews') {
+                  return AdminPanelNews(
+                    currentUser: widget.currentUser,
+                    newsList: newsList,
+                    notifyRefresh: (refresh) {
+                      _refreshData();
+                    },
+                  );
+                } else {
+                  return const Scaffold(
+                      body: Center(child: CircularProgressIndicator()));
+                }
+              },
+            ),
+          );
   }
 }

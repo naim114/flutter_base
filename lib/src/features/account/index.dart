@@ -15,6 +15,7 @@ import '../../model/user_model.dart';
 import '../../services/auth_services.dart';
 import '../../widgets/list_tile/list_tile_icon.dart';
 import '../../widgets/list_tile/list_tile_profile.dart';
+import '../news/bookmarked.dart';
 
 class Account extends StatefulWidget {
   const Account({
@@ -83,7 +84,7 @@ class _AccountState extends State<Account> {
                             title: "Account",
                             icon: const Icon(
                               CupertinoIcons.person_fill,
-                              size: 24,
+                              size: 20,
                             ),
                           ),
                           // PROFILE
@@ -104,7 +105,7 @@ class _AccountState extends State<Account> {
                             child: Text(
                               'Settings',
                               style: TextStyle(
-                                fontSize: 18,
+                                fontSize: 16,
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
@@ -151,6 +152,18 @@ class _AccountState extends State<Account> {
                               ),
                             ),
                           ),
+                          // Liked News
+                          listTileIcon(
+                            context: context,
+                            icon: CupertinoIcons.bookmark_fill,
+                            title: "Bookmarked News",
+                            onTap: () => Navigator.of(widget.mainContext).push(
+                              MaterialPageRoute(
+                                builder: (context) =>
+                                    BookmarkedNews(user: user),
+                              ),
+                            ),
+                          ),
                           // ADMIN ONLY
                           user.role != null && user.role!.name == "user"
                               ? const SizedBox()
@@ -162,7 +175,7 @@ class _AccountState extends State<Account> {
                                       child: Text(
                                         'Admin',
                                         style: TextStyle(
-                                          fontSize: 18,
+                                          fontSize: 16,
                                           fontWeight: FontWeight.bold,
                                         ),
                                       ),

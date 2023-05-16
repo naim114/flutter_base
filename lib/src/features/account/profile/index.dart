@@ -31,13 +31,15 @@ class _ProfileState extends State<Profile> {
   final TextEditingController phoneController = TextEditingController();
   final TextEditingController birthdayController = TextEditingController();
   final TextEditingController addressController = TextEditingController();
+  final TextEditingController bioController = TextEditingController();
   String countryDropdownValue = Countries.abw.number;
 
   @override
   void initState() {
-    nameController.text = widget.user.name ?? "";
+    nameController.text = widget.user.name;
     phoneController.text = widget.user.phone ?? "";
     addressController.text = widget.user.address ?? "";
+    bioController.text = widget.user.bio ?? "";
     birthdayController.text = widget.user.birthday != null
         ? DateFormat('dd/MM/yyyy')
             .format(widget.user.birthday ?? DateTime.now())
@@ -54,6 +56,7 @@ class _ProfileState extends State<Profile> {
     phoneController.dispose();
     birthdayController.dispose();
     addressController.dispose();
+    bioController.dispose();
     super.dispose();
   }
 
@@ -70,6 +73,7 @@ class _ProfileState extends State<Profile> {
                 ? null
                 : DateFormat('dd/MM/yyyy').parse(birthdayController.text),
             phone: phoneController.text,
+            bio: bioController.text,
             address: addressController.text,
             countryNumber: countryDropdownValue,
           );
@@ -270,6 +274,14 @@ class _ProfileState extends State<Profile> {
                     child: TextField(
                       controller: nameController,
                       decoration: const InputDecoration(labelText: 'Name'),
+                    ),
+                  ),
+                  // Bio
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 8.0),
+                    child: TextField(
+                      controller: bioController,
+                      decoration: const InputDecoration(labelText: 'Bio'),
                     ),
                   ),
                   // Birthday

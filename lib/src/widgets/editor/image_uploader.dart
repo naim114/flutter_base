@@ -25,7 +25,7 @@ class ImageUploader extends StatefulWidget {
     this.height = 300,
     this.appBarTitle = "Upload Image",
     this.desc =
-        'Tap image to upload new image. Tap top right to confirm changes. ',
+        'Tap image to upload new image. Tap top right to confirm changes.',
     this.imageFile,
     this.fit = BoxFit.cover,
   });

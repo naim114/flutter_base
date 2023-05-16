@@ -161,7 +161,6 @@ class UserActivityServices {
       try {
         dynamic add = await _collectionRef.add({
           'createdAt': DateTime.now(),
-          'updatedAt': DateTime.now(),
           'deletedAt': null,
         }).then((docRef) {
           _db

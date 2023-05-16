@@ -1,23 +1,22 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:news_app/src/features/news/carousel_news.dart';
-import 'package:news_app/src/features/news/latest_news.dart';
-import 'package:news_app/src/features/news/popular_news.dart';
-import 'package:news_app/src/features/news/search_news.dart';
+import 'package:news_app/src/features/news/news_section.dart';
 import 'package:news_app/src/services/news_services.dart';
-import 'package:provider/provider.dart';
-import '../../model/app_settings_model.dart';
+import 'package:news_app/src/widgets/image/logo_favicon.dart';
+import 'package:news_app/src/widgets/skeleton/skeleton_news.dart';
 import '../../model/news_model.dart';
 import '../../model/user_model.dart';
+import '../../widgets/image/avatar.dart';
 
 class News extends StatefulWidget {
   const News({
     super.key,
     required this.mainContext,
     required this.user,
+    required this.onAvatarTap,
   });
   final BuildContext mainContext;
   final UserModel? user;
+  final void Function()? onAvatarTap;
 
   @override
   State<News> createState() => _NewsState();
@@ -27,39 +26,47 @@ class _NewsState extends State<News> with TickerProviderStateMixin {
   final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey =
       GlobalKey<RefreshIndicatorState>();
 
-  List<List<NewsModel?>> allList = [
-    [], // fetchedAllNews
+  List<List<NewsModel>> allList = [
     [], // fetchedStarredNews
     [], // fetchedPopularNews
     [], // fetchedLatestNews
   ];
+  bool loading = true;
 
   Future<void> _refreshData() async {
     try {
-      final List<NewsModel?> fetchedAllNews = await NewsService().getAll();
-      final List<NewsModel?> fetchedStarredNews = await NewsService().getAllBy(
+      final List<NewsModel> fetchedStarredNews = (await NewsService().getAllBy(
         fieldName: 'starred',
         desc: true,
         limit: 5,
-      );
-      final List<NewsModel?> fetchedPopularNews = await NewsService().getAllBy(
-        fieldName: 'likeCount',
-        desc: true,
-        limit: 5,
-      );
-      final List<NewsModel?> fetchedLatestNews = await NewsService().getAllBy(
+      ))
+          .whereType<NewsModel>()
+          .toList();
+
+      final List<NewsModel> fetchedAllNews =
+          (await NewsService().getAll()).whereType<NewsModel>().toList();
+
+      final List<NewsModel> fetchedPopularNews = fetchedAllNews
+          .where((news) =>
+              news.likedBy != null &&
+              news.likedBy!.isNotEmpty) // only consider news with likes
+          .toList()
+        ..sort((a, b) => b.likedBy!.length
+            .compareTo(a.likedBy!.length)) // sort by number of likes
+        ..take(5) // take only the top five news with the most likes
+            .toList();
+
+      final List<NewsModel> fetchedLatestNews = (await NewsService().getAllBy(
         fieldName: 'createdAt',
         desc: true,
         limit: 5,
-      );
+      ))
+          .whereType<NewsModel>()
+          .toList();
 
       setState(() {
-        allList = [
-          fetchedAllNews,
-          fetchedStarredNews,
-          fetchedPopularNews,
-          fetchedLatestNews
-        ];
+        loading = false;
+        allList = [fetchedStarredNews, fetchedPopularNews, fetchedLatestNews];
       });
 
       // Trigger a refresh of the RefreshIndicator widget
@@ -72,164 +79,84 @@ class _NewsState extends State<News> with TickerProviderStateMixin {
   }
 
   @override
+  void initState() {
+    super.initState();
+    _refreshData();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    final appSettings = Provider.of<AppSettingsModel?>(context);
+    return loading
+        ? const SkeletonNews()
+        : Scaffold(
+            appBar: AppBar(
+              centerTitle: true,
+              title: logoFavicon(context: context),
+              leading: GestureDetector(
+                onTap: widget.onAvatarTap,
+                child: Padding(
+                  padding: const EdgeInsets.only(
+                    left: 20.0,
+                    top: 10,
+                    bottom: 10,
+                  ),
+                  child: avatar(
+                    user: widget.user!,
+                    width: MediaQuery.of(context).size.height * 0.05,
+                    height: MediaQuery.of(context).size.height * 0.05,
+                  ),
+                ),
+              ),
+            ),
+            body: RefreshIndicator(
+              key: _refreshIndicatorKey,
+              onRefresh: _refreshData,
+              child: Builder(
+                builder: (context) {
+                  final List<NewsModel> starredNewsList = allList[0];
+                  final List<NewsModel> popularNewsList = allList[1];
+                  final List<NewsModel> latestNewsList = allList[2];
 
-    return appSettings == null && widget.user == null
-        ? const Scaffold(body: Center(child: CircularProgressIndicator()))
-        : RefreshIndicator(
-            key: _refreshIndicatorKey,
-            onRefresh: _refreshData,
-            child: FutureBuilder(
-              future: Future.wait([
-                NewsService().getAll(),
-                NewsService().getAllBy(
-                  fieldName: 'starred',
-                  desc: true,
-                  limit: 5,
-                ),
-                NewsService().getAllBy(
-                  fieldName: 'likedBy',
-                  desc: true,
-                  limit: 5,
-                ),
-                NewsService().getAllBy(
-                  fieldName: 'createdAt',
-                  desc: true,
-                  limit: 5,
-                ),
-              ]),
-              builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return const Scaffold(
-                      body: Center(child: CircularProgressIndicator()));
-                } else if (snapshot.hasError) {
-                  return Center(child: Text('Error: ${snapshot.error}'));
-                } else {
-                  final List<NewsModel?> allNews = snapshot.data![0];
-                  final List<NewsModel?> starredNewsList = snapshot.data![1];
-                  final List<NewsModel?> popularNewsList = snapshot.data![2];
-                  final List<NewsModel?> latestNewsList = snapshot.data![3];
-
-                  return Scaffold(
-                    appBar: AppBar(
-                      centerTitle: true,
-                      actions: [
-                        SearchNews(
-                          mainContext: widget.mainContext,
-                          newsList: allNews,
-                          user: widget.user!,
-                          child: const Icon(Icons.search),
-                        ),
-                      ],
-                      title: CachedNetworkImage(
-                        imageUrl: appSettings!.logoFaviconURL,
-                        fit: BoxFit.contain,
-                        height: 30,
-                        placeholder: (context, url) => Image.asset(
-                          'assets/images/default_logo_favicon.png',
-                          fit: BoxFit.contain,
-                          height: 30,
-                        ),
-                        errorWidget: (context, url, error) => Image.asset(
-                          'assets/images/default_logo_favicon.png',
-                          fit: BoxFit.contain,
-                          height: 30,
-                        ),
-                      ),
-                    ),
-                    body: ListView(
-                      children: [
-                        // // Page Title
-                        // Container(
-                        //   padding: const EdgeInsets.only(
-                        //     top: 25,
-                        //     left: 25,
-                        //     right: 25,
-                        //     bottom: 10,
-                        //   ),
-                        //   child: Column(
-                        //     crossAxisAlignment: CrossAxisAlignment.start,
-                        //     children: [
-                        //       pageTitleIcon(
-                        //         context: context,
-                        //         title: "News",
-                        //         icon: const Icon(
-                        //           Icons.newspaper,
-                        //           size: 24,
-                        //         ),
-                        //       ),
-                        //       const Padding(
-                        //         padding:
-                        //             EdgeInsets.symmetric(vertical: 10),
-                        //         child: Text(
-                        //           'Get all the latest news here.',
-                        //         ),
-                        //       ),
-                        //     ],
-                        //   ),
-                        // ),
-                        // // Search News
-                        // SearchNews(
-                        //   mainContext: widget.mainContext,
-                        //   newsList: allNews,
-                        // ),
-                        // Carousel News (Starred News)
-                        CarouselNews(
-                          mainContext: widget.mainContext,
-                          newsList: starredNewsList,
-                          user: widget.user!,
-                        ),
-                        // Popular News Cards
-                        popularNewsList.isEmpty
-                            ? const SizedBox()
-                            : const Padding(
-                                padding: EdgeInsets.symmetric(
-                                    horizontal: 25, vertical: 10),
-                                child: Text(
-                                  "Popular News",
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 20,
-                                  ),
-                                ),
-                              ),
-                        popularNewsList.isEmpty
-                            ? const SizedBox()
-                            : popularNews(
-                                context: context,
-                                mainContext: widget.mainContext,
-                                newsList: popularNewsList,
-                                user: widget.user!,
-                              ),
-                        // Latest News Cards
-                        latestNewsList.isEmpty
-                            ? const SizedBox()
-                            : const Padding(
-                                padding: EdgeInsets.symmetric(
-                                    horizontal: 25, vertical: 10),
-                                child: Text(
-                                  "Latest News",
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 20,
-                                  ),
-                                ),
-                              ),
-                        latestNewsList.isEmpty
-                            ? const SizedBox()
-                            : latestNews(
-                                context: context,
-                                mainContext: widget.mainContext,
-                                newsList: latestNewsList,
-                                user: widget.user!,
-                              ),
-                        const SizedBox(height: 40),
-                      ],
-                    ),
+                  return ListView(
+                    children: [
+                      // Latest News
+                      const SizedBox(height: 5),
+                      starredNewsList.isEmpty
+                          ? const SizedBox()
+                          : newsSection(
+                              context: context,
+                              mainContext: widget.mainContext,
+                              newsList: starredNewsList,
+                              user: widget.user!,
+                              title: 'More News',
+                            ),
+                      const SizedBox(height: 5),
+                      // Popular News
+                      popularNewsList.isEmpty
+                          ? const SizedBox()
+                          : newsSection(
+                              context: context,
+                              mainContext: widget.mainContext,
+                              newsList: popularNewsList,
+                              user: widget.user!,
+                              title: 'Popular News',
+                            ),
+                      const SizedBox(height: 5),
+                      // Latest News
+                      latestNewsList.isEmpty
+                          ? const SizedBox()
+                          : newsSection(
+                              context: context,
+                              mainContext: widget.mainContext,
+                              newsList: latestNewsList,
+                              user: widget.user!,
+                              title: 'Latest News',
+                            ),
+                      const SizedBox(height: 40),
+                    ],
                   );
-                }
-              },
+                },
+              ),
             ),
           );
   }

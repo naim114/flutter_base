@@ -5,7 +5,7 @@ import 'package:news_app/src/model/role_model.dart';
 class UserModel {
   final String id;
   final String email;
-  final String? name;
+  final String name;
   final DateTime? birthday;
   final String? phone;
   final String? address;
@@ -13,6 +13,7 @@ class UserModel {
   final String? avatarPath;
   final String? avatarURL;
   final RoleModel? role;
+  final String? bio;
 
   // date
   final DateTime createdAt;
@@ -24,7 +25,7 @@ class UserModel {
 
   UserModel({
     required this.id,
-    this.name,
+    required this.name,
     this.birthday,
     this.phone,
     this.address,
@@ -34,6 +35,7 @@ class UserModel {
     this.avatarPath,
     this.avatarURL,
     required this.role,
+    this.bio,
     required this.createdAt,
     required this.updatedAt,
     this.disableAt,
@@ -41,44 +43,7 @@ class UserModel {
 
   @override
   String toString() {
-    return 'UserModel(id: $id, email: $email, name: $name, birthday: $birthday, phone: $phone, address: $address, country: ${country.isoShortName}, avatarPath: $avatarPath, avatarURL: $avatarURL, role: $role, createdAt: $createdAt, updatedAt: $updatedAt, disableAt: $disableAt, password: $password)';
-  }
-
-  UserModel.fromMap(Map<String, dynamic> map)
-      : this(
-          id: map['id'],
-          email: map['email'],
-          name: map['name'],
-          birthday: map['birthday'],
-          phone: map['phone'],
-          address: map['address'],
-          country: map['country'],
-          avatarPath: map['avatarPath'],
-          avatarURL: map['avatarURL'],
-          role: map['role'],
-          createdAt: map['createdAt'],
-          updatedAt: map['updatedAt'],
-          disableAt: map['disableAt'],
-          password: map['password'],
-        );
-
-  Map<String, dynamic> toMap() {
-    return {
-      'id': id,
-      'email': email,
-      'name': name,
-      'birthday': birthday,
-      'phone': phone,
-      'address': address,
-      'country': country,
-      'avatarPath': avatarPath,
-      'avatarURL': avatarURL,
-      'role': role?.id,
-      'createdAt': createdAt,
-      'updatedAt': updatedAt,
-      'disableAt': disableAt,
-      'password': password,
-    };
+    return 'UserModel(id: $id, email: $email, name: $name, birthday: $birthday, phone: $phone, address: $address, bio: $bio country: ${country.isoShortName}, avatarPath: $avatarPath, avatarURL: $avatarURL, role: $role, createdAt: $createdAt, updatedAt: $updatedAt, disableAt: $disableAt, password: $password)';
   }
 
   UserModel.fromJson(Map<String, Object?> json)
@@ -89,6 +54,7 @@ class UserModel {
           birthday: json['birthday']! as DateTime,
           phone: json['phone']! as String,
           address: json['address']! as String,
+          bio: json['bio']! as String,
           country: json['country']! as Country,
           avatarPath: json['avatarPath']! as String,
           avatarURL: json['avatarURL']! as String,
@@ -107,6 +73,7 @@ class UserModel {
       'birthday': birthday,
       'phone': phone,
       'address': address,
+      'bio': bio,
       'country': country.number,
       'avatarPath': avatarPath,
       'avatarURL': avatarURL,

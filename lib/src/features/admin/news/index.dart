@@ -10,6 +10,7 @@ import 'package:intl/intl.dart';
 
 import '../../../model/user_model.dart';
 import '../../../services/helpers.dart';
+import '../../news/comments.dart';
 
 class AdminPanelNews extends StatefulWidget {
   const AdminPanelNews({
@@ -35,12 +36,6 @@ class _AdminPanelNewsState extends State<AdminPanelNews> {
   bool _isAscending = true;
 
   @override
-  void initState() {
-    filteredData = widget.newsList;
-    super.initState();
-  }
-
-  @override
   void dispose() {
     searchController.dispose();
     super.dispose();
@@ -58,7 +53,15 @@ class _AdminPanelNewsState extends State<AdminPanelNews> {
   }
 
   @override
+  void initState() {
+    filteredData = widget.newsList;
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
+    filteredData = widget.newsList;
+
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
@@ -153,13 +156,13 @@ class _AdminPanelNewsState extends State<AdminPanelNews> {
                           if (_isAscending == true) {
                             _isAscending = false;
                             widget.newsList.sort((itemA, itemB) => itemB
-                                .author!.name!
-                                .compareTo(itemA.author!.name!));
+                                .author!.name
+                                .compareTo(itemA.author!.name));
                           } else {
                             _isAscending = true;
                             widget.newsList.sort((itemA, itemB) => itemA
-                                .author!.name!
-                                .compareTo(itemB.author!.name!));
+                                .author!.name
+                                .compareTo(itemB.author!.name));
                           }
                         });
                       },
@@ -189,13 +192,13 @@ class _AdminPanelNewsState extends State<AdminPanelNews> {
                           if (_isAscending == true) {
                             _isAscending = false;
                             widget.newsList.sort((itemA, itemB) => itemB
-                                .updatedBy!.name!
-                                .compareTo(itemA.updatedBy!.name!));
+                                .updatedBy!.name
+                                .compareTo(itemA.updatedBy!.name));
                           } else {
                             _isAscending = true;
                             widget.newsList.sort((itemA, itemB) => itemA
-                                .updatedBy!.name!
-                                .compareTo(itemB.updatedBy!.name!));
+                                .updatedBy!.name
+                                .compareTo(itemB.updatedBy!.name));
                           }
                         });
                       },
@@ -269,15 +272,12 @@ class _AdminPanelNewsState extends State<AdminPanelNews> {
                               softWrap: true,
                             ),
                           )),
-                          DataCell(Text(news.author!.name == null ||
-                                  news.author!.name == ""
-                              ? "None"
-                              : news.author!.name!)),
+                          DataCell(Text(news.author!.name)),
                           DataCell(Text(DateFormat('dd/MM/yyyy hh:mm a')
                               .format(news.createdAt))),
                           DataCell(Text(news.updatedBy == null
                               ? "None"
-                              : news.updatedBy!.name!)),
+                              : news.updatedBy!.name)),
                           DataCell(Text(DateFormat('dd/MM/yyyy hh:mm a')
                               .format(news.updatedAt))),
                           DataCell(Text(news.likedBy == null
@@ -360,7 +360,6 @@ class _AdminPanelNewsState extends State<AdminPanelNews> {
                                         ),
                                       ),
                                     );
-                                    widget.notifyRefresh(true);
                                   },
                                 ),
                                 // Edit
@@ -377,6 +376,18 @@ class _AdminPanelNewsState extends State<AdminPanelNews> {
                                     );
                                     widget.notifyRefresh(true);
                                   },
+                                ),
+                                // Comment
+                                IconButton(
+                                  icon: const Icon(Icons.chat_bubble),
+                                  onPressed: () => Navigator.of(context).push(
+                                    MaterialPageRoute(
+                                      builder: (context) => NewsComments(
+                                        news: news,
+                                        currentUser: widget.currentUser,
+                                      ),
+                                    ),
+                                  ),
                                 ),
                                 // Delete
                                 IconButton(
