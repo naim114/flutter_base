@@ -19,7 +19,7 @@ v2
 <!-- - rework news view -->
 <!-- - add explore page (search, split news by category) -->
 
-- anonymous/google sign in
+<!-- - anonymous/google sign in -->
 - add multiple image/video
 - use better font
 
