@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:news_app/src/features/auth/sign_up.dart';
 import 'package:news_app/src/services/helpers.dart';
 import 'package:news_app/src/widgets/appbar/custom_appbar.dart';
 import 'package:news_app/src/widgets/button/custom_button.dart';
@@ -132,7 +133,12 @@ class _LogInState extends State<LogIn> {
               },
             ),
             TextButton(
-              onPressed: () => Navigator.pop(context),
+              onPressed: () {
+                Navigator.pop(context);
+                Navigator.of(context).push(
+                  MaterialPageRoute(builder: (context) => const SignUp()),
+                );
+              },
               child: RichText(
                 text: const TextSpan(
                   style: TextStyle(fontWeight: FontWeight.bold),

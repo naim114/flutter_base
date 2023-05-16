@@ -34,7 +34,7 @@ Widget skeletonNewsCardMain({
           highlightColor: CupertinoColors.systemGrey2,
           child: Container(
             color: Colors.grey,
-            width: double.infinity,
+            width: MediaQuery.of(context).size.width * 0.5,
             height: MediaQuery.of(context).size.height * 0.05,
           ),
         ),
