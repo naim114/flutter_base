@@ -16,7 +16,8 @@ News App is a simple application that allows users to read, and post news. The a
 Contributions are welcome! If you notice any bugs or would like to suggest a new feature, please submit an issue on GitHub. If you would like to contribute code, please fork the repository and create a pull request.
 
 ### Demo
-Download: [Demo APK](https://firebasestorage.googleapis.com/v0/b/news-app-v2-e2716.appspot.com/o/demo%2F2.0.5.apk?alt=media&token=c96c9da5-67bd-4b07-8aa4-d6c61dcf7e1d)
-
+Download: 
+- [2.0.5](https://firebasestorage.googleapis.com/v0/b/news-app-v2-e2716.appspot.com/o/demo%2F2.0.5.apk?alt=media&token=c96c9da5-67bd-4b07-8aa4-d6c61dcf7e1d)
+- [2.0.6](https://firebasestorage.googleapis.com/v0/b/news-app-v2-e2716.appspot.com/o/demo%2F2.0.6.apk?alt=media&token=096b15b1-98e2-47ad-99b5-7b6df26e2e29)
 ### Preview
 <img src="https://github.com/naim114/news_app/blob/master/demo/landing.png" width="250" > <img src="https://github.com/naim114/news_app/blob/master/demo/landing_modal.png" width="250" > <img src="https://github.com/naim114/news_app/blob/master/demo/login.png" width="250" > <img src="https://github.com/naim114/news_app/blob/master/demo/signup.png" width="250" > <img src="https://github.com/naim114/news_app/blob/master/demo/home.gif" width="250" > <img src="https://github.com/naim114/news_app/blob/master/demo/explore.gif" width="250" > <img src="https://github.com/naim114/news_app/blob/master/demo/article.gif" width="250" > <img src="https://github.com/naim114/news_app/blob/master/demo/noti.gif" width="250" > <img src="https://github.com/naim114/news_app/blob/master/demo/profile.png" width="250" > 
